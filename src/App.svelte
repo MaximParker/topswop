@@ -20,10 +20,14 @@
 
   const userSnapshot = onSnapshot(colRef, (QuerySnapshot) => {
     QuerySnapshot.forEach((user) => {
-      let userData = { ...user.data() };
+      let userData = { ...user.data(), id: user.id };
       users = [userData, ...users];
     });
   });
+
+  const removeUser = async (id) => {
+    await deleteDoc(doc(db, "users", id));
+  };
 
   export let name;
 </script>

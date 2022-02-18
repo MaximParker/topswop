@@ -5,10 +5,11 @@
     collection,
     onSnapshot,
     addDoc,
+    doc,
+    deleteDoc,
   } from "firebase/firestore";
   import { firebaseConfig } from "./lib/firebaseConfig";
   import Template from "./lib/components/Template.svelte";
-  // import Post from "./Post.svelte";
 
   const init = initializeApp(firebaseConfig);
   export const db = getFirestore();
@@ -19,10 +20,14 @@
 
   export const userSnapshot = onSnapshot(colRef, (QuerySnapshot) => {
     QuerySnapshot.forEach((user) => {
-      let userData = { ...user.data() };
+      let userData = { ...user.data(), id: user.id };
       users = [userData, ...users];
     });
   });
+
+  const removeUser = async (id) => {
+    await deleteDoc(doc(db, "users", id));
+  };
 
   export let name;
 
@@ -44,6 +49,7 @@
 
 <main>
   <h1>Hello {name}!</h1>
+  <DeleteFunction {db} />
   <Template />
   <form
     on:submit={(event) => {
@@ -59,6 +65,18 @@
   <ul>
     {#each users as user}
       <li><span>{user.forename} {user.surname} ({user.username})</span></li>
+    {/each}
+  </ul>
+  <p>----------------</p>
+  <ul>
+    {#each users as user}
+      <li>
+        <span>{user.forename} {user.surname} ({user.username})</span><button
+          on:click={() => {
+            removeUser(user.id);
+          }}>Delete</button
+        >
+      </li>
     {/each}
   </ul>
 </main>

@@ -1,6 +1,11 @@
 <script>
   import { initializeApp } from "firebase/app";
-  import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+  import {
+    getFirestore,
+    collection,
+    onSnapshot,
+    addDoc,
+  } from "firebase/firestore";
   import { firebaseConfig } from "./lib/firebaseConfig";
   import Template from "./lib/components/Template.svelte";
   // import Post from "./Post.svelte";
@@ -22,22 +27,35 @@
   export let name;
 
   let arrList = [];
-  let newUser = "";
+  let newForename = "";
+  let newSurname = "";
+  let newUsername = "";
 
-  const addPeople = async (
-    forename = newUser,
-    surname = newUser,
-    username = newUser
-  ) => {
-    await addDoc(colRef, { forename, surname, username });
+  const addUser = async (event) => {
+    event.preventDefault();
+    const docRef = await addDoc(collection(db, "users"), {
+      forename: newForename,
+      surname: newSurname,
+      username: newUsername,
+    });
+    console.log("Document written with ID: ", docRef.id);
   };
 </script>
 
 <main>
   <h1>Hello {name}!</h1>
   <Template />
-  <input type="text" bind:value={newUser} />
-  <button on:click={addPeople}>Add</button>
+  <form
+    on:submit={(event) => {
+      addUser(event);
+    }}
+  >
+    <input type="text" placeholder="Forename..." bind:value={newForename} />
+    <input type="text" placeholder="Surname..." bind:value={newSurname} />
+    <input type="text" placeholder="Username..." bind:value={newUsername} />
+    <button type="submit">Submit</button>
+  </form>
+
   <ul>
     {#each users as user}
       <li><span>{user.forename} {user.surname} ({user.username})</span></li>

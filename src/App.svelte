@@ -24,14 +24,10 @@
   let arrList = [];
   let newUser = "";
 
-  db.collection("user").onSnapshot((snapData) => {
-    arrList = snapData.docs;
-  });
-
   const addPeople = async (
-    forename = "CAT",
-    surname = "HOANG",
-    username = "CATH"
+    forename = newUser,
+    surname = newUser,
+    username = newUser
   ) => {
     await addDoc(colRef, { forename, surname, username });
   };

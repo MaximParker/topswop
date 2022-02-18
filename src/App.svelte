@@ -8,7 +8,6 @@
 
 	console.log(init)
 	console.log(db)
-
 	export let name;
 </script>
 

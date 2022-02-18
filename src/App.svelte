@@ -1,4 +1,14 @@
 <script>
+	import { initializeApp } from 'firebase/app';
+	import { getFirestore } from 'firebase/firestore';
+	import { firebaseConfig } from './lib/firebaseConfig';
+
+	const init = initializeApp(firebaseConfig);
+	const db = getFirestore();
+
+	console.log(init)
+	console.log(db)
+
 	export let name;
 </script>
 

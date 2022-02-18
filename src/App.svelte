@@ -41,6 +41,18 @@
       <li><span>{user.forename} {user.surname} ({user.username})</span></li>
     {/each}
   </ul>
+  <p>----------------</p>
+  <ul>
+    {#each users as user}
+      <li>
+        <span>{user.forename} {user.surname} ({user.username})</span><button
+          on:click={() => {
+            removeUser(user.id);
+          }}>Delete</button
+        >
+      </li>
+    {/each}
+  </ul>
 </main>
 
 <style>

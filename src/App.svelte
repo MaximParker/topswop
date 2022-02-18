@@ -9,7 +9,6 @@
   } from "firebase/firestore";
   import { firebaseConfig } from "./lib/firebaseConfig";
   import Template from "./lib/components/Template.svelte";
-  import DeleteFunction from "./lib/components/DeleteFunction.svelte";
 
   const init = initializeApp(firebaseConfig);
   const db = getFirestore();
@@ -34,7 +33,6 @@
 
 <main>
   <h1>Hello {name}!</h1>
-  <DeleteFunction {db} />
   <Template />
   <ul>
     {#each users as user}

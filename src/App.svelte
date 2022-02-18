@@ -16,12 +16,13 @@
   const colRef = collection(db, "users");
 
   let users = [];
-
-  const userSnapshot = onSnapshot(colRef, (QuerySnapshot) => {
-    QuerySnapshot.forEach((user) => {
-      let userData = { ...user.data(), id: user.id };
-      users = [userData, ...users];
+  const userSnapshot = onSnapshot(colRef, (querySnapshot) => {
+      let userArray = []
+    querySnapshot.forEach((user) => {
+      let userData = { ...user.data(), id: user.id};
+      userArray = [userData, ...userArray];
     });
+    users = userArray
   });
 
   const removeUser = async (id) => {

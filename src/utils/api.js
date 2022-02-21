@@ -5,10 +5,16 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../lib/firebaseConfig";
+import { firebaseConfig } from "./firebaseConfig";
+import firebase from "firebase/compat/app";
+import { getAuth } from "firebase/auth";
 
-const init = initializeApp(firebaseConfig);
+console.log(firebase);
+
+const app = firebase.initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+
 export const db = getFirestore();
 
 export const postListing = async (event) => {

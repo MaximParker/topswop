@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "firebase": "^9.6.7",
-    "sirv": "^2.0.2",
     "sirv-cli": "^2.0.2",
     "svelte-navigator": "^3.1.5"
   }

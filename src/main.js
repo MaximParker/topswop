@@ -1,10 +1,8 @@
 import App from './App.svelte';
 
-const app = new App({
+const firestoreApp = new App({
 	target: document.body,
-	props: {
-		name: 'world'
-	}
+	props: {}
 });
 
-export default app;
+export default firestoreApp;

@@ -1,34 +1,27 @@
 <script>
-  import { initializeApp } from "firebase/app";
-  import {
-    getFirestore,
-    collection,
-    onSnapshot,
-    addDoc,
-    doc,
-    deleteDoc,
-  } from "firebase/firestore";
-  import { firebaseConfig } from "./lib/firebaseConfig";
-
+  import { onSnapshot, collection } from "firebase/firestore";
   // ROUTERS
   import { Router, Route, Link } from "svelte-navigator";
   import Login from "./lib/components/Login.svelte";
   import PrivateRoute from "./lib/components/PrivateRoute.svelte";
   import { user } from "./lib/components/stores";
   import Template from "./lib/components/Template.svelte";
+  import {
+    reseedListingsDatabase,
+    postListing,
+    removeListingByID,
+    db,
+  } from "./utils/api";
 
   // GRAPHICS
-  import { HomeIcon, SearchIcon, InfoIcon, PlusCircleIcon, UserIcon, MenuIcon } from "svelte-feather-icons";
-
-  import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
-  import IconButton from '@smui/icon-button';
-  import Checkbox from '@smui/checkbox';
-  let prominent = false;
-  let dense = false;
-  let secondaryColor = false;
-
-  const init = initializeApp(firebaseConfig);
-  export const db = getFirestore();
+  import {
+    HomeIcon,
+    SearchIcon,
+    InfoIcon,
+    PlusCircleIcon,
+    UserIcon,
+    MenuIcon,
+  } from "svelte-feather-icons";
 
   let listings = [];
 
@@ -53,80 +46,6 @@
     tradeRequired: false,
   };
 
-  const postListing = async (event) => {
-    event.preventDefault();
-    const docRef = await addDoc(collection(db, "listings"), newListing);
-    console.log("Document written to Listings with ID: ", docRef.id);
-  };
-
-  const removeListingByID = async (id) => {
-    await deleteDoc(doc(db, "listings", id));
-  };
-
-  const reseedListingsDatabase = async (event) => {
-    console.log("Removing all listings...");
-    for (let listing of listings) {
-      removeListingByID(listing.id);
-    }
-    console.log("Listings removed.");
-    console.log("Seeding database...");
-    newListing = {
-      username: "mister_bean",
-      title: "Mini",
-      description: "Yellow",
-      condition: "Old",
-      location: "England",
-      tradeRequired: false,
-    };
-    postListing(event);
-    newListing = {
-      username: "darth_vader",
-      title: "Lightsaber",
-      description: "Red",
-      condition: "Good",
-      location: "Tatooine",
-      tradeRequired: false,
-    };
-    postListing(event);
-    newListing = {
-      username: "bilbo-baggins",
-      title: "The One Ring",
-      description: "Precious",
-      condition: "Old",
-      location: "Mordor",
-      tradeRequired: true,
-    };
-    postListing(event);
-    newListing = {
-      username: "doctor_who",
-      title: "TARDIS",
-      description: "Blue police box",
-      condition: "Excellent",
-      location: "Earth",
-      tradeRequired: true,
-    };
-    postListing(event);
-    newListing = {
-      username: "dog_",
-      title: "Bone",
-      description: "Tasty bone",
-      condition: "Damaged",
-      location: "Backyard",
-      tradeRequired: true,
-    };
-    postListing(event);
-    newListing = {
-      username: "cat_",
-      title: "Ball of yarn",
-      description: "Red",
-      condition: "Excellent",
-      location: "LivingRoom",
-      tradeRequired: true,
-    };
-    postListing(event);
-    console.log("Re-seed complete.");
-  };
-
   function handleLogout() {
     $user = null;
   }
@@ -140,34 +59,8 @@
       <Link to="listings"><SearchIcon size="36" /></Link>
       <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
       <Link to="profile"><UserIcon size="36" /></Link>
-      <MenuIcon size="36"/>
+      <MenuIcon size="36" />
     </nav>
-<!--     <div class="top-app-bar-container flexor">
-    <TopAppBar
-      variant="static"
-      {prominent}
-      {dense}
-      color={secondaryColor ? 'secondary' : 'primary'}
-    >
-      <Row>
-        <Section>
-          <IconButton class="material-icons">menu</IconButton>
-          <Title>Flex Static</Title>
-        </Section>
-        <Section align="end" toolbar>
-          <IconButton class="material-icons" aria-label="Download"
-            >file_download</IconButton
-          >
-          <IconButton class="material-icons" aria-label="Print this page"
-            >print</IconButton
-          >
-          <IconButton class="material-icons" aria-label="Bookmark this page"
-            >bookmark</IconButton
-          >
-        </Section>
-      </Row>
-    </TopAppBar>
-  </div> -->
   </header>
 
   <main>
@@ -207,7 +100,6 @@
           >
         {/each}
       </table>
-
     </Route>
 
     <Route path="new-listing">

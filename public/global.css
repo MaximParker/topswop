@@ -1,18 +1,24 @@
 html, body {
+	background-color: #84b474;
 	position: relative;
 	width: 100%;
 	height: 100%;
 }
 
 body {
-	color: #333;
+	color: white;
 	margin: 0;
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
+nav {
+	background-color: #76a367;
+	height: min-content;
+}
+
 a {
-	color: rgb(0,100,200);
+	color: white;
 	text-decoration: none;
 }
 
@@ -21,7 +27,7 @@ a:hover {
 }
 
 a:visited {
-	color: rgb(0,80,160);
+	color: white;
 }
 
 label {

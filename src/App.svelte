@@ -9,7 +9,23 @@
     deleteDoc,
   } from "firebase/firestore";
   import { firebaseConfig } from "./lib/firebaseConfig";
+
+  // ROUTERS
+  import { Router, Route, Link } from "svelte-navigator";
+  import Login from "./lib/components/Login.svelte";
+  import PrivateRoute from "./lib/components/PrivateRoute.svelte";
+  import { user } from "./lib/components/stores";
   import Template from "./lib/components/Template.svelte";
+
+  // GRAPHICS
+  import { HomeIcon, SearchIcon, InfoIcon, PlusCircleIcon, UserIcon, MenuIcon } from "svelte-feather-icons";
+
+  import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
+  import IconButton from '@smui/icon-button';
+  import Checkbox from '@smui/checkbox';
+  let prominent = false;
+  let dense = false;
+  let secondaryColor = false;
 
   const init = initializeApp(firebaseConfig);
   export const db = getFirestore();
@@ -91,30 +107,25 @@
     };
     postListing(event);
     newListing = {
-      username: "doctor_who",
-      title: "TARDIS",
-      description: "Blue police box",
-      condition: "Excellent",
-      location: "Earth",
+      username: "dog_",
+      title: "Bone",
+      description: "Tasty bone",
+      condition: "Damaged",
+      location: "Backyard",
       tradeRequired: true,
     };
     postListing(event);
     newListing = {
-      username: "doctor_who",
-      title: "TARDIS",
-      description: "Blue police box",
+      username: "cat_",
+      title: "Ball of yarn",
+      description: "Red",
       condition: "Excellent",
-      location: "Earth",
+      location: "LivingRoom",
       tradeRequired: true,
     };
     postListing(event);
     console.log("Re-seed complete.");
   };
-
-  import { Router, Route, Link } from "svelte-navigator";
-  import Login from "./lib/components/Login.svelte";
-  import PrivateRoute from "./lib/components/PrivateRoute.svelte";
-  import { user } from "./lib/components/stores";
 
   function handleLogout() {
     $user = null;
@@ -124,12 +135,39 @@
 <Router>
   <header>
     <nav>
-      <Link to="/home">Home</Link>
-      <Link to="listings">Offers</Link>
-      <Link to="about">About</Link>
-      <Link to="new-listing">New post</Link>
-      <Link to="profile">Profile</Link>
+      <Link to="/home"><HomeIcon size="36" /></Link>
+      <Link to="about"><InfoIcon size="36" /></Link>
+      <Link to="listings"><SearchIcon size="36" /></Link>
+      <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
+      <Link to="profile"><UserIcon size="36" /></Link>
+      <MenuIcon size="36"/>
     </nav>
+<!--     <div class="top-app-bar-container flexor">
+    <TopAppBar
+      variant="static"
+      {prominent}
+      {dense}
+      color={secondaryColor ? 'secondary' : 'primary'}
+    >
+      <Row>
+        <Section>
+          <IconButton class="material-icons">menu</IconButton>
+          <Title>Flex Static</Title>
+        </Section>
+        <Section align="end" toolbar>
+          <IconButton class="material-icons" aria-label="Download"
+            >file_download</IconButton
+          >
+          <IconButton class="material-icons" aria-label="Print this page"
+            >print</IconButton
+          >
+          <IconButton class="material-icons" aria-label="Bookmark this page"
+            >bookmark</IconButton
+          >
+        </Section>
+      </Row>
+    </TopAppBar>
+  </div> -->
   </header>
 
   <main>
@@ -161,7 +199,7 @@
         </tr>
         {#each listings as listing}
           <tr
-            ><td>{listing.id.substring(0,5)}...</td>
+            ><td>{listing.id.substring(0, 5)}...</td>
             <td>{listing.title}</td>
             <td>{listing.description}</td>
             <td>{listing.condition}</td>
@@ -170,17 +208,6 @@
         {/each}
       </table>
 
-      <!--       <ul>
-        {#each users as user}
-          <li>
-            <span>{user.forename} {user.surname} ({user.username})</span><button
-              on:click={() => {
-                removeUser(user.id);
-              }}>Delete</button
-            >
-          </li>
-        {/each}
-      </ul> -->
     </Route>
 
     <Route path="new-listing">
@@ -244,31 +271,4 @@
 </Router>
 
 <style>
-  :root {
-    background-color: darkslategrey;
-  }
-
-  nav {
-    background-color: lightblue;
-    height: 50px;
-  }
-
-  main {
-    background-color: white;
-    text-align: center;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-    margin: 0;
-  }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
-  }
 </style>

@@ -1,5 +1,5 @@
 /node_modules/
 /public/build/
-/src/lib/firebaseConfig.js
+/src/utils/firebaseConfig.js
 
 .DS_Store

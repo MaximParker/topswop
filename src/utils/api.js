@@ -6,17 +6,22 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import * as firebase from "firebase/app";
-import { initializeApp } from "firebase/app"
+import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { firebaseConfig } from "./firebaseConfig";
 
-console.log(firebase);
-
 const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth(app);
-
 export const db = getFirestore();
+
+let newListing = {
+  username: "",
+  title: "",
+  description: "",
+  condition: "",
+  location: "",
+  tradeRequired: false,
+};
 
 export const postListing = async (event) => {
   event.preventDefault();
@@ -28,7 +33,7 @@ export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));
 };
 
-export const reseedListingsDatabase = async (event) => {
+export const reseedListingsDatabase = async (event, listings) => {
   console.log("Removing all listings...");
   for (let listing of listings) {
     removeListingByID(listing.id);

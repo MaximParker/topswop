@@ -78,7 +78,7 @@
       <p>Listings</p>
       <button
         on:click={(event) => {
-          reseedListingsDatabase(event);
+          reseedListingsDatabase(event, listings);
         }}>Re-seed database</button
       >
 
@@ -106,7 +106,7 @@
       <h1>New listing</h1>
       <form
         on:submit={(event) => {
-          postListing(event);
+          postListing(event, newListing);
         }}
       >
         <input

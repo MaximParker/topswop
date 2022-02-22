@@ -27,14 +27,7 @@ const getListings = onSnapshot(
                 <p>Condition: {listing.condition}</p>
                 <p>{listing.location}</p>
              </div>
-       
-       
-        <!-- <div class="card">1</div>
-          <div class="card">2</div>
-          <div class="card">3</div>
-          <div class="card">4</div>
-          <div class="card">5</div>
-          <div class="card">6</div> -->
+
           {/each}
       </section>
 
@@ -61,25 +54,37 @@ const getListings = onSnapshot(
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /* margin-left: 5px; */
-    /* margin-right: 5px; */
+
+    animation: cardEntrance 700ms ease-out;
+    animation-fill-mode: backwards;
+    
 
  }
   
 .card:hover {
     box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em, rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
-    transform: translateY(-3px) scale(1.1);
+    transform: translateY(-3px) scale(1.05);
  }
 
  .basic-grid {
      display: grid;
-     gap: 0.5rem; 
-     padding: 5px;
+     gap: 0.75rem; 
+     padding: 0.5rem;
      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
      justify-content: center;
-     
-     
+     --stagger-delay: 100ms;
 
+ }
+
+ @keyframes cardEntrance {
+     from {
+         opacity: 0;
+         transform: scale(0.3);
+     }
+     to {
+         opacity: 1;
+         transform: scale(1);
+     }
  }
 
  @media screen and (max-width: 350px) {

@@ -3,6 +3,7 @@
   // ROUTERS
   import { Router, Route, Link } from "svelte-navigator";
   import Login from "./components/Login.svelte";
+  import Chat from "./components/Chat.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import { user } from "./components/stores";
   import Template from "./components/Template.svelte";
@@ -21,6 +22,7 @@
     PlusCircleIcon,
     UserIcon,
     MenuIcon,
+    MessageSquareIcon,
   } from "svelte-feather-icons";
 
   let listings = [];
@@ -59,6 +61,7 @@
       <Link to="listings"><SearchIcon size="36" /></Link>
       <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
       <Link to="profile"><UserIcon size="36" /></Link>
+      <Link to="inbox"><MessageSquareIcon size="36" /></Link>
       <MenuIcon size="36" />
     </nav>
   </header>
@@ -151,6 +154,12 @@
     <Route path="about">
       <h1>About</h1>
       <p>That's what it's all about!</p>
+    </Route>
+
+    <Route path="inbox">
+      <User let:user let:auth>
+        <Chat {user} />
+      </User>
     </Route>
 
     <PrivateRoute path="profile" let:location>

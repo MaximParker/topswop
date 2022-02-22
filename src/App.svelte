@@ -6,6 +6,7 @@
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import { user } from "./components/stores";
   import Template from "./components/Template.svelte";
+  import ListingCard from "./components/ListingCard.svelte"
   import {
     reseedListingsDatabase,
     postListing,
@@ -76,6 +77,7 @@
     <Route path="listings">
       <h1>All listings ({listings.length})</h1>
       <p>Listings</p>
+      <ListingCard />
       <button
         on:click={(event) => {
           reseedListingsDatabase(event, listings);

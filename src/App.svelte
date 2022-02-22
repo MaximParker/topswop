@@ -51,7 +51,6 @@
 
   <main>
     <Route path="/">
-      <h1>Welcome</h1>
       <Login />
     </Route>
 

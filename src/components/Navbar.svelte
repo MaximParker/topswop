@@ -13,7 +13,7 @@
   let signedIn;
 
   user.subscribe((value) => {
-    //uid = value.uid, etc....
+    signedIn = value;
   });
 </script>
 

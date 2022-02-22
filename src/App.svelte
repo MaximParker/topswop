@@ -2,6 +2,7 @@
   import { onSnapshot, collection } from "firebase/firestore";
   // ROUTERS
   import { Router, Route, Link } from "svelte-navigator";
+  import Navbar from "./components/Navbar.svelte";
   import Login from "./components/Login.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
 
@@ -16,20 +17,6 @@
   } from "./utils/api";
 
   // UI/UX
-  import {
-    HomeIcon,
-    SearchIcon,
-    InfoIcon,
-    PlusCircleIcon,
-    UserIcon,
-    MenuIcon,
-  } from "svelte-feather-icons";
-
-  let signedIn;
-
-  user.subscribe((value) => {
-    signedIn = value;
-  });
 
   let listings = [];
 
@@ -58,13 +45,7 @@
 <Router>
   <header>
     <nav>
-      <Link to="/home"><HomeIcon size="36" /></Link>
-      <Link to="about"><InfoIcon size="36" /></Link>
-      <Link to="listings"><SearchIcon size="36" /></Link>
-      <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
-      <Link to="profile"><UserIcon size="36" /></Link>
-      <MenuIcon size="36" />
-      <p>{signedIn ? `${signedIn.email} (${signedIn.uid})` : "Sign in"}</p>
+      <Navbar />
     </nav>
   </header>
 

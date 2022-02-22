@@ -2,10 +2,10 @@
   import { onSnapshot, collection } from "firebase/firestore";
   // ROUTERS
   import { Router, Route, Link } from "svelte-navigator";
-  import Login from "./lib/components/Login.svelte";
-  import PrivateRoute from "./lib/components/PrivateRoute.svelte";
-  import { user } from "./lib/components/stores";
-  import Template from "./lib/components/Template.svelte";
+  import Login from "./components/Login.svelte";
+  import PrivateRoute from "./components/PrivateRoute.svelte";
+  import { user } from "./components/stores";
+  import Template from "./components/Template.svelte";
   import {
     reseedListingsDatabase,
     postListing,

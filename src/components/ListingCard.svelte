@@ -31,10 +31,12 @@
     border-radius: 4px;
     transition: all 500ms;
     overflow: hidden;
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    /* margin-left: 5px; */
+    /* margin-right: 5px; */
+
  }
   
 .card:hover {
@@ -44,11 +46,20 @@
 
  .basic-grid {
      display: grid;
-     gap: 1rem; 
-     grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
+     gap: 0.5rem; 
+     padding: 5px;
+     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+     justify-content: center;
+     
      
 
  }
+
+ @media screen and (max-width: 350px) {
+   .basic-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+   }
+}
 
 </style>
 

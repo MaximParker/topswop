@@ -4,8 +4,10 @@
   import { Router, Route, Link } from "svelte-navigator";
   import Login from "./components/Login.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
-  import { user } from "./components/stores";
-  import Template from "./components/Template.svelte";
+
+  // FUNCTIONS
+  import { handleLogout } from "./utils/auth";
+  import { user } from "./utils/stores";
   import {
     reseedListingsDatabase,
     postListing,
@@ -22,6 +24,13 @@
     UserIcon,
     MenuIcon,
   } from "svelte-feather-icons";
+
+
+  let signedIn;
+
+  user.subscribe(value => {
+    signedIn = value;
+  })
 
   let listings = [];
 
@@ -45,10 +54,6 @@
     location: "",
     tradeRequired: false,
   };
-
-  function handleLogout() {
-    $user = null;
-  }
 </script>
 
 <Router>
@@ -60,6 +65,7 @@
       <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
       <Link to="profile"><UserIcon size="36" /></Link>
       <MenuIcon size="36" />
+      <p>{signedIn ? `${signedIn.email} (${signedIn.uid})` : "Sign in"}</p>
     </nav>
   </header>
 

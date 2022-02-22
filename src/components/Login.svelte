@@ -1,5 +1,5 @@
 <script>
-  import { registerUserByEmail } from "../utils/auth";
+  import { loginByEmail, registerUserByEmail } from "../utils/auth";
   import { useNavigate, useLocation } from "svelte-navigator";
   const navigate = useNavigate();
   const location = useLocation();
@@ -9,20 +9,21 @@
   let newEmail;
   let newPassword;
 
-  function handleLogin() {
-    /* $user = { email, password };
-      const from = ($location.state && $location.state.from) || "/";
-      navigate(from, { replace: true }); */
+  function handleLogin(event) {
+    event.preventDefault();
+    loginByEmail(email, password);
+    navigate('/home');
   }
 
-  function handleRegister() {
+  function handleRegister(event) {
+    event.preventDefault();
     registerUserByEmail(newEmail, newPassword);
     navigate('/home');
   }
 </script>
 
 <h3>Login</h3>
-<form on:submit={handleLogin}>
+<form on:submit={(event) => {handleLogin(event)}}>
   <input bind:value={email} type="email" name="email" placeholder="Email..." />
   <br />
   <input
@@ -36,7 +37,8 @@
 </form>
 
 <h3>Register as a new user</h3>
-<input
+<form on:submit={(event) => {handleRegister(event)}}>
+  <input
   bind:value={newEmail}
   type="email"
   name="email"
@@ -52,4 +54,6 @@
   required
 />
 <br />
-<button on:click={handleRegister}>Register</button>
+<button type="submit">Register</button>
+</form>
+

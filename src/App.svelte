@@ -25,12 +25,11 @@
     MenuIcon,
   } from "svelte-feather-icons";
 
-
   let signedIn;
 
-  user.subscribe(value => {
+  user.subscribe((value) => {
     signedIn = value;
-  })
+  });
 
   let listings = [];
 

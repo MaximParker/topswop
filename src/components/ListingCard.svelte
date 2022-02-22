@@ -2,35 +2,53 @@
 </script>
 
 <main>
-  <p>LISTING CARD</p>
-  <div class="card">
-    <img src="https://cdn.webshopapp.com/shops/50597/files/202371404/650x650x2/b-c-basic-heren-t-shirt.jpg" alt="Avatar">
-    <div class="container">
-      <h4><b>Item Name</b></h4>
-      <p>Description</p>
-    </div>
-  </div>
+      <section class="basic-grid">
+          <div class="card">1</div>
+          <div class="card">2</div>
+          <div class="card">3</div>
+          <div class="card">4</div>
+          <div class="card">5</div>
+          <div class="card">6</div>
+      </section>
+
+
+    
 </main>
 
 <style>
-    .card {
-  /* Add shadows to create the "card" effect */
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  border-radius: 5px;
-}
 
-/* On mouse-over, add a deeper shadow */
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #353535;
+    font-size: 3rem;
+    color: #fff;
+    box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem, rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    transition: all 500ms;
+    overflow: hidden;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+ }
+  
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
+    box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em, rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
+    transform: translateY(-3px) scale(1.1);
+ }
 
-/* Add some padding inside the card container */
-.container {
-  padding: 2px 16px;
-}
+ .basic-grid {
+     display: grid;
+     gap: 1rem; 
+     grid-template-columns: repeat(auto-fit, minmax(240px, 300px));
+     
 
-img {
-  border-radius: 5px 5px 0 0;
-}
+ }
+
 </style>
+

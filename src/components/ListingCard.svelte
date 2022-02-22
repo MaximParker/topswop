@@ -1,14 +1,41 @@
 <script>
+import { onSnapshot, collection } from "firebase/firestore";
+import { db } from "../utils/api";
+
+
+let listings = [];
+
+const getListings = onSnapshot(
+  collection(db, "listings"),
+  (querySnapshot) => {
+    let listingArray = [];
+    querySnapshot.forEach((listing) => {
+      let listingData = { ...listing.data(), id: listing.id };
+      listingArray = [listingData, ...listingArray];
+    });
+    listings = listingArray;
+  }
+);
 </script>
 
 <main>
       <section class="basic-grid">
-          <div class="card">1</div>
+        {#each listings as listing}
+            <div class="card">
+                <h4>{listing.title}</h4>
+                <p>{listing.description}</p>
+                <p>Condition: {listing.condition}</p>
+                <p>{listing.location}</p>
+             </div>
+       
+       
+        <!-- <div class="card">1</div>
           <div class="card">2</div>
           <div class="card">3</div>
           <div class="card">4</div>
           <div class="card">5</div>
-          <div class="card">6</div>
+          <div class="card">6</div> -->
+          {/each}
       </section>
 
 

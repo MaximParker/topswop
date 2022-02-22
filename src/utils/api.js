@@ -5,7 +5,6 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import * as firebase from "firebase/app";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { firebaseConfig } from "./firebaseConfig";

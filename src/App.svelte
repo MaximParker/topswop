@@ -6,6 +6,7 @@
   import Chat from "./components/Chat.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import { user } from "./components/stores";
+
   import Template from "./components/Template.svelte";
   import {
     reseedListingsDatabase,
@@ -157,9 +158,7 @@
     </Route>
 
     <Route path="inbox">
-      <User let:user let:auth>
-        <Chat {user} />
-      </User>
+      <Chat />
     </Route>
 
     <PrivateRoute path="profile" let:location>

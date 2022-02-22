@@ -15,7 +15,7 @@
     db,
   } from "./utils/api";
 
-  // GRAPHICS
+  // UI/UX
   import {
     HomeIcon,
     SearchIcon,

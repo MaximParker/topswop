@@ -11,6 +11,7 @@
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@smui/checkbox": "^6.0.0-beta.14",
+    "@smui/form-field": "^6.0.0-beta.14",
     "@smui/icon-button": "^6.0.0-beta.14",
     "@smui/top-app-bar": "^6.0.0-beta.14",
     "rollup": "^2.3.4",

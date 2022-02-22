@@ -20,8 +20,8 @@ const getListings = onSnapshot(
 
 <main>
       <section class="basic-grid">
-        {#each listings as listing}
-            <div class="card">
+        {#each listings as listing, i}
+            <div class="card" style="--animation-order: {i + 1};">
                 <h4>{listing.title}</h4>
                 <p>{listing.description}</p>
                 <p>Condition: {listing.condition}</p>
@@ -57,7 +57,7 @@ const getListings = onSnapshot(
 
     animation: cardEntrance 700ms ease-out;
     animation-fill-mode: backwards;
-    
+    animation-delay: calc(var(--animation-order) * 100ms);
 
  }
   

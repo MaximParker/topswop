@@ -1,19 +1,8 @@
 <script>
   import { loginByEmail, registerUserByEmail } from "../utils/auth";
   import { useNavigate, useLocation } from "svelte-navigator";
-  import { user } from "../utils/stores";
   const navigate = useNavigate();
   const location = useLocation();
-
-  let signedIn;
-
-  user.subscribe((value) => {
-    signedIn = value;
-  });
-
-  if (signedIn) {
-    navigate("/home");
-  }
 
   let email;
   let password;
@@ -24,23 +13,21 @@
   function handleLogin(event) {
     event.preventDefault();
     loginByEmail(email, password);
-    if (signedIn) {
-      navigate("/home");
-    }
+    navigate("/home");
   }
 
   function handleRegister(event) {
     event.preventDefault();
     if (newPassword == confirmPassword) {
       registerUserByEmail(newEmail, newPassword);
-      navigate("/home");
+    navigate("/home");
     } else {
-      alert("Passwords do not match!");
+      alert("Passwords do not match!")
     }
   }
 </script>
 
-<h1>Welcome</h1>
+<h1>Sign in</h1>
 <form
   on:submit={(event) => {
     handleLogin(event);

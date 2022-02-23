@@ -1,5 +1,4 @@
 <script>
-  import { onSnapshot, collection } from "firebase/firestore";
   // ROUTERS
   import { Router, Route, Link } from "svelte-navigator";
   import Navbar from "./components/Navbar.svelte";
@@ -7,16 +6,7 @@
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import NewListing from "./components/NewListing.svelte";
   import Listings from "./components/Listings.svelte";
-
-  // FUNCTIONS
-  import { handleLogout } from "./utils/auth";
-  import { user } from "./utils/stores";
-  import {
-    reseedListingsDatabase,
-    postListing,
-    removeListingByID,
-    db,
-  } from "./utils/api";
+  import Profile from './components/Profile.svelte'
 </script>
 
 <Router>
@@ -36,8 +26,7 @@
     </PrivateRoute>
 
     <PrivateRoute path="profile" let:location>
-      <h1>Welcome {$user.username}</h1>
-      <button on:click={handleLogout}>Logout</button>
+      <Profile />
     </PrivateRoute>
 
     <PrivateRoute path="new-listing" let:location>

@@ -20,8 +20,6 @@
 {#if signedIn}
   <main>
     <Link to="/"><HomeIcon size="36" /></Link>
-    <Link to="about"><InfoIcon size="36" /></Link>
-    <Link to="/"><SearchIcon size="36" /></Link>
     <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
     <Link to="profile"><UserIcon size="36" /></Link>
     <MenuIcon size="36" />

@@ -5,13 +5,6 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { firebaseConfig } from "./firebaseConfig";
-
-// should this be firestoreApp to match main js
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth();
 export const db = getFirestore();
 
 let newListing = {

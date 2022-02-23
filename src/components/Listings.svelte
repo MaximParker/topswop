@@ -1,6 +1,7 @@
 <script>
   import { onSnapshot, collection } from "firebase/firestore";
   import { db, reseedListingsDatabase } from "../utils/api";
+  import ListingCard from './ListingCard.svelte'
 
   let listings = [];
 
@@ -19,6 +20,9 @@
 
 <main>
   <h1>All listings ({listings.length})</h1>
+
+  <ListingCard />
+
   <p>Listings</p>
   <button
     on:click={(event) => {

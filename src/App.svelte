@@ -5,8 +5,8 @@
   import Navbar from "./components/Navbar.svelte";
   import Login from "./components/Login.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
-
-  // FUNCTIONS
+  import Template from "./components/Template.svelte";
+  import ListingCard from "./components/ListingCard.svelte"
   import { handleLogout } from "./utils/auth";
   import { user } from "./utils/stores";
   import {
@@ -61,6 +61,7 @@
     <Route path="listings">
       <h1>All listings ({listings.length})</h1>
       <p>Listings</p>
+      <ListingCard />
       <button
         on:click={(event) => {
           reseedListingsDatabase(event, listings);

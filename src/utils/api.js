@@ -14,10 +14,12 @@ let newListing = {
   condition: "",
   location: "",
   tradeRequired: false,
+  user_id: ""
 };
 
-export const postListing = async (event) => {
+export const postListing = async (event, newListing) => {
   event.preventDefault();
+
   const docRef = await addDoc(collection(db, "listings"), newListing);
   console.log("Document written to Listings with ID: ", docRef.id);
 };
@@ -42,7 +44,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     tradeRequired: false,
     user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
   };
-  postListing(event);
+  postListing(event, newListing);
   newListing = {
     username: "darth_vader",
     title: "Lightsaber",
@@ -52,7 +54,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     tradeRequired: false,
     user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
   };
-  postListing(event);
+  postListing(event, newListing);
   newListing = {
     username: "bilbo-baggins",
     title: "The One Ring",
@@ -62,7 +64,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     tradeRequired: true,
     user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
   };
-  postListing(event);
+  postListing(event, newListing);
   newListing = {
     username: "doctor_who",
     title: "TARDIS",
@@ -72,7 +74,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     tradeRequired: true,
     user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
   };
-  postListing(event);
+  postListing(event, newListing);
   newListing = {
     username: "dog_",
     title: "Bone",
@@ -82,7 +84,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     tradeRequired: true,
     user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
   };
-  postListing(event);
+  postListing(event, newListing);
   newListing = {
     username: "cat_",
     title: "Ball of yarn",
@@ -92,6 +94,6 @@ export const reseedListingsDatabase = async (event, listings) => {
     tradeRequired: true,
     user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
   };
-  postListing(event);
+  postListing(event, newListing);
   console.log("Re-seed complete.");
 };

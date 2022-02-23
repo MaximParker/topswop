@@ -40,6 +40,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     condition: "Old",
     location: "England",
     tradeRequired: false,
+    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
   };
   postListing(event);
   newListing = {
@@ -49,6 +50,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     condition: "Good",
     location: "Tatooine",
     tradeRequired: false,
+    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
   };
   postListing(event);
   newListing = {
@@ -58,6 +60,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     condition: "Old",
     location: "Mordor",
     tradeRequired: true,
+    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
   };
   postListing(event);
   newListing = {
@@ -67,6 +70,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     condition: "Excellent",
     location: "Earth",
     tradeRequired: true,
+    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
   };
   postListing(event);
   newListing = {
@@ -76,6 +80,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     condition: "Damaged",
     location: "Backyard",
     tradeRequired: true,
+    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
   };
   postListing(event);
   newListing = {
@@ -85,6 +90,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     condition: "Excellent",
     location: "LivingRoom",
     tradeRequired: true,
+    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
   };
   postListing(event);
   console.log("Re-seed complete.");

@@ -1,6 +1,7 @@
 <script>
   import { onSnapshot, collection } from "firebase/firestore";
   import { db, reseedListingsDatabase } from "../utils/api";
+import ListingCard from "./ListingCard.svelte";
 
   let listings = [];
 
@@ -20,6 +21,7 @@
 <main>
   <h1>All listings ({listings.length})</h1>
   <p>Listings</p>
+  <ListingCard />
   <button
     on:click={(event) => {
       reseedListingsDatabase(event, listings);
@@ -33,6 +35,7 @@
       <th>Description</th>
       <th>Condition</th>
       <th>Location</th>
+      <th>User ID</th>
     </tr>
     {#each listings as listing}
       <tr
@@ -40,7 +43,8 @@
         <td>{listing.title}</td>
         <td>{listing.description}</td>
         <td>{listing.condition}</td>
-        <td>{listing.location}</td></tr
+        <td>{listing.location}</td>
+        <td>{listing.user_id}</td></tr
       >
     {/each}
   </table>

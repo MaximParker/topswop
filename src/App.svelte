@@ -2,10 +2,13 @@
   import { onSnapshot, collection } from "firebase/firestore";
   // ROUTERS
   import { Router, Route, Link } from "svelte-navigator";
+  import Navbar from "./components/Navbar.svelte";
   import Login from "./components/Login.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
-  import { user } from "./components/stores";
-  import Template from "./components/Template.svelte";
+
+  // FUNCTIONS
+  import { handleLogout } from "./utils/auth";
+  import { user } from "./utils/stores";
   import {
     reseedListingsDatabase,
     postListing,
@@ -13,15 +16,7 @@
     db,
   } from "./utils/api";
 
-  // GRAPHICS
-  import {
-    HomeIcon,
-    SearchIcon,
-    InfoIcon,
-    PlusCircleIcon,
-    UserIcon,
-    MenuIcon,
-  } from "svelte-feather-icons";
+  // UI/UX
 
   let listings = [];
 
@@ -45,27 +40,17 @@
     location: "",
     tradeRequired: false,
   };
-
-  function handleLogout() {
-    $user = null;
-  }
 </script>
 
 <Router>
   <header>
     <nav>
-      <Link to="/home"><HomeIcon size="36" /></Link>
-      <Link to="about"><InfoIcon size="36" /></Link>
-      <Link to="listings"><SearchIcon size="36" /></Link>
-      <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
-      <Link to="profile"><UserIcon size="36" /></Link>
-      <MenuIcon size="36" />
+      <Navbar />
     </nav>
   </header>
 
   <main>
     <Route path="/">
-      <h1>Welcome</h1>
       <Login />
     </Route>
 

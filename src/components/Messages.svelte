@@ -1,6 +1,7 @@
 <script>
   import { onSnapshot, collection } from "firebase/firestore";
   import { db } from "../utils/api";
+  import { sendWelcomeMessage } from "../utils/auth";
   import { user } from "../utils/stores";
 
   let signedIn;
@@ -15,7 +16,7 @@
     collection(db, `messages/${signedIn.uid}/conversations`),
     (querySnapshot) => {
       querySnapshot.forEach((conversation) => {
-        console.log(conversation)
+        console.log(conversation);
         let conversationData = {
           ...conversation.data(),
           recipient_id: conversation.id,
@@ -31,12 +32,18 @@
   <h1>Messages</h1>
 </header>
 
+<button on:click={sendWelcomeMessage(user.uid)}>Send welcome message</button>
+
 <main>
   <ul>
     {#each conversations as conversation}
       <li>
         <p>{conversation.recipient_id}</p>
-        <p>Last message: {conversation.messages[conversation.messages.length-1]}</p>
+        <p>
+          Last message: {conversation.messages[
+            conversation.messages.length - 1
+          ]}
+        </p>
       </li>
     {/each}
   </ul>

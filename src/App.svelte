@@ -6,7 +6,8 @@
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import NewListing from "./components/NewListing.svelte";
   import Listings from "./components/Listings.svelte";
-  import Profile from './components/Profile.svelte'
+  import Profile from "./components/Profile.svelte";
+  import PotentialMatches from "./components/PotentialMatches.svelte";
 </script>
 
 <Router>
@@ -31,6 +32,10 @@
 
     <PrivateRoute path="new-listing" let:location>
       <NewListing />
+    </PrivateRoute>
+
+    <PrivateRoute path="potential-matches" let:location>
+      <PotentialMatches />
     </PrivateRoute>
   </main>
 </Router>

@@ -8,6 +8,7 @@
     PlusCircleIcon,
     UserIcon,
     MenuIcon,
+    GiftIcon,
   } from "svelte-feather-icons";
 
   let signedIn;
@@ -21,7 +22,9 @@
   <main>
     <Link to="/"><HomeIcon size="36" /></Link>
     <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
+    <Link to="potential-matches"><GiftIcon size="36" /></Link>
     <Link to="profile"><UserIcon size="36" /></Link>
+    
     <MenuIcon size="36" />
     <p>{signedIn ? `${signedIn.email} (${signedIn.uid})` : "Sign in"}</p>
   </main>

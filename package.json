@@ -12,15 +12,21 @@
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@smui/button": "^6.0.0-beta.14",
     "@smui/card": "^6.0.0-beta.14",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.5",
+    "postcss-load-config": "^3.1.1",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "svelte": "^3.0.0",
-    "svelte-feather-icons": "^3.5.1"
+    "svelte-feather-icons": "^3.5.1",
+    "svelte-preprocess": "^4.10.1",
+    "tailwindcss": "^3.0.12"
   },
   "dependencies": {
+    "daisyui": "^2.2.0",
     "firebase": "^9.6.7",
     "rxjs": "^7.5.4",
     "sirv-cli": "^2.0.2",

@@ -3,7 +3,7 @@ import { firebaseConfig } from "./firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { user } from "../utils/stores";
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export const loginByEmail = (email, password) => {

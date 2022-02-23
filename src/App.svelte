@@ -6,6 +6,7 @@
   import Login from "./components/Login.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import NewListing from './components/NewListing.svelte'
+  import Listings from './components/Listings.svelte'
 
   // FUNCTIONS
   import { handleLogout } from "./utils/auth";
@@ -16,22 +17,7 @@
     removeListingByID,
     db,
   } from "./utils/api";
-
-  // UI/UX
-
-  let listings = [];
-
-  const getListings = onSnapshot(
-    collection(db, "listings"),
-    (querySnapshot) => {
-      let listingArray = [];
-      querySnapshot.forEach((listing) => {
-        let listingData = { ...listing.data(), id: listing.id };
-        listingArray = [listingData, ...listingArray];
-      });
-      listings = listingArray;
-    }
-  );
+ 
 </script>
 
 <Router>
@@ -46,37 +32,8 @@
       <Login />
     </Route>
 
-    <Route path="login">
-      <Login />
-    </Route>
-
     <Route path="listings">
-      <h1>All listings ({listings.length})</h1>
-      <p>Listings</p>
-      <button
-        on:click={(event) => {
-          reseedListingsDatabase(event, listings);
-        }}>Re-seed database</button
-      >
-
-      <table style="width:100%">
-        <tr>
-          <th>id</th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Condition</th>
-          <th>Location</th>
-        </tr>
-        {#each listings as listing}
-          <tr
-            ><td>{listing.id.substring(0, 5)}...</td>
-            <td>{listing.title}</td>
-            <td>{listing.description}</td>
-            <td>{listing.condition}</td>
-            <td>{listing.location}</td></tr
-          >
-        {/each}
-      </table>
+      <Listings />
     </Route>
 
     <Route path="new-listing">
@@ -97,8 +54,7 @@
       <h1>Welcome {$user.username}</h1>
       <button on:click={handleLogout}>Logout</button>
     </PrivateRoute>
-
-    <Route path="/test" />
+    
   </main>
 </Router>
 

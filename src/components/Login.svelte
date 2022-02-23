@@ -1,8 +1,13 @@
 <script>
   import { loginByEmail, registerUserByEmail } from "../utils/auth";
   import { useNavigate, useLocation } from "svelte-navigator";
+  import { user } from '../utils/stores'
   const navigate = useNavigate();
   const location = useLocation();
+
+  if (user) {
+    navigate("/home")
+  }
 
   let email;
   let password;

@@ -21,10 +21,12 @@
   <ul class="basic-grid">
     {#each listings as listing, i}
       <li class="card" style="--animation-order: {i + 1};">
+          <img class="card-image" src="https://shop.tate.org.uk/dw/image/v2/BBPB_PRD/on/demandware.static/-/Sites-TateMasterShop/default/dwaa107262/tate-logo-black--tshirt-back-g1086.jpg?sw=556" alt="clothing item">
         <h3>{listing.title}</h3>
-        <p>{listing.description}</p>
+        <p>Description: {listing.description}</p>
         <p>Condition: {listing.condition}</p>
-        <p>{listing.location}</p>
+        <p>Location: {listing.location}</p>
+        <button>LIKE</button>
       </li>
     {/each}
   </ul>
@@ -37,7 +39,7 @@
     justify-content: center;
     align-items: center;
     background: #353535;
-    font-size: 2rem;
+    font-size: 1rem;
     color: #fff;
     box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem,
       rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
@@ -78,6 +80,13 @@
       transform: scale(1);
     }
   }
+
+  .card-image {
+      height: 150px; 
+      margin-bottom: 15px;
+      margin-top: 15px;
+  }
+
 
   @media screen and (max-width: 350px) {
     .basic-grid {

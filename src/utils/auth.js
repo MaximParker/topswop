@@ -3,17 +3,18 @@ import { firebaseConfig } from "./firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { user } from "../utils/stores";
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export const loginByEmail = (email, password) => {
-  signInWithEmailAndPassword(auth, email, password)
+  return signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     console.log(userCredential.user);
     user.set({
       uid: userCredential.user.uid,
       email: userCredential.user.email,
     });
+    return true;
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -23,13 +24,14 @@ export const loginByEmail = (email, password) => {
 };
 
 export const registerUserByEmail = (email, password) => {
-  createUserWithEmailAndPassword(auth, email, password)
+  return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log(userCredential.user);
       user.set({
         uid: userCredential.user.uid,
         email: userCredential.user.email,
       });
+      return true;
     })
     .catch((error) => {
       const errorCode = error.code;

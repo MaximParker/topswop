@@ -1,5 +1,5 @@
 <script>
-  import { user } from "./stores";
+  import { user } from "../utils/stores";
   import { db } from "../utils/api";
   import { onSnapshot, collection, addDoc } from "firebase/firestore";
 

@@ -5,6 +5,7 @@
   import Navbar from "./components/Navbar.svelte";
   import Login from "./components/Login.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
+  import NewListing from './components/NewListing.svelte'
 
   // FUNCTIONS
   import { handleLogout } from "./utils/auth";
@@ -31,15 +32,6 @@
       listings = listingArray;
     }
   );
-
-  let newListing = {
-    username: "",
-    title: "",
-    description: "",
-    condition: "",
-    location: "",
-    tradeRequired: false,
-  };
 </script>
 
 <Router>
@@ -88,44 +80,7 @@
     </Route>
 
     <Route path="new-listing">
-      <h1>New listing</h1>
-      <form
-        on:submit={(event) => {
-          postListing(event, newListing);
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Username..."
-          bind:value={newListing.username}
-        />
-        <input
-          type="text"
-          placeholder="title..."
-          bind:value={newListing.title}
-        />
-        <input
-          type="text"
-          placeholder="description..."
-          bind:value={newListing.description}
-        />
-        <input
-          type="text"
-          placeholder="condition..."
-          bind:value={newListing.condition}
-        />
-        <input
-          type="text"
-          placeholder="location..."
-          bind:value={newListing.location}
-        />
-        <input
-          type="text"
-          placeholder="tradeRequired..."
-          bind:value={newListing.tradeRequired}
-        />
-        <button type="submit">Submit</button>
-      </form>
+      <NewListing />
     </Route>
 
     <Route path="/home">

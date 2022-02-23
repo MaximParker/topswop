@@ -34,38 +34,42 @@ export const reseedListingsDatabase = async (event, listings) => {
   console.log("Listings removed.");
   console.log("Seeding database...");
   newListing = {
-    username: "mister_bean",
-    title: "Mini",
-    description: "Yellow",
-    condition: "Old",
-    location: "England",
-    tradeRequired: false,
-  };
-  postListing(event);
-  newListing = {
-    username: "darth_vader",
-    title: "Lightsaber",
-    description: "Red",
+    username: "magpie",
+    title: "Crown Jewels",
+    description: "Valuable!",
     condition: "Good",
-    location: "Tatooine",
+    location: "London",
+    geotag: "51.50, -0.07",
     tradeRequired: false,
   };
   postListing(event);
   newListing = {
-    username: "bilbo-baggins",
-    title: "The One Ring",
-    description: "Precious",
+    username: "anthony_gormley",
+    title: "Angel of the North",
+    description: "Very big",
+    condition: "Good",
+    location: "Gateshead",
+    geotag: "54.91, -1.58",
+    tradeRequired: false,
+  };
+  postListing(event);
+  newListing = {
+    username: "king_james",
+    title: "Edinburgh Castle",
+    description: "11th-century castle and barracks. Crown jewels not included.",
     condition: "Old",
-    location: "Mordor",
+    location: "Edinburgh",
+    geotag: "55.94, -3.19",
     tradeRequired: true,
   };
   postListing(event);
   newListing = {
-    username: "doctor_who",
-    title: "TARDIS",
-    description: "Blue police box",
+    username: "mancunian_123",
+    title: "New shoes",
+    description: "White trainers",
     condition: "Excellent",
-    location: "Earth",
+    location: "Manchester",
+    geotag: "53.48, -2.24",
     tradeRequired: true,
   };
   postListing(event);
@@ -74,16 +78,18 @@ export const reseedListingsDatabase = async (event, listings) => {
     title: "Bone",
     description: "Tasty bone",
     condition: "Damaged",
-    location: "Backyard",
+    location: "Sheffield",
+    geotag: "53.37, -1.49",
     tradeRequired: true,
   };
   postListing(event);
   newListing = {
-    username: "cat_",
-    title: "Ball of yarn",
-    description: "Red",
+    username: "yorkie_pud",
+    title: "Collection of trains",
+    description: "Various locomotives, different sizes",
     condition: "Excellent",
-    location: "LivingRoom",
+    location: "York",
+    geotag: "53.96, -1.09",
     tradeRequired: true,
   };
   postListing(event);

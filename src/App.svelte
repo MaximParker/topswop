@@ -5,8 +5,8 @@
   import Navbar from "./components/Navbar.svelte";
   import Login from "./components/Login.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
-  import NewListing from './components/NewListing.svelte'
-  import Listings from './components/Listings.svelte'
+  import NewListing from "./components/NewListing.svelte";
+  import Listings from "./components/Listings.svelte";
 
   // FUNCTIONS
   import { handleLogout } from "./utils/auth";
@@ -17,7 +17,6 @@
     removeListingByID,
     db,
   } from "./utils/api";
- 
 </script>
 
 <Router>
@@ -32,29 +31,18 @@
       <Login />
     </Route>
 
-    <Route path="listings">
+    <PrivateRoute path="home" let:location>
       <Listings />
-    </Route>
-
-    <Route path="new-listing">
-      <NewListing />
-    </Route>
-
-    <Route path="/home">
-      <h1>Home</h1>
-      <p>Home sweet home...</p>
-    </Route>
-
-    <Route path="about">
-      <h1>About</h1>
-      <p>That's what it's all about!</p>
-    </Route>
+    </PrivateRoute>
 
     <PrivateRoute path="profile" let:location>
       <h1>Welcome {$user.username}</h1>
       <button on:click={handleLogout}>Logout</button>
     </PrivateRoute>
-    
+
+    <PrivateRoute path="new-listing" let:location>
+      <NewListing />
+    </PrivateRoute>
   </main>
 </Router>
 

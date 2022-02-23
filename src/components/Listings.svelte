@@ -1,5 +1,6 @@
 <script>
-  import { reseedListingsDatabase } from "../utils/api";
+  import { onSnapshot, collection } from "firebase/firestore";
+  import { db, reseedListingsDatabase } from "../utils/api";
 
   let listings = [];
 

@@ -6,33 +6,34 @@
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import NewListing from "./components/NewListing.svelte";
   import Listings from "./components/Listings.svelte";
-  import Profile from './components/Profile.svelte'
+  import Profile from "./components/Profile.svelte";
+  import Messages from "./components/Messages.svelte";
 </script>
 
 <Router>
-  <header>
-    <nav>
-      <Navbar />
-    </nav>
-  </header>
+  <nav>
+    <Navbar />
+  </nav>
 
-  <main>
-    <Route path="/">
-      <Login />
-    </Route>
+  <Route path="/">
+    <Login />
+  </Route>
 
-    <PrivateRoute path="home" let:location>
-      <Listings />
-    </PrivateRoute>
+  <PrivateRoute path="home" let:location>
+    <Listings />
+  </PrivateRoute>
 
-    <PrivateRoute path="profile" let:location>
-      <Profile />
-    </PrivateRoute>
+  <PrivateRoute path="profile" let:location>
+    <Profile />
+  </PrivateRoute>
 
-    <PrivateRoute path="new-listing" let:location>
-      <NewListing />
-    </PrivateRoute>
-  </main>
+  <PrivateRoute path="new-listing" let:location>
+    <NewListing />
+  </PrivateRoute>
+
+  <PrivateRoute path="messages" let:location>
+    <Messages />
+  </PrivateRoute>
 </Router>
 
 <style>

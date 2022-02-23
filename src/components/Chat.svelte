@@ -3,7 +3,7 @@
   import { db } from "../utils/api";
   import { onSnapshot, collection, addDoc } from "firebase/firestore";
 
-  const message = {
+  const chatMessage = {
     text: "",
     user: "",
     date: Date.now(),
@@ -11,7 +11,7 @@
   user.subscribe((value) => {
     if (value) {
       console.log(value);
-      message.user = value.uid;
+      chatMessage.user = value.uid;
     }
   });
   let chats = [];
@@ -19,24 +19,24 @@
     let chatArray = [];
     querySnapshot.forEach((chat) => {
       console.log(chat, "chatsssss");
-      let chapata = { ...chat.data(), id: chat.id };
-      chatArray = [chapata, ...chatArray];
+      let chatData = { ...chat.data(), id: chat.id };
+      chatArray = [chatData, ...chatArray];
     });
     chats = chatArray;
   });
 
-  async function sendMessage() {
-    const docRef = await addDoc(collection(db, "chats"), message);
+  async function sendchatMessage() {
+    const docRef = await setDoc(collection(db, "chats"), chatMessage);
     console.log("Document written to chats: ", docRef);
-    message.text = "";
+    chatMessage.text = "";
   }
 </script>
 
 <main>
   <h1>Hi</h1>
   <div class="form">
-    <input type="text" bind:value={message.text} />
-    <button on:click={sendMessage}>send!</button>
+    <input type="text" bind:value={chatMessage.text} />
+    <button on:click={sendchatMessage}>send!</button>
     {#each chats as chat}
       <div>
         <p>{chat.text}</p>

@@ -3,8 +3,8 @@
   // ROUTERS
   import { Router, Route, Link } from "svelte-navigator";
   import Login from "./components/Login.svelte";
-  import Chat from "./components/Chat.svelte";
   import PrivateRoute from "./components/PrivateRoute.svelte";
+  import Inbox from "./components/Inbox.svelte";
   import { user } from "./components/stores";
 
   import Template from "./components/Template.svelte";
@@ -158,7 +158,7 @@
     </Route>
 
     <Route path="inbox">
-      <Chat />
+      <Inbox />
     </Route>
 
     <PrivateRoute path="profile" let:location>

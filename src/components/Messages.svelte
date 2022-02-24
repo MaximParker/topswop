@@ -13,7 +13,25 @@
   let conversations = {};
   let recipientsArray = [];
 
-  onSnapshot(
+  async function getMessagesFromConversations(recipientsArray) {
+    recipientsArray.forEach((recipient) => {
+      conversations[recipient] = [];
+      collection(
+        db,
+        `messages/${signedIn.uid}/conversations/${recipient}/messages`
+      ),
+        (messagesSnapshot) => {
+          console.log(messagesSnapshot);
+          messagesSnapshot.forEach((message) => {
+            console.log(message);
+            conversations[recipient_id].push(message.data());
+          });
+        };
+    });
+    console.log(conversations)
+  }
+
+  const getConversations = onSnapshot(
     collection(db, `messages/${signedIn.uid}/conversations`),
     (conversationsSnapshot) => {
       conversationsSnapshot.forEach((conversation) => {
@@ -24,25 +42,9 @@
       });
 
       console.log(recipientsArray);
+      getMessagesFromConversations(recipientsArray)
     }
   );
-
-  recipientsArray.forEach((recipient) => {
-    conversations[recipient] = [];
-    collection(
-      db,
-      `messages/${signedIn.uid}/conversations/${recipient_id}/messages`
-    ),
-      (messagesSnapshot) => {
-        console.log(messagesSnapshot);
-        messagesSnapshot.forEach((message) => {
-          console.log(message);
-          conversations[recipient_id].push(message.data());
-        });
-      };
-  });
-
-  console.log(conversations);
 </script>
 
 <header>

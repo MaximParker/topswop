@@ -1,7 +1,6 @@
 <script>
   import { onSnapshot, collection } from "firebase/firestore";
   import { db } from "../utils/api";
-
   let listings = [];
 
   const getListings = onSnapshot(
@@ -21,7 +20,11 @@
   <ul class="basic-grid">
     {#each listings as listing, i}
       <li class="card" style="--animation-order: {i + 1};">
-          <img class="card-image" src="https://shop.tate.org.uk/dw/image/v2/BBPB_PRD/on/demandware.static/-/Sites-TateMasterShop/default/dwaa107262/tate-logo-black--tshirt-back-g1086.jpg?sw=556" alt="clothing item">
+        <img
+          class="card-image"
+          src="https://shop.tate.org.uk/dw/image/v2/BBPB_PRD/on/demandware.static/-/Sites-TateMasterShop/default/dwaa107262/tate-logo-black--tshirt-back-g1086.jpg?sw=556"
+          alt="clothing item"
+        />
         <h3>{listing.title}</h3>
         <p>Description: {listing.description}</p>
         <p>Condition: {listing.condition}</p>
@@ -82,11 +85,10 @@
   }
 
   .card-image {
-      height: 150px; 
-      margin-bottom: 15px;
-      margin-top: 15px;
+    height: 150px;
+    margin-bottom: 15px;
+    margin-top: 15px;
   }
-
 
   @media screen and (max-width: 350px) {
     .basic-grid {

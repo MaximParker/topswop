@@ -1,5 +1,11 @@
 <script>
-  import { onSnapshot, collection } from "firebase/firestore";
+  import {
+    onSnapshot,
+    collection,
+    query,
+    where,
+    getDocs,
+  } from "firebase/firestore";
   import { db } from "../utils/api";
   import { sendWelcomeMessage } from "../utils/api";
   import { user } from "../utils/stores";
@@ -13,22 +19,21 @@
   let conversations = {};
   let recipientsArray = [];
 
-  async function getMessagesFromConversations(recipientsArray) {
+  function getMessagesFromConversations(recipientsArray) {
     recipientsArray.forEach((recipient) => {
       conversations[recipient] = [];
-      collection(
-        db,
-        `messages/${signedIn.uid}/conversations/${recipient}/messages`
-      ),
-        (messagesSnapshot) => {
-          console.log(messagesSnapshot);
-          messagesSnapshot.forEach((message) => {
-            console.log(message);
-            conversations[recipient_id].push(message.data());
+      const q = onSnapshot(
+        collection(
+          db,
+          `messages/${signedIn.uid}/conversations/${recipient}/messages`
+        ),
+        (querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            conversations[recipient].push(doc.data());
           });
-        };
+        }
+      );
     });
-    console.log(conversations)
   }
 
   const getConversations = onSnapshot(
@@ -36,13 +41,10 @@
     (conversationsSnapshot) => {
       conversationsSnapshot.forEach((conversation) => {
         let recipient_id = conversation.id;
-        console.log(conversation.id);
 
         recipientsArray.push(recipient_id);
       });
-
-      console.log(recipientsArray);
-      getMessagesFromConversations(recipientsArray)
+      getMessagesFromConversations(recipientsArray);
     }
   );
 </script>
@@ -56,6 +58,10 @@
 
 <main>
   <ul>
-    <li><p>List items here!</p></li>
+    {#each Object.keys(conversations) as key}
+      {console.log(conversations[key])}
+      <!-- {console.log(conversations[key])} -->
+      <li>{conversations[key]}</li>
+    {/each}
   </ul>
 </main>

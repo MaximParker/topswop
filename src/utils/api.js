@@ -4,7 +4,9 @@ import {
   addDoc,
   doc,
   deleteDoc,
+  setDoc,
 } from "firebase/firestore";
+import { getDatabase, ref, set } from "firebase/database";
 export const db = getFirestore();
 
 let newListing = {
@@ -95,3 +97,38 @@ export const reseedListingsDatabase = async (event, listings) => {
   postListing(event);
   console.log("Re-seed complete.");
 };
+
+export const sendWelcomeMessage = (targetID) => {
+  console.log(`Creating folder in messages for ${targetID}`);
+  return setDoc(doc(db, `messages`, `${targetID}`), {}).then(() => {
+    console.log(`Creating conversations collection for ${targetID}`);
+    setDoc(
+      doc(db, `messages/${targetID}/conversations`, `topswop_team`),
+      {}
+    ).then(() => {
+      addDoc(
+        collection(
+          db,
+          `messages/${targetID}/conversations/topswop_team/messages`
+        ),
+        {
+          from: "Topswop Team",
+          date: new Date(),
+          text: "Welcome to Topswop! Here's some information, etc. etc.",
+          read: false,
+        }
+      );
+    });
+  });
+};
+
+/* 
+addDoc(
+        collection(db, `messages/#your_uid/conversations/#recipient_uid/messages/#random_message_id`),
+        {
+          from: "Topswop Team",
+          date: new Date(),
+          text: "Welcome to Topswop! Here's some information, etc. etc.",
+          read: false,
+        }
+*/

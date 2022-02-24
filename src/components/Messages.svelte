@@ -1,7 +1,7 @@
 <script>
   import { onSnapshot, collection } from "firebase/firestore";
   import { db } from "../utils/api";
-  import { sendWelcomeMessage } from "../utils/auth";
+  import { sendWelcomeMessage } from "../utils/api";
   import { user } from "../utils/stores";
 
   let signedIn;
@@ -10,21 +10,38 @@
     signedIn = value;
   });
 
-  let conversations = [];
+  let conversations = {};
+  let recipientsArray = [];
 
-  const getConversations = onSnapshot(
+  onSnapshot(
     collection(db, `messages/${signedIn.uid}/conversations`),
-    (querySnapshot) => {
-      querySnapshot.forEach((conversation) => {
-        console.log(conversation);
-        let conversationData = {
-          ...conversation.data(),
-          recipient_id: conversation.id,
-        };
-        conversations = [conversationData, ...conversations];
+    (conversationsSnapshot) => {
+      conversationsSnapshot.forEach((conversation) => {
+        let recipient_id = conversation.id;
+        console.log(conversation.id);
+
+        recipientsArray.push(recipient_id);
       });
+
+      console.log(recipientsArray);
     }
   );
+
+  recipientsArray.forEach((recipient) => {
+    conversations[recipient] = [];
+    collection(
+      db,
+      `messages/${signedIn.uid}/conversations/${recipient_id}/messages`
+    ),
+      (messagesSnapshot) => {
+        console.log(messagesSnapshot);
+        messagesSnapshot.forEach((message) => {
+          console.log(message);
+          conversations[recipient_id].push(message.data());
+        });
+      };
+  });
+
   console.log(conversations);
 </script>
 
@@ -32,19 +49,11 @@
   <h1>Messages</h1>
 </header>
 
-<button on:click={sendWelcomeMessage(user.uid)}>Send welcome message</button>
+<button on:click={sendWelcomeMessage(signedIn.uid)}>Send welcome message</button
+>
 
 <main>
   <ul>
-    {#each conversations as conversation}
-      <li>
-        <p>{conversation.recipient_id}</p>
-        <p>
-          Last message: {conversation.messages[
-            conversation.messages.length - 1
-          ]}
-        </p>
-      </li>
-    {/each}
+    <li><p>List items here!</p></li>
   </ul>
 </main>

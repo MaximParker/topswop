@@ -6,7 +6,6 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
 import { user } from "../utils/stores";
 
 initializeApp(firebaseConfig);
@@ -59,14 +58,6 @@ export const registerUserByEmail = (email, password, username) => {
       const errorMessage = error.message;
       alert(error);
     });
-};
-
-export const sendWelcomeMessage = async (targetID) => {
-  const docRef = await set(
-    ref(db, `messages/${targetID}/conversations/wdyh41raSfMoy2lLC6dztyWuxdq2`),
-    
-    { from: "Topswop Team", date: new Date(), text: "Welcome to Topswop! Here's some information, etc. etc.", read:false }
-  );
 };
 
 export const handleLogout = () => {

@@ -34,14 +34,23 @@
   });
 
   const sendMessage = async () => {
-    const docRef = await addDoc(
+    const senderCopy = await addDoc(
       collection(
         db,
         `messages/${signedIn.uid}/conversations/${currentChat}/messages`
       ),
       newMessage
     );
-    console.log("Sending message: ", docRef.id);
+    console.log("Sending message: ", senderCopy.id, "(sender's copy)");
+
+    const recipientCopy = await addDoc(
+      collection(
+        db,
+        `messages/${currentChat}/conversations/${signedIn.uid}/messages`
+      ),
+      newMessage
+    );
+    console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
   };
 </script>
 
@@ -71,7 +80,7 @@
       currentConversation.push(newMessage);
       sendMessage();
       newMessage.text = "";
-      console.log()
+      console.log();
     }}
   >
     <input

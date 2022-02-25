@@ -44,7 +44,7 @@ export const updateUserDisplayName = (newUsername) => {
 export const registerUserByEmail = (email, password, username) => {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      console.log(userCredential.user);
+      console.log("REGISTERED NEW USER:\n",userCredential.user);
       user.set({
         uid: userCredential.user.uid,
         email: userCredential.user.email,

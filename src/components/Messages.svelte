@@ -6,7 +6,7 @@
     where,
     getDocs,
   } from "firebase/firestore";
-  import { db } from "../utils/api";
+  import { createChatroom, db } from "../utils/api";
   import { sendWelcomeMessage } from "../utils/api";
   import { user } from "../utils/stores";
   import Chat from "../components/Chat.svelte";
@@ -63,21 +63,30 @@
   <h1>Messages</h1>
 </header>
 
+<button
+  on:click={() => {
+    createChatroom(
+      "WoDT5RSioGR1wrsQXtseBN1J6mq1",
+      "SKTFILPxIPamzZ2EUbNSRgy830q1"
+    );
+  }}
+/>
+
 <main>
   {#if currentChat}
     <Chat {conversationArray} {currentChat} />
   {:else}
     <ul>
-      {#each uniqueConversations as conversation}
+      {#each uniqueConversations as message}
         <li>
           <p>
-            <strong>{conversation.recipient}</strong>
+            <strong>{message.recipient}</strong>
           </p>
-          <p>{conversation.data.from}: {conversation.data.text}</p>
+          <p>{message.data.from}: {message.data.text}</p>
 
           <button
             on:click={() => {
-              currentChat = conversation.recipient;
+              currentChat = message.recipient;
             }}>Chat!</button
           >
         </li>

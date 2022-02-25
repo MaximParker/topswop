@@ -2,6 +2,7 @@
   import { loginByEmail, registerUserByEmail } from "../utils/auth";
   import { useNavigate, useLocation } from "svelte-navigator";
   import { user } from "../utils/stores";
+import { sendWelcomeMessage } from "../utils/api";
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,7 +33,9 @@
   function handleRegister(event) {
     event.preventDefault();
     if (newPassword == confirmPassword) {
-      registerUserByEmail(newEmail, newPassword, newUsername).then(() => {
+      registerUserByEmail(newEmail, newPassword, newUsername)
+      .then(() => {
+        sendWelcomeMessage(signedIn.uid)
         navigate("/home");
       });
     } else {

@@ -124,34 +124,53 @@ export const sendWelcomeMessage = (targetID) => {
 
 export const createChatroom = (user_a, user_b) => {
   console.log(`Creating a conversation between ${user_a} and ${user_b}`);
-  setDoc(
-    doc(db, `messages/${user_a}/conversations`, `${user_b}`),
-    {}
-  )
-  setDoc(
-    doc(db, `messages/${user_b}/conversations`, `${user_a}`),
-    {}
-  )
-};
-
-export const sendDirectMessage = (sender_id, sender_displayName, recipient_id, text) => {
-    console.log(`Creating conversations collection for ${targetID}`);
-    setDoc(
-      doc(db, `messages/${targetID}/conversations`, `topswop_team`),
-      {}
-    ).then(() => {
+  setDoc(doc(db, `messages/${user_a}/conversations`, `${user_b}`), {});
+  setDoc(doc(db, `messages/${user_b}/conversations`, `${user_a}`), {}).then(
+    () => {
       addDoc(
-        collection(
-          db,
-          `messages/${targetID}/conversations/topswop_team/messages`
-        ),
+        collection(db, `messages/${user_a}/conversations/${user_b}/messages`),
         {
           from: "Topswop Team",
           date: new Date(),
-          text: "Welcome to Topswop! Here's some information, etc. etc.",
+          text: `You have matched with ${user_b}! You can discuss the trade here.`,
           read: false,
         }
       );
-    });
+      addDoc(
+        collection(db, `messages/${user_b}/conversations/${user_a}/messages`),
+        {
+          from: "Topswop Team",
+          date: new Date(),
+          text: `You have matched with ${user_a}! You can discuss the trade here.`,
+          read: false,
+        }
+      );
+    }
+  );
+};
 
+export const sendDirectMessage = (
+  sender_id,
+  sender_displayName,
+  recipient_id,
+  text
+) => {
+  console.log(`Creating conversations collection for ${targetID}`);
+  setDoc(
+    doc(db, `messages/${targetID}/conversations`, `topswop_team`),
+    {}
+  ).then(() => {
+    addDoc(
+      collection(
+        db,
+        `messages/${targetID}/conversations/topswop_team/messages`
+      ),
+      {
+        from: "Topswop Team",
+        date: new Date(),
+        text: "Welcome to Topswop! Here's some information, etc. etc.",
+        read: false,
+      }
+    );
+  });
 };

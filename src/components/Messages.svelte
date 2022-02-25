@@ -17,25 +17,8 @@
 
   let recipientsArray = [];
   let conversationArray = [];
-
-  function getMessagesFromConversations(recipientsArray) {
-    recipientsArray.forEach((recipient) => {
-      const q = onSnapshot(
-        collection(
-          db,
-          `messages/${signedIn.uid}/conversations/${recipient}/messages`
-        ),
-        (querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            conversationArray = [
-              ...conversationArray,
-              { recipient, data: doc.data() },
-            ];
-          });
-        }
-      );
-    });
-  }
+  let uniqueConversations = [];
+  let tallyRecipients = [];
 
   const getConversations = onSnapshot(
     collection(db, `messages/${signedIn.uid}/conversations`),
@@ -44,24 +27,48 @@
         let recipient_id = conversation.id;
         recipientsArray.push(recipient_id);
       });
-      getMessagesFromConversations(recipientsArray);
+
+      recipientsArray.forEach((recipient) => {
+        const q = onSnapshot(
+          collection(
+            db,
+            `messages/${signedIn.uid}/conversations/${recipient}/messages`
+          ),
+          (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              conversationArray = [
+                ...conversationArray,
+                { recipient, data: doc.data() },
+              ];
+            });
+          }
+        );
+      });
     }
   );
+
+  $: {
+    conversationArray.forEach((entry) => {
+      if (!tallyRecipients.includes(entry.recipient)) {
+        uniqueConversations = [...uniqueConversations, entry];
+        tallyRecipients = [...tallyRecipients, entry.recipient];
+      }
+    });
+  }
 </script>
 
 <header>
   <h1>Messages</h1>
 </header>
-<button on:click={sendWelcomeMessage(signedIn.uid)}>Send welcome message</button
->
+
 <main>
   <ul>
-    {#each conversationArray as conversation}
+    {#each uniqueConversations as conversation}
       <li>
-        <p><strong>{conversation.recipient}</strong>: {conversation.data.text}</p>
-        
+        <p>
+          <strong>{conversation.recipient}</strong>: {conversation.data.text}
+        </p>
       </li>
     {/each}
   </ul>
-  {console.log(conversationArray)}
 </main>

@@ -78,8 +78,11 @@
   <form
     on:submit={(event) => {
       event.preventDefault();
+
       newMessage.date = new Date();
-      currentConversation.push(newMessage);
+      currentConversation = [
+        ...currentConversation, { data: { ...newMessage } }
+      ];
       sendMessage();
     }}
   >

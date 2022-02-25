@@ -122,26 +122,26 @@ export const sendWelcomeMessage = (targetID) => {
   });
 };
 
-export const createChatroom = (user_a, user_b) => {
-  console.log(`Creating a conversation between ${user_a} and ${user_b}`);
-  setDoc(doc(db, `messages/${user_a}/conversations`, `${user_b}`), {});
-  setDoc(doc(db, `messages/${user_b}/conversations`, `${user_a}`), {}).then(
+export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
+  console.log(`Creating a conversation between ${uid_a} and ${uid_b}`);
+  setDoc(doc(db, `messages/${uid_a}/conversations`, `${uid_b}`), {});
+  setDoc(doc(db, `messages/${uid_b}/conversations`, `${uid_a}`), {}).then(
     () => {
       addDoc(
-        collection(db, `messages/${user_a}/conversations/${user_b}/messages`),
+        collection(db, `messages/${uid_a}/conversations/${uid_b}/messages`),
         {
           from: "Topswop Team",
           date: new Date(),
-          text: `You have matched with ${user_b}! You can discuss the trade here.`,
+          text: `You have matched with ${uid_b}! You can discuss the trade here.`,
           read: false,
         }
       );
       addDoc(
-        collection(db, `messages/${user_b}/conversations/${user_a}/messages`),
+        collection(db, `messages/${uid_b}/conversations/${uid_a}/messages`),
         {
           from: "Topswop Team",
           date: new Date(),
-          text: `You have matched with ${user_a}! You can discuss the trade here.`,
+          text: `You have matched with ${uid_a}! You can discuss the trade here.`,
           read: false,
         }
       );

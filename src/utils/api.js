@@ -114,7 +114,7 @@ export const sendWelcomeMessage = (targetID) => {
         {
           from: "Topswop Team",
           date: new Date(),
-          text: "Welcome to Topswop! Here's some information, etc. etc.",
+          text: "Welcome to Topswop! Look here for your messages.",
           read: false,
         }
       );
@@ -122,13 +122,36 @@ export const sendWelcomeMessage = (targetID) => {
   });
 };
 
-/* 
-addDoc(
-        collection(db, `messages/#your_uid/conversations/#recipient_uid/messages/#random_message_id`),
+export const createChatroom = (user_a, user_b) => {
+  console.log(`Creating a conversation between ${user_a} and ${user_b}`);
+  setDoc(
+    doc(db, `messages/${user_a}/conversations`, `${user_b}`),
+    {}
+  )
+  setDoc(
+    doc(db, `messages/${user_b}/conversations`, `${user_a}`),
+    {}
+  )
+};
+
+export const sendDirectMessage = (sender_id, sender_displayName, recipient_id, text) => {
+    console.log(`Creating conversations collection for ${targetID}`);
+    setDoc(
+      doc(db, `messages/${targetID}/conversations`, `topswop_team`),
+      {}
+    ).then(() => {
+      addDoc(
+        collection(
+          db,
+          `messages/${targetID}/conversations/topswop_team/messages`
+        ),
         {
           from: "Topswop Team",
           date: new Date(),
           text: "Welcome to Topswop! Here's some information, etc. etc.",
           read: false,
         }
-*/
+      );
+    });
+
+};

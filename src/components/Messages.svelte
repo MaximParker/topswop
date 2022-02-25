@@ -7,8 +7,9 @@
     getDocs,
   } from "firebase/firestore";
   import { db } from "../utils/api";
-  import { sendWelcomeMessage } from "../utils/api";
+  import { sendWelcomeMessage, createChatroom } from "../utils/api";
   import { user } from "../utils/stores";
+  import { onMount } from "svelte";
 
   let signedIn;
 
@@ -16,12 +17,13 @@
     signedIn = value;
   });
 
-  let conversations = {};
+  $: conversations = {};
   let recipientsArray = [];
 
   function getMessagesFromConversations(recipientsArray) {
-    recipientsArray.forEach((recipient) => {
-      conversations[recipient] = [];
+    let newConversations = {};
+    recipientsArray.forEach(async (recipient) => {
+      newConversations[recipient] = [];
       const q = onSnapshot(
         collection(
           db,
@@ -29,11 +31,16 @@
         ),
         (querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            conversations[recipient].push(doc.data());
+            newConversations[recipient] = [
+              doc.data(),
+              ...newConversations[recipient],
+            ];
           });
         }
       );
     });
+    console.log("NEW CONVERSATION DATA:", newConversations);
+    conversations = newConversations;
   }
 
   const getConversations = onSnapshot(
@@ -55,13 +62,21 @@
 
 <button on:click={sendWelcomeMessage(signedIn.uid)}>Send welcome message</button
 >
+<button
+  on:click={() => {
+    createChatroom("cat", "dan");
+  }}>Start chatroom</button
+>
 
 <main>
   <ul>
     {#each Object.keys(conversations) as key}
-      {console.log(conversations[key])}
-      <!-- {console.log(conversations[key])} -->
-      <li>{conversations[key]}</li>
+      <li>
+        <p>{key}</p>
+        <p>{conversations.topswop_team}</p>
+      </li>
+    {:else}
+      <p>Loading...</p>
     {/each}
   </ul>
 </main>

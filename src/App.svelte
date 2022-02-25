@@ -6,7 +6,8 @@
   import PrivateRoute from "./components/PrivateRoute.svelte";
   import NewListing from "./components/NewListing.svelte";
   import Listings from "./components/Listings.svelte";
-  import Profile from './components/Profile.svelte'
+  import Profile from "./components/Profile.svelte";
+  import Inbox from "./components/Inbox.svelte";
 </script>
 
 <Router>
@@ -25,6 +26,10 @@
       <Listings />
     </PrivateRoute>
 
+    <Route path="inbox">
+      <Inbox />
+    </Route>
+
     <PrivateRoute path="profile" let:location>
       <Profile />
     </PrivateRoute>
@@ -35,5 +40,8 @@
   </main>
 </Router>
 
-<style>
+<style global lang="postcss">
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
 </style>

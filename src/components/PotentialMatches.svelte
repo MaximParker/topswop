@@ -14,7 +14,7 @@
 
   const getPotMatches = (current_user) => {
     return queryPotentialUsers(current_user).then((likingUsers) => {
-      queryPotentialMatchItems(likingUsers)
+      queryPotentialMatchItems( likingUsers, "user_id")
         .then((items) => {
           potentialMatches = items;
         })

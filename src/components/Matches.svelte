@@ -1,6 +1,6 @@
 <script>
   import { user } from "../utils/stores";
-  import { queryUserLikes, queryMatchOwner } from "../utils/api";
+  import { queryUserLikes, queryMatchOwner, queryPotentialMatchItems } from "../utils/api";
   import { onMount } from "svelte";
 
   let signedIn;
@@ -9,53 +9,70 @@
     signedIn = value;
   });
 
-  let all_matches = [];
+  let allMatches = [];
+  let matchedItemData = [];
 
   const getMatches = (current_user) => {
     return queryUserLikes(current_user).then((likingUsers) => {
       queryMatchOwner(current_user).then((itemOwner) => {
-        joinObjects(likingUsers, itemOwner);
+        joinObjects(likingUsers, itemOwner)
+        .then((matchData) => {
+            
+            queryPotentialMatchItems( matchData )
+            .then((items) => {
+                console.log(items, 'ALL THE ITEMS')
+            })
+        })
       });
     });
   };
 
-    const joinObjects = (currentUserLikes, likesMyItems) => {
-    let all_items = [];
+    const joinObjects = async (currentUserLikes, likesMyItems) => {
+    let allMatchIds = [];
+    let allItemIds = [];
     currentUserLikes.forEach((user) => {
-      let test = likesMyItems.filter(
+      let filteredMatches = likesMyItems.filter(
         (item) =>
           item.liking_user_id == user.item_owner_id &&
           item.item_owner_id == user.liking_user_id
       );
-      test.forEach((item) => {
+      filteredMatches.forEach((item) => {
         let itemMatch = {
           user: user.liking_user_id,
           item: user.item_id,
           match_item: item.item_id,
           match_user: item.liking_user_id,
         };
-        all_items = [itemMatch, ...all_items];
+        allMatchIds = [itemMatch, ...allMatchIds];
+        allItemIds = [user.item_id, item.item_id, ...allItemIds]
       });
     });
-    all_matches = all_items;
+    allMatches = allMatchIds;
+    return allItemIds
   };
+
+
+
+
 
   onMount(async () => {
     getMatches(`${signedIn.uid}`);
   });
+
 </script>
 
 <main>
   <h2>Matches!</h2>
 
   <ol>
-    {#each all_matches as m}
+    {#each allMatches as m}
       <li>
         <span>{m.user}</span>
         <span>{m.item}</span>
         <span>{m.match_item}</span>
         <span>{m.match_user}</span>
       </li>
+      
     {:else}
       <p>No listings</p>
     {/each}

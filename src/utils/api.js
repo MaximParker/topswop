@@ -7,6 +7,7 @@ import {
   query,
   where,
   getDocs,
+  documentId,
 } from "firebase/firestore";
 export const db = getFirestore();
 
@@ -45,10 +46,10 @@ export const queryPotentialUsers = async (current_user) => {
   return usersThatLikedMyItem;
 };
 
-export const queryPotentialMatchItems = async (likingUsers) => {
+export const queryPotentialMatchItems = async ( searchingFor, searchingIn = documentId() ) => {
   const query2 = query(
     collection(db, "listings"),
-    where("user_id", "in", likingUsers)
+    where(searchingIn, "in", searchingFor)
   );
   const querySnapshot = await getDocs(query2);
   let potentialMatchItems = [];

@@ -1,5 +1,10 @@
 <script>
-  import { loginByEmail, registerUserByEmail } from "../utils/auth";
+  import {
+    loginByEmail,
+    registerUserByEmail,
+    loginByGoogle,
+    logoutByGoogle,
+  } from "../utils/auth";
   import { useNavigate, useLocation } from "svelte-navigator";
   import { user } from "../utils/stores";
   const navigate = useNavigate();
@@ -37,6 +42,13 @@
     } else {
       alert("Passwords do not match!");
     }
+  }
+
+  function handleGoogleLogin(event) {
+    event.preventDefault();
+    loginByGoogle();
+    signedIn = true;
+    navigate("/home");
   }
 </script>
 
@@ -90,3 +102,6 @@
   <br />
   <button type="submit">Register</button>
 </form>
+
+<h3>Or</h3>
+<button on:click={handleGoogleLogin}>Sign in with Google</button>

@@ -60,9 +60,33 @@ export const queryPotentialMatchItems = async (likingUsers) => {
 };
 
 
+export const queryUserLikes = async (current_user) => {
+  const query1 = query(
+    collection(db, "matches"),
+    where("liking_user_id", "==", current_user)
+  );
+  const querySnapshot = await getDocs(query1);
+  let itemsUserLikes = [];
+  querySnapshot.forEach((doc) => {
+    let itemData = { ...doc.data() };
+    itemsUserLikes = [itemData, ...itemsUserLikes];
+  });
+  return itemsUserLikes;
+};
 
-
-
+export const queryMatchOwner = async (current_user) => {
+  const query2 = query(
+    collection(db, "matches"),
+    where("item_owner_id", "==", current_user)
+  );
+  const querySnapshot = await getDocs(query2);
+  let OwnerIdArray = [];
+  querySnapshot.forEach((doc) => {
+    let itemOwner = { ...doc.data() };
+    OwnerIdArray = [itemOwner, ...OwnerIdArray];
+  });
+  return OwnerIdArray;
+};
 
 export const reseedListingsDatabase = async (event, listings) => {
   console.log("Removing all listings...");

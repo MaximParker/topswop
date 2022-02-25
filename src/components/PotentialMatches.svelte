@@ -1,17 +1,7 @@
 <script>
   import { user } from "../utils/stores";
   import ListingCard from "./ListingCard.svelte";
-  import { db } from "../utils/api";
-  import {
-    onSnapshot,
-    collection,
-    getDocs,
-    query,
-    where,
-  } from "firebase/firestore";
   import { onMount } from "svelte";
-  import App from "../../../firesvelt/src/App.svelte";
-  import Listings from "./Listings.svelte";
   import { queryPotentialUsers, queryPotentialMatchItems } from "../utils/api";
 
   let signedIn;

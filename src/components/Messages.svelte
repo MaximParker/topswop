@@ -9,6 +9,7 @@
   import { db } from "../utils/api";
   import { sendWelcomeMessage } from "../utils/api";
   import { user } from "../utils/stores";
+  import Chat from "../components/Chat.svelte";
   let signedIn;
 
   user.subscribe((value) => {
@@ -19,6 +20,7 @@
   let conversationArray = [];
   let uniqueConversations = [];
   let tallyRecipients = [];
+  let currentChat = "";
 
   const getConversations = onSnapshot(
     collection(db, `messages/${signedIn.uid}/conversations`),
@@ -62,13 +64,23 @@
 </header>
 
 <main>
-  <ul>
-    {#each uniqueConversations as conversation}
-      <li>
-        <p>
-          <strong>{conversation.recipient}</strong>: {conversation.data.text}
-        </p>
-      </li>
-    {/each}
-  </ul>
+  {#if currentChat}
+    <Chat {conversationArray} {currentChat} />
+  {:else}
+    <ul>
+      {#each uniqueConversations as conversation}
+        <li>
+          <p>
+            <strong>{conversation.recipient}</strong>: {conversation.data.text}
+          </p>
+
+          <button
+            on:click={() => {
+              currentChat = conversation.recipient;
+            }}>Chat!</button
+          >
+        </li>
+      {/each}
+    </ul>
+  {/if}
 </main>

@@ -27,7 +27,7 @@
     (conversationsSnapshot) => {
       conversationsSnapshot.forEach((conversation) => {
         let recipient_id = conversation.id;
-        recipientsArray.push(recipient_id);
+        recipientsArray = [...recipientsArray, recipient_id];
       });
 
       recipientsArray.forEach((recipient) => {
@@ -71,8 +71,9 @@
       {#each uniqueConversations as conversation}
         <li>
           <p>
-            <strong>{conversation.recipient}</strong>: {conversation.data.text}
+            <strong>{conversation.recipient}</strong>
           </p>
+          <p>{conversation.data.from}: {conversation.data.text}</p>
 
           <button
             on:click={() => {

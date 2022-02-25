@@ -10,31 +10,36 @@
   import { db } from "../utils/api";
   import { user } from "../utils/stores";
   import { useNavigate, useLocation } from "svelte-navigator";
-
   const navigate = useNavigate();
 
   let signedIn;
-  let newText = {
-    text: "",
-    from: signedIn.displayName,
-    date: Date.now(),
-    read: false,
-  };
   user.subscribe((value) => {
     signedIn = value;
   });
 
+  let newMessage = {
+    text: "",
+    from: signedIn.displayName,
+    date: new Date(),
+    read: false,
+  };
+
   export let currentChat;
   export let conversationArray;
+  let currentConversation = conversationArray.filter(
+    (entry) => entry.recipient == currentChat
+  );
+  currentConversation.sort(function (a, b) {
+    return a.data.date - b.data.date;
+  });
 
-  const sendMessage = async (event) => {
-    event.preventDefault();
+  const sendMessage = async () => {
     const docRef = await addDoc(
       collection(
         db,
         `messages/${signedIn.uid}/conversations/${currentChat}/messages`
       ),
-      newText
+      newMessage
     );
     console.log("Sending message: ", docRef.id);
   };
@@ -52,15 +57,28 @@
   <h1>{currentChat}</h1>
 </header>
 
-{#each conversationArray as conversation}
-  {#if conversation.recipient == currentChat}
-    <li>{conversation.data.text}</li>
-  {/if}
+{#each currentConversation as message}
+  <li>
+    <strong>{message.data.from}</strong> says: {message.data.text}
+  </li>
 {/each}
 
 <main>
-  <form>
-    <input type="text" placeholder="type message here" bind:value={newText} />
-    <button on:click={sendMessage}>Send!</button>
+  <form
+    on:submit={(event) => {
+      event.preventDefault();
+      newMessage.date = new Date();
+      currentConversation.push(newMessage);
+      sendMessage();
+      newMessage.text = "";
+      console.log()
+    }}
+  >
+    <input
+      type="text"
+      placeholder="type message here"
+      bind:value={newMessage.text}
+    />
+    <button type="submit">Send!</button>
   </form>
 </main>

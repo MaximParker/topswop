@@ -4,6 +4,9 @@ import {
   addDoc,
   doc,
   deleteDoc,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 export const db = getFirestore();
 
@@ -27,6 +30,39 @@ export const postListing = async (event, newListing) => {
 export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));
 };
+
+export const queryPotentialUsers = async (current_user) => {
+  const query1 = query(
+    collection(db, "matches"),
+    where("item_owner_id", "==", current_user)
+  );
+  const querySnapshot = await getDocs(query1);
+  let usersThatLikedMyItem = [];
+  querySnapshot.forEach((doc) => {
+    let userData = { ...doc.data() };
+    usersThatLikedMyItem = [userData.liking_user_id, ...usersThatLikedMyItem];
+  });
+  return usersThatLikedMyItem;
+};
+
+export const queryPotentialMatchItems = async (likingUsers) => {
+  const query2 = query(
+    collection(db, "listings"),
+    where("user_id", "in", likingUsers)
+  );
+  const querySnapshot = await getDocs(query2);
+  let potentialMatchItems = [];
+  querySnapshot.forEach((doc) => {
+    let itemData = { ...doc.data(), id: doc.id };
+    potentialMatchItems = [itemData, ...potentialMatchItems];
+  });
+  return potentialMatchItems;
+};
+
+
+
+
+
 
 export const reseedListingsDatabase = async (event, listings) => {
   console.log("Removing all listings...");

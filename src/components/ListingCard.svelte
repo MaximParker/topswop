@@ -1,19 +1,8 @@
 <script>
   import { onSnapshot, collection } from "firebase/firestore";
   import { db } from "../utils/api";
-  let listings = [];
 
-  const getListings = onSnapshot(
-    collection(db, "listings"),
-    (querySnapshot) => {
-      let listingArray = [];
-      querySnapshot.forEach((listing) => {
-        let listingData = { ...listing.data(), id: listing.id };
-        listingArray = [listingData, ...listingArray];
-      });
-      listings = listingArray;
-    }
-  );
+  export let listings = [];
 </script>
 
 <main>
@@ -31,6 +20,8 @@
         <p>Location: {listing.location}</p>
         <button>LIKE</button>
       </li>
+    {:else}
+      <p>Loading.App..</p>
     {/each}
   </ul>
 </main>

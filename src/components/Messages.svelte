@@ -7,23 +7,19 @@
     getDocs,
   } from "firebase/firestore";
   import { db } from "../utils/api";
-  import { sendWelcomeMessage, createChatroom } from "../utils/api";
+  import { sendWelcomeMessage } from "../utils/api";
   import { user } from "../utils/stores";
-  import { onMount } from "svelte";
-
   let signedIn;
 
   user.subscribe((value) => {
     signedIn = value;
   });
 
-  $: conversations = {};
   let recipientsArray = [];
+  let conversationArray = [];
 
   function getMessagesFromConversations(recipientsArray) {
-    let newConversations = {};
-    recipientsArray.forEach(async (recipient) => {
-      newConversations[recipient] = [];
+    recipientsArray.forEach((recipient) => {
       const q = onSnapshot(
         collection(
           db,
@@ -31,16 +27,14 @@
         ),
         (querySnapshot) => {
           querySnapshot.forEach((doc) => {
-            newConversations[recipient] = [
-              doc.data(),
-              ...newConversations[recipient],
+            conversationArray = [
+              ...conversationArray,
+              { recipient, data: doc.data() },
             ];
           });
         }
       );
     });
-    console.log("NEW CONVERSATION DATA:", newConversations);
-    conversations = newConversations;
   }
 
   const getConversations = onSnapshot(
@@ -48,7 +42,6 @@
     (conversationsSnapshot) => {
       conversationsSnapshot.forEach((conversation) => {
         let recipient_id = conversation.id;
-
         recipientsArray.push(recipient_id);
       });
       getMessagesFromConversations(recipientsArray);
@@ -59,24 +52,16 @@
 <header>
   <h1>Messages</h1>
 </header>
-
 <button on:click={sendWelcomeMessage(signedIn.uid)}>Send welcome message</button
 >
-<button
-  on:click={() => {
-    createChatroom("cat", "dan");
-  }}>Start chatroom</button
->
-
 <main>
   <ul>
-    {#each Object.keys(conversations) as key}
+    {#each conversationArray as conversation}
       <li>
-        <p>{key}</p>
-        <p>{conversations.topswop_team}</p>
+        <p><strong>{conversation.recipient}</strong>: {conversation.data.text}</p>
+        
       </li>
-    {:else}
-      <p>Loading...</p>
     {/each}
   </ul>
+  {console.log(conversationArray)}
 </main>

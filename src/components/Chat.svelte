@@ -42,7 +42,6 @@
       newMessage
     );
     console.log("Sending message: ", senderCopy.id, "(sender's copy)");
-
     const recipientCopy = await addDoc(
       collection(
         db,
@@ -51,6 +50,7 @@
       newMessage
     );
     console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
+    newMessage.text = "";
   };
 </script>
 
@@ -63,7 +63,9 @@
   >
     <button type="submit">Go back to messages</button>
   </form>
+
   <h1>{currentChat}</h1>
+  {console.log("Current chat:", currentChat)}
 </header>
 
 {#each currentConversation as message}
@@ -79,8 +81,6 @@
       newMessage.date = new Date();
       currentConversation.push(newMessage);
       sendMessage();
-      newMessage.text = "";
-      console.log();
     }}
   >
     <input

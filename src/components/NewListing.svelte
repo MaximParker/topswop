@@ -22,6 +22,7 @@
     }}
   >
     <input
+      class="input-primary"
       type="text"
       placeholder="Username..."
       bind:value={newListing.username}
@@ -47,6 +48,6 @@
       placeholder="tradeRequired..."
       bind:value={newListing.tradeRequired}
     />
-    <button type="submit">Submit</button>
+    <button class="btn" type="submit">Submit</button>
   </form>
 </main>

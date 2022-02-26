@@ -12,16 +12,16 @@ const config = {
       "light",
       "emerald",
       {
-        mytheme: {
-          primary: "#047857",
+        "topswop_light": {
+          primary: "#83b271",
 
-          secondary: "#fde047",
+          secondary: "#edf2e9",
 
           accent: "#37CDBE",
 
-          neutral: "#2A2E37",
+          neutral: "#f3f7f0",
 
-          "base-100": "#f3f4f6",
+          "base-100": "#fcfffa",
 
           info: "#3ABFF8",
 

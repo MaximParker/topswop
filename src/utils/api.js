@@ -32,6 +32,20 @@ export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));
 };
 
+export const postLike = async (event, likingUserId, itemId, itemOwnerId) => {
+  event.preventDefault();
+
+  let newLike = {
+    liking_user_id: likingUserId,
+    item_id: itemId,
+    item_owner_id: itemOwnerId
+  }
+
+  const docRef = await addDoc(collection(db, "matches"), newLike);
+  console.log("Document written to matches with ID: ", docRef.id);
+
+};
+
 export const queryPotentialUsers = async (current_user) => {
   const query1 = query(
     collection(db, "matches"),

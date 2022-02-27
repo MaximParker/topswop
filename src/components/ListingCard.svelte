@@ -1,8 +1,16 @@
 <script>
-  import { onSnapshot, collection } from "firebase/firestore";
-  import { db } from "../utils/api";
+  import { postLike } from '../utils/api'
+  import { user } from "../utils/stores";
+
+
+  let signedIn;
+
+user.subscribe((value) => {
+  signedIn = value;
+});
 
   export let listings = [];
+
 </script>
 
 <main>
@@ -18,7 +26,8 @@
         <p>Description: {listing.description}</p>
         <p>Condition: {listing.condition}</p>
         <p>Location: {listing.location}</p>
-        <button>LIKE</button>
+        <button on:click={(event) => {
+          postLike(event, signedIn.uid, listing.id, listing.user_id )}}>LIKE</button>
       </li>
     {:else}
       <p>Loading.App..</p>

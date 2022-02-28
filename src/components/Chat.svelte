@@ -1,52 +1,96 @@
 <script>
-  import { user } from "../utils/stores";
+  import {
+    onSnapshot,
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+  } from "firebase/firestore";
   import { db } from "../utils/api";
-  import { onSnapshot, collection, addDoc } from "firebase/firestore";
+  import { user } from "../utils/stores";
+  import { useNavigate, useLocation } from "svelte-navigator";
+  const navigate = useNavigate();
 
-  const chatMessage = {
-    text: "",
-    user: "",
-    date: Date.now(),
-  };
+  let signedIn;
   user.subscribe((value) => {
-    if (value) {
-      console.log(value);
-      chatMessage.user = value.uid;
-    }
-  });
-  let chats = [];
-  const getChats = onSnapshot(collection(db, "chats"), (querySnapshot) => {
-    let chatArray = [];
-    querySnapshot.forEach((chat) => {
-      console.log(chat, "chatsssss");
-      let chatData = { ...chat.data(), id: chat.id };
-      chatArray = [chatData, ...chatArray];
-    });
-    chats = chatArray;
+    signedIn = value;
   });
 
-  async function sendchatMessage() {
-    const docRef = await setDoc(collection(db, "chats"), chatMessage);
-    console.log("Document written to chats: ", docRef);
-    chatMessage.text = "";
-  }
+  let newMessage = {
+    text: "",
+    from: signedIn.displayName,
+    date: new Date(),
+    read: false,
+  };
+
+  export let currentChat;
+  export let conversationArray;
+  let currentConversation = conversationArray.filter(
+    (entry) => entry.recipient == currentChat
+  );
+  currentConversation.sort(function (a, b) {
+    return a.data.date - b.data.date;
+  });
+
+  const sendMessage = async () => {
+    const senderCopy = await addDoc(
+      collection(
+        db,
+        `messages/${signedIn.uid}/conversations/${currentChat}/messages`
+      ),
+      newMessage
+    );
+    console.log("Sending message: ", senderCopy.id, "(sender's copy)");
+    const recipientCopy = await addDoc(
+      collection(
+        db,
+        `messages/${currentChat}/conversations/${signedIn.uid}/messages`
+      ),
+      newMessage
+    );
+    console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
+    newMessage.text = "";
+  };
 </script>
 
-<main>
-  <h1>Hi</h1>
-  <div class="form">
-    <input type="text" bind:value={chatMessage.text} />
-    <button on:click={sendchatMessage}>send!</button>
-    {#each chats as chat}
-      <div>
-        <p>{chat.text}</p>
-      </div>
-    {/each}
-  </div>
-</main>
+<header>
+  <form
+    on:submit={() => {
+      currentChat = "";
+      navigate("/messages");
+    }}
+  >
+    <button type="submit">Go back to messages</button>
+  </form>
 
-<style>
-  .form {
-    background-color: solid red;
-  }
-</style>
+  <h1>{currentChat}</h1>
+  {console.log("Current chat:", currentChat)}
+</header>
+
+{#each currentConversation as message}
+  <li>
+    <strong>{message.data.from}</strong> says: {message.data.text}
+  </li>
+{/each}
+
+<main>
+  <form
+    on:submit={(event) => {
+      event.preventDefault();
+
+      newMessage.date = new Date();
+      currentConversation = [
+        ...currentConversation, { data: { ...newMessage } }
+      ];
+      sendMessage();
+    }}
+  >
+    <input
+      type="text"
+      placeholder="type message here"
+      bind:value={newMessage.text}
+    />
+    <button type="submit">Send!</button>
+  </form>
+</main>

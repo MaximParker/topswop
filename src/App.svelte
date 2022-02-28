@@ -7,37 +7,49 @@
   import NewListing from "./components/NewListing.svelte";
   import Listings from "./components/Listings.svelte";
   import Profile from "./components/Profile.svelte";
-  import Inbox from "./components/Inbox.svelte";
+  import PotentialMatches from "./components/PotentialMatches.svelte";
+  import Matches from "./components/Matches.svelte"
+  import Messages from "./components/Messages.svelte";
 </script>
 
 <Router>
-  <header>
-    <nav>
-      <Navbar />
-    </nav>
-  </header>
+  <nav>
+    <Navbar />
+  </nav>
 
-  <main>
-    <Route path="/">
-      <Login />
-    </Route>
+  <Route path="/">
+    <Login />
+  </Route>
 
-    <PrivateRoute path="home" let:location>
-      <Listings />
-    </PrivateRoute>
+  <PrivateRoute path="home" let:location>
+    <Listings />
+  </PrivateRoute>
 
-    <Route path="inbox">
-      <Inbox />
-    </Route>
+  <PrivateRoute path="profile" let:location>
+    <Profile />
+  </PrivateRoute>
 
-    <PrivateRoute path="profile" let:location>
-      <Profile />
-    </PrivateRoute>
 
     <PrivateRoute path="new-listing" let:location>
       <NewListing />
     </PrivateRoute>
-  </main>
+
+    <PrivateRoute path="potential-matches" let:location>
+      <PotentialMatches />
+    </PrivateRoute>
+
+    <PrivateRoute path="matches" let:location>
+      <Matches />
+    </PrivateRoute>
+
+  <PrivateRoute path="new-listing" let:location>
+    <NewListing />
+  </PrivateRoute>
+
+  <PrivateRoute path="messages" let:location>
+    <Messages />
+  </PrivateRoute>
+
 </Router>
 
 <style global lang="postcss">

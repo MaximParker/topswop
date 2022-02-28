@@ -1,5 +1,12 @@
 <script>
   import { postListing } from "../utils/api";
+  import { user } from "../utils/stores";
+
+  let signedIn;
+
+  user.subscribe((value) => {
+    signedIn = value;
+  });
 
   let newListing = {
     username: "",
@@ -8,11 +15,15 @@
     condition: "",
     location: "",
     tradeRequired: false,
+    user_id: `${signedIn.uid}`
   };
 </script>
 
 <main>
   <h1>New listing</h1>
+
+  <button></button>
+
   <form
     on:submit={(event) => {
       postListing(event, newListing);

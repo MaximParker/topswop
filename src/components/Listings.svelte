@@ -21,8 +21,6 @@
 <main>
   <h1>All listings ({listings.length})</h1>
 
-  <ListingCard />
-
   <p>Listings</p>
   <ListingCard {listings} />
   <button

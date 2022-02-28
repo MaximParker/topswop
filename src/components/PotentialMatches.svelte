@@ -11,10 +11,14 @@
   });
 
   let potentialMatches = [];
+  let anyMatchesYet = true 
 
   const getPotMatches = (current_user) => {
     return queryPotentialUsers(current_user).then((likingUsers) => {
-      queryPotentialMatchItems( likingUsers, "user_id")
+      if (likingUsers.length === 0 ){
+         anyMatchesYet = false }
+       else 
+      queryPotentialMatchItems( likingUsers, "user_id") 
         .then((items) => {
           potentialMatches = items;
         })
@@ -33,7 +37,11 @@
 
 <main>
   <h2>Potential Matches</h2>
-  <ListingCard listings={potentialMatches} />
+  {#if !anyMatchesYet}
+    <p> No potential matches yet, get liking to increase your visibility!</p>
+  {:else}
+    <ListingCard listings={potentialMatches} />
+  {/if}
 </main>
 
 <style>

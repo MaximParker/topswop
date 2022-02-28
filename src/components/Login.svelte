@@ -121,7 +121,7 @@
       <div class="form-control">
         <form
           on:submit={(event) => {
-            handleRegister(event);
+            handleLogin(event);
           }}
         >
           <div class="form-control">

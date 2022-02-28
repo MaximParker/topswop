@@ -17,7 +17,7 @@
 </script>
 
 {#if signedIn}
-  <main>
+  <main class="navbar-center">
     <Link to="/"><HomeIcon size="36" /></Link>
     <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
     <Link to="profile"><UserIcon size="36" /></Link>

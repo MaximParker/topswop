@@ -16,6 +16,7 @@ import { sendWelcomeMessage } from "../utils/api";
     navigate("/home");
   }
 
+  let displayMenu = "register";
   let email;
   let password;
   let newUsername;
@@ -44,67 +45,118 @@ import { sendWelcomeMessage } from "../utils/api";
   }
 </script>
 
-<h1>Sign in</h1>
-<form
-  on:submit={(event) => {
-    handleLogin(event);
-  }}
->
-  <input
-    bind:value={email}
-    type="email"
-    name="email"
-    placeholder="Email..."
-    required
-  />
-  <br />
-  <input
-    bind:value={password}
-    type="password"
-    name="password"
-    placeholder="Password..."
-    required
-  />
-  <br />
-  <button>Sign in</button>
-</form>
+<div class="card w-80 bg-base-100 shadow-xl mx-auto my-10">
+  <div class="card-body items-center text-center">
+    <figure>
+      <img
+        src="graphics/logotext_green_icon_dark_text.png"
+        alt="Topswop logo"
+      />
+    </figure>
+    {#if displayMenu === "register"}
+      <div class="btn-group my-6">
+        <button class="btn btn-active">Register</button>
+        <button
+          class="btn"
+          on:click={() => {
+            displayMenu = "sign_in";
+          }}>Sign in</button
+        >
+      </div>
 
-<h3>Register as a new user</h3>
-<form
-  on:submit={(event) => {
-    handleRegister(event);
-  }}
->
-  <input
-    bind:value={newUsername}
-    type="text"
-    name="username"
-    placeholder="Username..."
-    required
-  />
-  <input
-    bind:value={newEmail}
-    type="email"
-    name="email"
-    placeholder="Email..."
-    required
-  />
-  <br />
-  <input
-    bind:value={newPassword}
-    type="password"
-    name="new-password"
-    placeholder="Password..."
-    required
-  />
-  <br />
-  <input
-    bind:value={confirmPassword}
-    type="password"
-    name="confirm-password"
-    placeholder="Confirm password..."
-    required
-  />
-  <br />
-  <button type="submit">Register</button>
-</form>
+      <div class="form-control">
+        <form
+          on:submit={(event) => {
+            handleRegister(event);
+          }}
+        >
+          <div class="form-control">
+            <label class="input-group input-group-vertical mb-2">
+              <span>Email</span>
+              <input
+                bind:value={newEmail}
+                type="email"
+                placeholder="example@site.com"
+                required
+                class="input input-bordered"
+              />
+            </label>
+
+            <label class="input-group input-group-vertical mb-2">
+              <span>Password</span>
+              <input
+                bind:value={newPassword}
+                type="password"
+                placeholder="At least 6 characters..."
+                required
+                class="input input-bordered"
+              />
+            </label>
+
+            <label class="input-group input-group-vertical mb-2">
+              <span>Confirm password</span>
+              <input
+                bind:value={confirmPassword}
+                type="password"
+                placeholder="Confirm password..."
+                required
+                class="input input-bordered"
+              />
+            </label>
+          </div>
+
+          <div type="submit" class="justify-center card-actions">
+            <button class="btn btn-primary">Register</button>
+          </div>
+        </form>
+      </div>
+    {/if}
+    {#if displayMenu === "sign_in"}
+      <div class="btn-group my-6">
+        <button
+          class="btn"
+          on:click={() => {
+            displayMenu = "register";
+          }}>Register</button
+        >
+        <button class="btn btn-active">Sign in</button>
+      </div>
+
+      <div class="form-control">
+        <form
+          on:submit={(event) => {
+            handleLogin(event);
+          }}
+        >
+          <div class="form-control">
+            <label class="input-group input-group-vertical mb-2">
+              <span>Email</span>
+              <input
+                bind:value={email}
+                type="email"
+                placeholder="example@site.com"
+                required
+                class="input input-bordered"
+              />
+            </label>
+
+            <label class="input-group input-group-vertical mb-2">
+              <span>Password</span>
+              <input
+                bind:value={password}
+                type="password"
+                placeholder="Password..."
+                required
+                class="input input-bordered"
+              />
+            </label>
+
+            <div type="submit" class="justify-center card-actions">
+              <button class="btn btn-primary">Sign in</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    {/if}
+  </div>
+</div>

@@ -1,6 +1,7 @@
 <script>
-  import { postLike } from '../utils/api'
+  import { postLike, queryUserLikes } from '../utils/api'
   import { user } from "../utils/stores";
+  import { onMount } from "svelte";
 
 
   let signedIn;
@@ -10,12 +11,53 @@ user.subscribe((value) => {
 });
 
   export let listings = [];
+  let listingsWithLikes = [];
+
+  const likeButtonSetting = async (current_user) => {
+      return queryUserLikes(current_user)
+   .then((userLikesData) => {
+
+     let itemIds = []
+      userLikesData.forEach((item) => {
+        itemIds =  [item.item_id, ...itemIds]
+      })
+
+    listings.forEach ((listing) => {
+      let filteredIds = itemIds.filter ((item) => item === listing.id )
+      if ( filteredIds.length > 0 ) {
+        listing.liked = true
+      } else {
+        listing.liked = false
+      }
+    })
+    listingsWithLikes = listings
+   })
+  }
+
+
+  const eventHandler = (event, signedIn, listingId, listingUserId, liked) => {
+    if (liked === true) {
+      unlike()
+    } else {
+      postLike(event, signedIn, listingId, listingUserId )
+    }
+    liked = !liked
+  }
+
+ const unlike = () => {
+   console.log('UNLIKED')
+ }
+
+ onMount(async () => {
+    likeButtonSetting(`${signedIn.uid}`);
+  });
+
 
 </script>
 
 <main>
   <ul class="basic-grid">
-    {#each listings as listing, i}
+    {#each listingsWithLikes as listing, i}
       <li class="card" style="--animation-order: {i + 1};">
         <img
           class="card-image"
@@ -27,7 +69,14 @@ user.subscribe((value) => {
         <p>Condition: {listing.condition}</p>
         <p>Location: {listing.location}</p>
         <button on:click={(event) => {
-          postLike(event, signedIn.uid, listing.id, listing.user_id )}}>LIKE</button>
+          eventHandler(event, signedIn.uid, listing.id, listing.user_id, listing.liked )}}>
+          {listing.liked}
+          {#if listing.liked == false }
+            LIKE
+          {:else}
+            Dislike
+          {/if}
+        </button>
       </li>
     {:else}
       <p>Loading.App..</p>

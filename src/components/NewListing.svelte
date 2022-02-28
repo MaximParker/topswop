@@ -1,5 +1,12 @@
 <script>
   import { postListing } from "../utils/api";
+  import { user } from "../utils/stores";
+
+  let signedIn;
+
+  user.subscribe((value) => {
+    signedIn = value;
+  });
 
   let newListing = {
     username: "",
@@ -8,6 +15,7 @@
     condition: "",
     location: "",
     tradeRequired: false,
+    user_id: `${signedIn.uid}`
   };
 </script>
 

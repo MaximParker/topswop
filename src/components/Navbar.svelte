@@ -6,6 +6,8 @@
     PlusCircleIcon,
     UserIcon,
     MenuIcon,
+    GiftIcon,
+    UsersIcon,
     MessageSquareIcon
   } from "svelte-feather-icons";
 
@@ -19,6 +21,8 @@
 {#if signedIn}
   <main class="navbar-center">
     <Link to="/"><HomeIcon size="36" /></Link>
+    <Link to="potential-matches"><GiftIcon size="36" /></Link>
+    <Link to="matches"><UsersIcon size="36" /></Link>
     <Link to="new-listing"><PlusCircleIcon size="36" /></Link>
     <Link to="profile"><UserIcon size="36" /></Link>
     <Link to="messages"><MessageSquareIcon size="36" /></Link>

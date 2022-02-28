@@ -11,7 +11,7 @@
       let listingArray = [];
       querySnapshot.forEach((listing) => {
         let listingData = { ...listing.data(), id: listing.id };
-        listingArray = [listingData, ...listingArray];
+        listingArray = [listingData, ...listingArray]; 
       });
       listings = listingArray;
     }
@@ -24,27 +24,30 @@
   <ListingCard />
 
   <p>Listings</p>
+  <ListingCard {listings} />
   <button
     on:click={(event) => {
       reseedListingsDatabase(event, listings);
     }}>Re-seed database</button
   >
 
-  <table style="width:100%">
+  <table>
     <tr>
       <th>id</th>
       <th>Title</th>
       <th>Description</th>
       <th>Condition</th>
       <th>Location</th>
+      <th>User ID</th>
     </tr>
     {#each listings as listing}
       <tr
-        ><td>{listing.id.substring(0, 5)}...</td>
+        ><td style="width: 400px">{listing.id}...</td>
         <td>{listing.title}</td>
         <td>{listing.description}</td>
         <td>{listing.condition}</td>
-        <td>{listing.location}</td></tr
+        <td>{listing.location}</td>
+        <td>{listing.user_id}</td></tr
       >
     {/each}
   </table>

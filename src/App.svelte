@@ -7,6 +7,8 @@
   import NewListing from "./components/NewListing.svelte";
   import Listings from "./components/Listings.svelte";
   import Profile from "./components/Profile.svelte";
+  import PotentialMatches from "./components/PotentialMatches.svelte";
+  import Matches from "./components/Matches.svelte"
   import Messages from "./components/Messages.svelte";
 </script>
 
@@ -27,6 +29,19 @@
     <Profile />
   </PrivateRoute>
 
+
+    <PrivateRoute path="new-listing" let:location>
+      <NewListing />
+    </PrivateRoute>
+
+    <PrivateRoute path="potential-matches" let:location>
+      <PotentialMatches />
+    </PrivateRoute>
+
+    <PrivateRoute path="matches" let:location>
+      <Matches />
+    </PrivateRoute>
+
   <PrivateRoute path="new-listing" let:location>
     <NewListing />
   </PrivateRoute>
@@ -34,6 +49,7 @@
   <PrivateRoute path="messages" let:location>
     <Messages />
   </PrivateRoute>
+
 </Router>
 
 <style global lang="postcss">

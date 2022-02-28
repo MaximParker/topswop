@@ -1,33 +1,36 @@
 <script>
-  import { onSnapshot, collection } from "firebase/firestore";
-  import { db } from "../utils/api";
+  import { postLike } from '../utils/api'
+  import { user } from "../utils/stores";
 
-  let listings = [];
 
-  const getListings = onSnapshot(
-    collection(db, "listings"),
-    (querySnapshot) => {
-      let listingArray = [];
-      querySnapshot.forEach((listing) => {
-        let listingData = { ...listing.data(), id: listing.id };
-        listingArray = [listingData, ...listingArray];
-      });
-      listings = listingArray;
-    }
-  );
+  let signedIn;
+
+user.subscribe((value) => {
+  signedIn = value;
+});
+
+  export let listings = [];
+
 </script>
 
 <main>
   <ul class="basic-grid">
     {#each listings as listing, i}
       <li class="card" style="--animation-order: {i + 1};">
-          <img class="card-image" src="https://shop.tate.org.uk/dw/image/v2/BBPB_PRD/on/demandware.static/-/Sites-TateMasterShop/default/dwaa107262/tate-logo-black--tshirt-back-g1086.jpg?sw=556" alt="clothing item">
+        <img
+          class="card-image"
+          src="https://shop.tate.org.uk/dw/image/v2/BBPB_PRD/on/demandware.static/-/Sites-TateMasterShop/default/dwaa107262/tate-logo-black--tshirt-back-g1086.jpg?sw=556"
+          alt="clothing item"
+        />
         <h3>{listing.title}</h3>
         <p>Description: {listing.description}</p>
         <p>Condition: {listing.condition}</p>
         <p>Location: {listing.location}</p>
-        <button>LIKE</button>
+        <button on:click={(event) => {
+          postLike(event, signedIn.uid, listing.id, listing.user_id )}}>LIKE</button>
       </li>
+    {:else}
+      <p>Loading.App..</p>
     {/each}
   </ul>
 </main>
@@ -82,11 +85,10 @@
   }
 
   .card-image {
-      height: 150px; 
-      margin-bottom: 15px;
-      margin-top: 15px;
+    height: 150px;
+    margin-bottom: 15px;
+    margin-top: 15px;
   }
-
 
   @media screen and (max-width: 350px) {
     .basic-grid {

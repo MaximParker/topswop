@@ -7,9 +7,9 @@
     getDocs,
   } from "firebase/firestore";
   import { createChatroom, db } from "../utils/api";
-  import { sendWelcomeMessage } from "../utils/api";
   import { user } from "../utils/stores";
   import Chat from "../components/Chat.svelte";
+  import { onValue, ref } from "firebase/database";
   let signedIn;
 
   user.subscribe((value) => {
@@ -37,10 +37,11 @@
             `messages/${signedIn.uid}/conversations/${recipient}/messages`
           ),
           (querySnapshot) => {
-            querySnapshot.forEach((doc) => {
+            querySnapshot.docChanges().forEach((entry) => {
+              console.log(entry.doc.data());
               conversationArray = [
                 ...conversationArray,
-                { recipient, data: doc.data() },
+                { recipient, data: entry.doc.data() },
               ];
             });
           }

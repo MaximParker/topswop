@@ -61,5 +61,5 @@ export const registerUserByEmail = (email, password, username) => {
 };
 
 export const handleLogout = () => {
-  user.set(null);
+  user.set("");
 };

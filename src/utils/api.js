@@ -34,6 +34,19 @@ export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));
 };
 
+export const removeLike = async (current_user, itemId) => {
+  const query1 = query(
+    collection(db, "matches"),
+    where("liking_user_id", "==", current_user), where("item_id", "==", itemId))
+
+    const querySnapshot = await getDocs(query1);
+  querySnapshot.forEach((data) => {
+    deleteDoc(doc(db, "matches", data.id));
+    console.log(data.id, 'deleted')
+  });
+
+};
+
 export const postLike = async (event, likingUserId, itemId, itemOwnerId) => {
   event.preventDefault();
 

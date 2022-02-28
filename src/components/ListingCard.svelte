@@ -1,58 +1,61 @@
 <script>
-  import { postLike, queryUserLikes } from '../utils/api'
+  import { postLike, queryUserLikes, removeLike } from "../utils/api";
   import { user } from "../utils/stores";
   import { onMount } from "svelte";
 
-
   let signedIn;
 
-user.subscribe((value) => {
-  signedIn = value;
-});
+  user.subscribe((value) => {
+    signedIn = value;
+  });
 
   export let listings = [];
   let listingsWithLikes = [];
 
   const likeButtonSetting = async (current_user) => {
-      return queryUserLikes(current_user)
-   .then((userLikesData) => {
-
-     let itemIds = []
+    return queryUserLikes(current_user).then((userLikesData) => {
+      let itemIds = [];
       userLikesData.forEach((item) => {
-        itemIds =  [item.item_id, ...itemIds]
-      })
+        itemIds = [item.item_id, ...itemIds];
+      });
 
-    listings.forEach ((listing) => {
-      let filteredIds = itemIds.filter ((item) => item === listing.id )
-      if ( filteredIds.length > 0 ) {
-        listing.liked = true
-      } else {
-        listing.liked = false
-      }
-    })
-    listingsWithLikes = listings
-   })
-  }
-
+      listings.forEach((listing) => {
+        let filteredIds = itemIds.filter((item) => item === listing.id);
+        if (filteredIds.length > 0) {
+          listing.liked = true;
+        } else {
+          listing.liked = false;
+        }
+      });
+      listingsWithLikes = listings;
+      console.log("IM RUNNING");
+    });
+  };
 
   const eventHandler = (event, signedIn, listingId, listingUserId, liked) => {
+    let updatedListingLikes = [];
+
     if (liked === true) {
-      unlike()
+      unlike(signedIn, listingId);
     } else {
-      postLike(event, signedIn, listingId, listingUserId )
+      postLike(event, signedIn, listingId, listingUserId);
     }
-    liked = !liked
-  }
+    listingsWithLikes.forEach((item) => {
+      if (item.id == listingId) {
+        item.liked = !item.liked;
+      }
+      updatedListingLikes = [item, ...updatedListingLikes];
+    });
+    listingsWithLikes = updatedListingLikes;
+  };
 
- const unlike = () => {
-   console.log('UNLIKED')
- }
+  const unlike = (current_user, itemId) => {
+    removeLike(current_user, itemId);
+  };
 
- onMount(async () => {
+  onMount(async () => {
     likeButtonSetting(`${signedIn.uid}`);
   });
-
-
 </script>
 
 <main>
@@ -68,10 +71,19 @@ user.subscribe((value) => {
         <p>Description: {listing.description}</p>
         <p>Condition: {listing.condition}</p>
         <p>Location: {listing.location}</p>
-        <button on:click={(event) => {
-          eventHandler(event, signedIn.uid, listing.id, listing.user_id, listing.liked )}}>
+        <button
+          on:click={(event) => {
+            eventHandler(
+              event,
+              signedIn.uid,
+              listing.id,
+              listing.user_id,
+              listing.liked
+            );
+          }}
+        >
           {listing.liked}
-          {#if listing.liked == false }
+          {#if listing.liked == false}
             LIKE
           {:else}
             Dislike

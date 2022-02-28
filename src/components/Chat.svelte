@@ -26,12 +26,15 @@
 
   export let currentChat;
   export let conversationArray;
-  let currentConversation = conversationArray.filter(
-    (entry) => entry.recipient == currentChat
-  );
-  currentConversation.sort(function (a, b) {
-    return a.data.date - b.data.date;
-  });
+  let currentConversation = [];
+  $: if (conversationArray) {
+    currentConversation = conversationArray.filter(
+      (entry) => entry.recipient == currentChat
+    );
+    currentConversation.sort(function (a, b) {
+      return a.data.date - b.data.date;
+    });
+  }
 
   const sendMessage = async () => {
     const senderCopy = await addDoc(
@@ -65,7 +68,7 @@
   </form>
 
   <h1>{currentChat}</h1>
-  {console.log("Current chat:", currentChat)}
+  {console.log("Current chatly chatting with:", currentChat)}
 </header>
 
 {#each currentConversation as message}
@@ -81,7 +84,8 @@
 
       newMessage.date = new Date();
       currentConversation = [
-        ...currentConversation, { data: { ...newMessage } }
+        ...currentConversation,
+        { data: { ...newMessage } },
       ];
       sendMessage();
     }}

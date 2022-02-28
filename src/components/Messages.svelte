@@ -38,7 +38,6 @@
           ),
           (querySnapshot) => {
             querySnapshot.docChanges().forEach((entry) => {
-              console.log(entry.doc.data());
               conversationArray = [
                 ...conversationArray,
                 { recipient, data: entry.doc.data() },

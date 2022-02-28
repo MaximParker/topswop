@@ -11,7 +11,6 @@
 </script>
 
 <main>
-  <h1>Welcome, {signedIn.email}</h1>
+  <h1>Welcome, {signedIn.displayName}</h1>
   <button on:click={handleLogout}>Logout</button>
 </main>
-

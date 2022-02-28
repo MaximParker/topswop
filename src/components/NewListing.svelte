@@ -13,6 +13,9 @@
 
 <main>
   <h1>New listing</h1>
+
+  <button></button>
+
   <form
     on:submit={(event) => {
       postListing(event, newListing);

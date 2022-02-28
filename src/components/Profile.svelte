@@ -8,6 +8,7 @@
   user.subscribe((value) => {
     signedIn = value;
   });
+
 </script>
 
 <main>

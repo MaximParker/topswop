@@ -7,7 +7,7 @@
     getDocs,
     addDoc,
   } from "firebase/firestore";
-  import { db } from "../utils/api";
+  import { db, sendMessage } from "../utils/api";
   import { user } from "../utils/stores";
   import { useNavigate, useLocation } from "svelte-navigator";
   const navigate = useNavigate();
@@ -24,51 +24,30 @@
     read: false,
   };
 
-  export let currentChat;
+  export let currentRecipient;
   export let conversationArray;
   let currentConversation = [];
   $: if (conversationArray) {
     currentConversation = conversationArray.filter(
-      (entry) => entry.recipient == currentChat
+      (entry) => entry.recipient == currentRecipient
     );
     currentConversation.sort(function (a, b) {
       return a.data.date - b.data.date;
     });
   }
-
-  const sendMessage = async () => {
-    const senderCopy = await addDoc(
-      collection(
-        db,
-        `messages/${signedIn.uid}/conversations/${currentChat}/messages`
-      ),
-      newMessage
-    );
-    console.log("Sending message: ", senderCopy.id, "(sender's copy)");
-    const recipientCopy = await addDoc(
-      collection(
-        db,
-        `messages/${currentChat}/conversations/${signedIn.uid}/messages`
-      ),
-      newMessage
-    );
-    console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
-    newMessage.text = "";
-  };
 </script>
 
 <header>
   <form
     on:submit={() => {
-      currentChat = "";
+      currentRecipient = "";
       navigate("/messages");
     }}
   >
     <button type="submit">Go back to messages</button>
   </form>
-
-  <h1>{currentChat}</h1>
-  {console.log("Current chatly chatting with:", currentChat)}
+  <h1>{currentConversation[0].data.from}</h1>
+  {console.log(`Chatting with: ${currentConversation[0].data.from} (${currentRecipient})`)}
 </header>
 
 {#each currentConversation as message}
@@ -87,7 +66,8 @@
         ...currentConversation,
         { data: { ...newMessage } },
       ];
-      sendMessage();
+      sendMessage(signedIn.uid, currentRecipient, newMessage);
+      newMessage.text = "";
     }}
   >
     <input

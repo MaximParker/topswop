@@ -10,7 +10,6 @@ import {
   documentId,
   setDoc,
 } from "firebase/firestore";
-import { getDatabase, ref, set } from "firebase/database";
 export const db = getFirestore();
 
 let newListing = {
@@ -20,7 +19,7 @@ let newListing = {
   condition: "",
   location: "",
   tradeRequired: false,
-  user_id: ""
+  user_id: "",
 };
 
 export const postListing = async (event, newListing) => {
@@ -40,12 +39,11 @@ export const postLike = async (event, likingUserId, itemId, itemOwnerId) => {
   let newLike = {
     liking_user_id: likingUserId,
     item_id: itemId,
-    item_owner_id: itemOwnerId
-  }
+    item_owner_id: itemOwnerId,
+  };
 
   const docRef = await addDoc(collection(db, "matches"), newLike);
   console.log("Document written to matches with ID: ", docRef.id);
-
 };
 
 export const queryPotentialUsers = async (current_user) => {
@@ -62,7 +60,10 @@ export const queryPotentialUsers = async (current_user) => {
   return usersThatLikedMyItem;
 };
 
-export const queryPotentialMatchItems = async ( searchingFor, searchingIn = documentId() ) => {
+export const queryPotentialMatchItems = async (
+  searchingFor,
+  searchingIn = documentId()
+) => {
   const query2 = query(
     collection(db, "listings"),
     where(searchingIn, "in", searchingFor)
@@ -75,7 +76,6 @@ export const queryPotentialMatchItems = async ( searchingFor, searchingIn = docu
   });
   return potentialMatchItems;
 };
-
 
 export const queryUserLikes = async (current_user) => {
   const query1 = query(
@@ -120,7 +120,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "London",
     geotag: "51.50, -0.07",
     tradeRequired: false,
-    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
+    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3",
   };
   postListing(event, newListing);
   newListing = {
@@ -131,7 +131,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Gateshead",
     geotag: "54.91, -1.58",
     tradeRequired: false,
-    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
+    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3",
   };
   postListing(event, newListing);
   newListing = {
@@ -142,7 +142,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Edinburgh",
     geotag: "55.94, -3.19",
     tradeRequired: true,
-    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
+    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1",
   };
   postListing(event, newListing);
   newListing = {
@@ -153,7 +153,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Manchester",
     geotag: "53.48, -2.24",
     tradeRequired: true,
-    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
+    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1",
   };
   postListing(event, newListing);
   newListing = {
@@ -164,7 +164,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Sheffield",
     geotag: "53.37, -1.49",
     tradeRequired: true,
-    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
+    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3",
   };
   postListing(event, newListing);
   newListing = {
@@ -175,10 +175,14 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "York",
     geotag: "53.96, -1.09",
     tradeRequired: true,
-    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
+    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3",
   };
   postListing(event, newListing);
   console.log("Re-seed complete.");
+};
+
+export const addDisplayNameToDB = (uid, displayName) => {
+  setDoc(doc(db, `messages/${uid}/`), { displayName });
 };
 
 export const sendWelcomeMessage = (targetID) => {
@@ -213,18 +217,18 @@ export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
       addDoc(
         collection(db, `messages/${uid_a}/conversations/${uid_b}/messages`),
         {
-          from: "Topswop Team",
+          from: uid_b,
           date: new Date(),
-          text: `You have matched with ${uid_b}! You can discuss the trade here.`,
+          text: `Matched with ${uid_b}! You can discuss the trade here.`,
           read: false,
         }
       );
       addDoc(
         collection(db, `messages/${uid_b}/conversations/${uid_a}/messages`),
         {
-          from: "Topswop Team",
+          from: uid_a,
           date: new Date(),
-          text: `You have matched with ${uid_a}! You can discuss the trade here.`,
+          text: `Matched with ${uid_a}! You can discuss the trade here.`,
           read: false,
         }
       );
@@ -232,28 +236,21 @@ export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
   );
 };
 
-export const sendDirectMessage = (
-  sender_id,
-  sender_displayName,
-  recipient_id,
-  text
-) => {
-  console.log(`Creating conversations collection for ${targetID}`);
-  setDoc(
-    doc(db, `messages/${targetID}/conversations`, `topswop_team`),
-    {}
-  ).then(() => {
-    addDoc(
-      collection(
-        db,
-        `messages/${targetID}/conversations/topswop_team/messages`
-      ),
-      {
-        from: "Topswop Team",
-        date: new Date(),
-        text: "Welcome to Topswop! Here's some information, etc. etc.",
-        read: false,
-      }
-    );
-  });
+export const sendMessage = async (senderID, recipientID, messageObject) => {
+  const senderCopy = await addDoc(
+    collection(
+      db,
+      `messages/${senderID}/conversations/${recipientID}/messages`
+    ),
+    messageObject
+  );
+  console.log("Sending message: ", senderCopy.id, "(sender's copy)");
+  const recipientCopy = await addDoc(
+    collection(
+      db,
+      `messages/${recipientID}/conversations/${senderID}/messages`
+    ),
+    messageObject
+  );
+  console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
 };

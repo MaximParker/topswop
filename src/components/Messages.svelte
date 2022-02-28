@@ -20,7 +20,7 @@
   let conversationArray = [];
   let uniqueConversations = [];
   let tallyRecipients = [];
-  let currentChat = "";
+  let currentRecipient = "";
 
   const getConversations = onSnapshot(
     collection(db, `messages/${signedIn.uid}/conversations`),
@@ -70,24 +70,25 @@
       "SKTFILPxIPamzZ2EUbNSRgy830q1"
     );
   }}
-/>
+>Create conversation</button>
 
 <main>
-  {#if currentChat}
-    <Chat {conversationArray} {currentChat} />
+  {#if currentRecipient}
+    <Chat {conversationArray} {currentRecipient} />
   {:else}
     <ul>
-      {#each uniqueConversations as message}
+      {#each uniqueConversations as convo}
+        {console.log(convo, "<<<<<")}
         <li>
           <p>
-            <strong>{message.recipient}</strong>
+            <strong>{convo.recipient}</strong>
           </p>
-          <p>{message.data.from}: {message.data.text}</p>
+          <p>{convo.data.from} says: {convo.data.text}</p>
 
           <button
             on:click={() => {
-              currentChat = message.recipient;
-            }}>Chat!</button
+              currentRecipient = convo.recipient;
+            }}>Open chat</button
           >
         </li>
       {/each}

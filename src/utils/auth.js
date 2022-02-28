@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./firebaseConfig";
+initializeApp(firebaseConfig);
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -8,13 +10,11 @@ import {
 } from "firebase/auth";
 import { user } from "../utils/stores";
 
-initializeApp(firebaseConfig);
 const auth = getAuth();
 
 export const loginByEmail = (email, password) => {
   return signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      console.log(userCredential);
       user.set({
         uid: userCredential.user.uid,
         email: userCredential.user.email,
@@ -44,13 +44,14 @@ export const updateUserDisplayName = (newUsername) => {
 export const registerUserByEmail = (email, password, username) => {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      console.log("REGISTERED NEW USER:\n",userCredential.user);
+      console.log("REGISTERED NEW USER:\n", userCredential.user);
       user.set({
         uid: userCredential.user.uid,
         email: userCredential.user.email,
         displayName: username,
       });
       updateUserDisplayName(username);
+      addDisplayNameToDB
       return true;
     })
     .catch((error) => {

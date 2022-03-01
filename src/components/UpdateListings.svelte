@@ -1,7 +1,6 @@
 <script>
+  import { deleteListing, updateItem } from "../utils/api";
   export let listing;
-  export let deleteListing;
-  export let updateItem;
 
   let editItem = {
     title: "",

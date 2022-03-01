@@ -3,14 +3,7 @@
   import { handleLogout } from "../utils/auth";
   import { user } from "../utils/stores";
   import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
-  import {
-    onSnapshot,
-    collection,
-    deleteDoc,
-    doc,
-    updateDoc,
-  } from "firebase/firestore";
-  import { update } from "firebase/database";
+  import { onSnapshot, collection } from "firebase/firestore";
   import UpdateListings from "./UpdateListings.svelte";
 
   const auth = getAuth();
@@ -34,14 +27,14 @@
   let newPassword = "";
 
   function changePassword() {
-    console.log("inside function");
     updatePassword(fireUser, newPassword)
       .then(() => {
         newPassword = "";
-        console.log("Password Changed");
+        alert("Password Changed");
+        console.log("password changed");
       })
       .catch((error) => {
-        console.log(error, "errror");
+        alert("Error");
       });
   }
 
@@ -61,22 +54,6 @@
       });
     }
   );
-
-  function deleteListing(listing) {
-    deleteDoc(doc(db, "listings", listing));
-  }
-
-  const updateItem = async (
-    editItem,
-    listItem,
-    title,
-    description,
-    condition,
-    location
-  ) => {
-    const updateRef = doc(db, "listings", listItem);
-    await updateDoc(updateRef, editItem);
-  };
 </script>
 
 <main>
@@ -97,7 +74,7 @@
   <ul>
     {#each myListings as listing}
       <li>
-        <UpdateListings {listing} {deleteListing} {updateItem} />
+        <UpdateListings {listing} />
       </li>
     {/each}
   </ul>

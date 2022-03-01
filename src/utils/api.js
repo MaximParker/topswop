@@ -9,6 +9,7 @@ import {
   getDocs,
   documentId,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { getDatabase, ref, set } from "firebase/database";
 export const db = getFirestore();
@@ -20,7 +21,7 @@ let newListing = {
   condition: "",
   location: "",
   tradeRequired: false,
-  user_id: ""
+  user_id: "",
 };
 
 export const postListing = async (event, newListing) => {
@@ -40,12 +41,11 @@ export const postLike = async (event, likingUserId, itemId, itemOwnerId) => {
   let newLike = {
     liking_user_id: likingUserId,
     item_id: itemId,
-    item_owner_id: itemOwnerId
-  }
+    item_owner_id: itemOwnerId,
+  };
 
   const docRef = await addDoc(collection(db, "matches"), newLike);
   console.log("Document written to matches with ID: ", docRef.id);
-
 };
 
 export const queryPotentialUsers = async (current_user) => {
@@ -62,7 +62,10 @@ export const queryPotentialUsers = async (current_user) => {
   return usersThatLikedMyItem;
 };
 
-export const queryPotentialMatchItems = async ( searchingFor, searchingIn = documentId() ) => {
+export const queryPotentialMatchItems = async (
+  searchingFor,
+  searchingIn = documentId()
+) => {
   const query2 = query(
     collection(db, "listings"),
     where(searchingIn, "in", searchingFor)
@@ -75,7 +78,6 @@ export const queryPotentialMatchItems = async ( searchingFor, searchingIn = docu
   });
   return potentialMatchItems;
 };
-
 
 export const queryUserLikes = async (current_user) => {
   const query1 = query(
@@ -120,7 +122,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "London",
     geotag: "51.50, -0.07",
     tradeRequired: false,
-    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
+    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3",
   };
   postListing(event, newListing);
   newListing = {
@@ -131,7 +133,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Gateshead",
     geotag: "54.91, -1.58",
     tradeRequired: false,
-    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3"
+    user_id: "EVebWT2lGySQG3x5Qm8xqUiHzuC3",
   };
   postListing(event, newListing);
   newListing = {
@@ -142,7 +144,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Edinburgh",
     geotag: "55.94, -3.19",
     tradeRequired: true,
-    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
+    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1",
   };
   postListing(event, newListing);
   newListing = {
@@ -153,7 +155,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Manchester",
     geotag: "53.48, -2.24",
     tradeRequired: true,
-    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1"
+    user_id: "vUEK9J8c8tMHLLpGgdnuqJVjwZm1",
   };
   postListing(event, newListing);
   newListing = {
@@ -164,7 +166,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "Sheffield",
     geotag: "53.37, -1.49",
     tradeRequired: true,
-    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
+    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3",
   };
   postListing(event, newListing);
   newListing = {
@@ -175,7 +177,7 @@ export const reseedListingsDatabase = async (event, listings) => {
     location: "York",
     geotag: "53.96, -1.09",
     tradeRequired: true,
-    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3"
+    user_id: "vUNC6IYA8kZjYUy99OcBC5qmiFF3",
   };
   postListing(event, newListing);
   console.log("Re-seed complete.");
@@ -256,4 +258,20 @@ export const sendDirectMessage = (
       }
     );
   });
+};
+
+export function deleteListing(listing) {
+  deleteDoc(doc(db, "listings", listing));
+}
+
+export const updateItem = async (
+  editItem,
+  listItem,
+  title,
+  description,
+  condition,
+  location
+) => {
+  const updateRef = doc(db, "listings", listItem);
+  await updateDoc(updateRef, editItem);
 };

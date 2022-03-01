@@ -34,6 +34,14 @@ let newListing = {
   user_id: "",
 };
 
+let uid;
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    uid = user.uid;
+    return uid;
+  }
+});
+
 export const postListing = async (event, newListing) => {
   event.preventDefault();
   const docRef = await addDoc(collection(db, "listings"), newListing);
@@ -43,11 +51,11 @@ export const postListing = async (event, newListing) => {
   uploadImage(event, uid, listingRef);
 };
 
+const storageRef = ref_storage(storage);
+const metadata = {
+  contentType: "image/jpeg",
+};
 export const uploadImage = (event, uid, listingRef) => {
-  const storageRef = ref_storage(storage);
-  const metadata = {
-    contentType: "image/jpeg",
-  };
   event.preventDefault();
   const file = event.target[6].files[0];
   if (!file) return;
@@ -69,6 +77,27 @@ export const uploadImage = (event, uid, listingRef) => {
 const updateListingWithImage = (downloadURL, listingRef) => {
   const newListingRef = doc(db, "listings", listingRef);
   setDoc(newListingRef, { imageURL: downloadURL }, { merge: true });
+};
+
+export let profilePicExport;
+export const uploadProfilePic = (event) => {
+  event.preventDefault();
+  const profilePic = event.target[0].files[0];
+  if (!profilePic) return;
+  const storageRef = ref_storage(
+    storage,
+    `/files/${uid}/profilepics/${profilePic}`
+  );
+  const uploadTask = uploadBytesResumable(
+    storageRef,
+    profilePic,
+    metadata
+  ).then((uploadTaskSnapshot) => {
+    getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
+      console.log(downloadURL);
+      return (profilePicExport = downloadURL);
+    });
+  });
 };
 
 export const removeListingByID = async (id) => {

@@ -1,13 +1,9 @@
 <script>
+  import { db } from "../utils/api";
   import { handleLogout } from "../utils/auth";
-  import { useNavigate, useLocation } from "svelte-navigator";
   import { user } from "../utils/stores";
-  import { updatePassword, onAuthStateChanged } from "firebase/auth";
-  import MyListings from "./MyListings.svelte";
-
-  const navigate = useNavigate();
-
-  import { getAuth } from "firebase/auth";
+  import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
+  import { onSnapshot, collection, deleteDoc, doc } from "firebase/firestore";
 
   const auth = getAuth();
 
@@ -38,8 +34,28 @@
       })
       .catch((error) => {
         console.log(error, "errror");
-        console.log("Cannot change password");
       });
+  }
+
+  let myListings = [];
+
+  const getListings = onSnapshot(
+    collection(db, "listings"),
+    (querySnapshot) => {
+      let listingArray = [];
+      querySnapshot.forEach((listing) => {
+        let listingData = { ...listing.data(), id: listing.id };
+        listingArray = [listingData, ...listingArray];
+      });
+
+      myListings = listingArray.filter((listItem) => {
+        return listItem.user_id == signedIn.uid;
+      });
+    }
+  );
+
+  function deleteListing(listing) {
+    deleteDoc(doc(db, "listings", listing));
   }
 </script>
 
@@ -47,7 +63,6 @@
   <h1>Welcome, {signedIn.displayName}</h1>
   <button on:click={handleLogout}>Logout</button>
   <p>Avatar image{signedIn.photoURL}</p>
-
   <p>Email: {signedIn.email}</p>
   <form on:submit|preventDefault={changePassword}>
     <input
@@ -55,11 +70,22 @@
       placeholder="new password"
       bind:value={newPassword}
     />
-    <button>Change Password</button>
+    <button class="btn">Change Password</button>
   </form>
-
+  <br />
+  <h2>My listings</h2>
   <ul>
-    My listings
-    <li />
+    {#each myListings as listing}
+      <li>
+        <h3>Title: {listing.title}</h3>
+        <p>Description: {listing.description}</p>
+        <p>Condition: {listing.condition}</p>
+        <p>Location: {listing.location}</p>
+        <button class="btn" on:click={deleteListing(listing.id)}
+          >Delete Item</button
+        >
+        <button class="btn">Edit Item</button>
+      </li>
+    {/each}
   </ul>
 </main>

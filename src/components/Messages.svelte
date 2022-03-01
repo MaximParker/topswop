@@ -7,9 +7,9 @@
     getDocs,
   } from "firebase/firestore";
   import { createChatroom, db } from "../utils/api";
-  import { sendWelcomeMessage } from "../utils/api";
   import { user } from "../utils/stores";
   import Chat from "../components/Chat.svelte";
+  import { onValue, ref } from "firebase/database";
   let signedIn;
 
   user.subscribe((value) => {
@@ -20,7 +20,7 @@
   let conversationArray = [];
   let uniqueConversations = [];
   let tallyRecipients = [];
-  let currentChat = "";
+  let currentRecipient = "";
 
   const getConversations = onSnapshot(
     collection(db, `messages/${signedIn.uid}/conversations`),
@@ -37,10 +37,10 @@
             `messages/${signedIn.uid}/conversations/${recipient}/messages`
           ),
           (querySnapshot) => {
-            querySnapshot.forEach((doc) => {
+            querySnapshot.docChanges().forEach((entry) => {
               conversationArray = [
                 ...conversationArray,
-                { recipient, data: doc.data() },
+                { recipient, data: entry.doc.data() },
               ];
             });
           }
@@ -60,34 +60,23 @@
 </script>
 
 <header>
-  <h1>Messages</h1>
+  <div class="mx-auto my-2">
+    <h1 class="text-xl font-bold text-primary align-center text-center">Messages</h1>
+  </div>
 </header>
 
-<button
-  on:click={() => {
-    createChatroom(
-      "WoDT5RSioGR1wrsQXtseBN1J6mq1",
-      "SKTFILPxIPamzZ2EUbNSRgy830q1"
-    );
-  }}
-/>
-
 <main>
-  {#if currentChat}
-    <Chat {conversationArray} {currentChat} />
+  {#if currentRecipient}
+    <Chat {conversationArray} {currentRecipient} />
   {:else}
-    <ul>
-      {#each uniqueConversations as message}
+    <ul class="menu bg-primary mx-auto w-80 p-2 rounded-box">
+      {#each uniqueConversations as convo}
         <li>
-          <p>
-            <strong>{message.recipient}</strong>
-          </p>
-          <p>{message.data.from}: {message.data.text}</p>
-
           <button
+            class="btn btn-ghost"
             on:click={() => {
-              currentChat = message.recipient;
-            }}>Chat!</button
+              currentRecipient = convo.recipient;
+            }}>{convo.recipient}</button
           >
         </li>
       {/each}

@@ -7,7 +7,7 @@
     getDocs,
     addDoc,
   } from "firebase/firestore";
-  import { db } from "../utils/api";
+  import { db, sendMessage } from "../utils/api";
   import { user } from "../utils/stores";
   import { useNavigate, useLocation } from "svelte-navigator";
   const navigate = useNavigate();
@@ -24,55 +24,42 @@
     read: false,
   };
 
-  export let currentChat;
+  export let currentRecipient;
   export let conversationArray;
-  let currentConversation = conversationArray.filter(
-    (entry) => entry.recipient == currentChat
-  );
-  currentConversation.sort(function (a, b) {
-    return a.data.date - b.data.date;
-  });
-
-  const sendMessage = async () => {
-    const senderCopy = await addDoc(
-      collection(
-        db,
-        `messages/${signedIn.uid}/conversations/${currentChat}/messages`
-      ),
-      newMessage
+  let currentConversation = [];
+  $: if (conversationArray) {
+    currentConversation = conversationArray.filter(
+      (entry) => entry.recipient == currentRecipient
     );
-    console.log("Sending message: ", senderCopy.id, "(sender's copy)");
-    const recipientCopy = await addDoc(
-      collection(
-        db,
-        `messages/${currentChat}/conversations/${signedIn.uid}/messages`
-      ),
-      newMessage
-    );
-    console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
-    newMessage.text = "";
-  };
+    currentConversation.sort(function (a, b) {
+      return a.data.date - b.data.date;
+    });
+  }
 </script>
 
 <header>
   <form
     on:submit={() => {
-      currentChat = "";
+      currentRecipient = "";
       navigate("/messages");
     }}
   >
     <button type="submit">Go back to messages</button>
   </form>
-
-  <h1>{currentChat}</h1>
-  {console.log("Current chat:", currentChat)}
+  <div class="bg-primary mx-auto w-100 p-2">
+    <h1 class="text-xl font-bold align-center text-center">{currentConversation[0].data.from}</h1>
+  </div>
 </header>
 
-{#each currentConversation as message}
-  <li>
-    <strong>{message.data.from}</strong> says: {message.data.text}
-  </li>
-{/each}
+<ul class="bg-neutral mx-auto w-100 p-2">
+  {#each currentConversation as message}
+    <li>
+      <div class="bg-primary max-w-fit p-2 mb-1 rounded-r-lg mr-0">
+        <p>{message.data.text}</p>
+      </div>
+    </li>
+  {/each}
+</ul>
 
 <main>
   <form
@@ -81,15 +68,18 @@
 
       newMessage.date = new Date();
       currentConversation = [
-        ...currentConversation, { data: { ...newMessage } }
+        ...currentConversation,
+        { data: { ...newMessage } },
       ];
-      sendMessage();
+      sendMessage(signedIn.uid, currentRecipient, newMessage);
+      newMessage.text = "";
     }}
   >
     <input
       type="text"
       placeholder="type message here"
       bind:value={newMessage.text}
+      required
     />
     <button type="submit">Send!</button>
   </form>

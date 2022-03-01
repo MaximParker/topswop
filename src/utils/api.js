@@ -10,7 +10,6 @@ import {
   documentId,
   setDoc,
 } from "firebase/firestore";
-import { getDatabase, ref, set } from "firebase/database";
 export const db = getFirestore();
 
 let newListing = {
@@ -88,7 +87,6 @@ export const queryPotentialMatchItems = async ( searchingFor, searchingIn = docu
   });
   return potentialMatchItems;
 };
-
 
 export const queryUserLikes = async (current_user) => {
   const query1 = query(

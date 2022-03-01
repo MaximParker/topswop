@@ -1,7 +1,7 @@
 <script>
-  import { postLike, queryUserLikes, removeLike } from "../utils/api";
+  import { postLike, removeLike } from "../utils/api";
   import { user } from "../utils/stores";
-  import { onMount } from "svelte";
+  import { getOrderedList } from "../utils/helpers";
 
   let signedIn;
 
@@ -9,34 +9,13 @@
     signedIn = value;
   });
 
-  export let listings = [];
-  let listingsWithLikes = [];
-
-  const likeButtonSetting = async (current_user) => {
-    return queryUserLikes(current_user).then((userLikesData) => {
-      let itemIds = [];
-      userLikesData.forEach((item) => {
-        itemIds = [item.item_id, ...itemIds];
-      });
-
-      listings.forEach((listing) => {
-        let filteredIds = itemIds.filter((item) => item === listing.id);
-        if (filteredIds.length > 0) {
-          listing.liked = true;
-        } else {
-          listing.liked = false;
-        }
-      });
-      listingsWithLikes = listings;
-      console.log("IM RUNNING");
-    });
-  };
+  export let listingsWithLikes = [];
 
   const eventHandler = (event, signedIn, listingId, listingUserId, liked) => {
     let updatedListingLikes = [];
 
     if (liked === true) {
-      unlike(signedIn, listingId);
+      removeLike(signedIn, listingId);
     } else {
       postLike(event, signedIn, listingId, listingUserId);
     }
@@ -48,19 +27,11 @@
     });
     listingsWithLikes = updatedListingLikes;
   };
-
-  const unlike = (current_user, itemId) => {
-    removeLike(current_user, itemId);
-  };
-
-  onMount(async () => {
-    likeButtonSetting(`${signedIn.uid}`);
-  });
 </script>
 
 <main>
   <ul class="basic-grid">
-    {#each listingsWithLikes as listing, i}
+    {#each getOrderedList([...listingsWithLikes]) as listing, i}
       <li class="card" style="--animation-order: {i + 1};">
         <img
           class="card-image"
@@ -82,7 +53,6 @@
             );
           }}
         >
-          {listing.liked}
           {#if listing.liked == false}
             LIKE
           {:else}

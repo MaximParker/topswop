@@ -1,31 +1,65 @@
 <script>
-  import { onSnapshot, collection } from "firebase/firestore";
-  import { db, reseedListingsDatabase } from "../utils/api";
-  import ListingCard from './ListingCard.svelte'
+  import { onSnapshot, collection, getDocs } from "firebase/firestore";
+  import { db, reseedListingsDatabase, queryUserLikes } from "../utils/api";
+  import ListingCard from "./ListingCard.svelte";
+  import { user } from "../utils/stores";
+  import { onMount } from "svelte";
 
-  let listings = [];
+  let signedIn;
 
-  const getListings = onSnapshot(
-    collection(db, "listings"),
-    (querySnapshot) => {
-      let listingArray = [];
-      querySnapshot.forEach((listing) => {
-        let listingData = { ...listing.data(), id: listing.id };
-        listingArray = [listingData, ...listingArray]; 
-      });
-      listings = listingArray;
-    }
-  );
+  user.subscribe((value) => {
+    signedIn = value;
+  });
+
+  let listingsWithLikes = [];
+
+  const getListingsAsync = async () => {
+    let listings = [];
+    const querySnapshot = await getDocs(collection(db, "listings"));
+
+    let listingArray = [];
+    querySnapshot.forEach((listing) => {
+      let listingData = { ...listing.data(), id: listing.id };
+      listingArray = [listingData, ...listingArray];
+    });
+    listings = listingArray;
+    return listings;
+  };
+
+  const likeButtonSetting = async (current_user) => {
+    const listings = await getListingsAsync();
+
+    const userLikesData = await queryUserLikes(current_user);
+
+    let itemIds = [];
+    userLikesData.forEach((item) => {
+      itemIds = [item.item_id, ...itemIds];
+    });
+
+    listings.forEach((listing) => {
+      let filteredIds = itemIds.filter((item) => item === listing.id);
+      if (filteredIds.length > 0) {
+        listing.liked = true;
+      } else {
+        listing.liked = false;
+      }
+    });
+    return listings;
+  };
+
+  onMount(async () => {
+    listingsWithLikes = await likeButtonSetting(`${signedIn.uid}`);
+  });
 </script>
 
 <main>
-  <h1>All listings ({listings.length})</h1>
+  <h1>All listings ({listingsWithLikes.length})</h1>
 
   <p>Listings</p>
-  <ListingCard {listings} />
+  <ListingCard {listingsWithLikes} />
   <button
     on:click={(event) => {
-      reseedListingsDatabase(event, listings);
+      reseedListingsDatabase(event, listingsWithLikes);
     }}>Re-seed database</button
   >
 
@@ -38,7 +72,7 @@
       <th>Location</th>
       <th>User ID</th>
     </tr>
-    {#each listings as listing}
+    {#each listingsWithLikes as listing}
       <tr
         ><td style="width: 400px">{listing.id}...</td>
         <td>{listing.title}</td>

@@ -2,7 +2,11 @@
   import { user } from "../utils/stores";
   import ListingCard from "./ListingCard.svelte";
   import { onMount } from "svelte";
-  import { queryPotentialUsers, queryPotentialMatchItems } from "../utils/api";
+  import {
+    queryPotentialUsers,
+    queryPotentialMatchItems,
+    queryUserLikes,
+  } from "../utils/api";
 
   let signedIn;
 
@@ -11,36 +15,52 @@
   });
 
   let potentialMatches = [];
-  let anyMatchesYet = true 
+  let anyMatchesYet = true;
 
-  const getPotMatches = (current_user) => {
-    return queryPotentialUsers(current_user).then((likingUsers) => {
-      if (likingUsers.length === 0 ){
-         anyMatchesYet = false }
-       else 
-      queryPotentialMatchItems( likingUsers, "user_id") 
-        .then((items) => {
-          potentialMatches = items;
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          alert(error);
-        });
+  const getPotMatches = async (current_user) => {
+    const likingUsers = await queryPotentialUsers(current_user);
+    let initialMatches = [];
+    if (likingUsers.length === 0) {
+      anyMatchesYet = false;
+    } else {
+      const items = await queryPotentialMatchItems(likingUsers, "user_id");
+      initialMatches = items;
+    }
+    return initialMatches;
+  };
+
+  const likeButtonSetting = async (current_user) => {
+    const listings = await getPotMatches(current_user);
+    const userLikesData = await queryUserLikes(current_user);
+
+    let itemIds = [];
+    userLikesData.forEach((item) => {
+      itemIds = [item.item_id, ...itemIds];
     });
+
+    listings.forEach((listing) => {
+      let filteredIds = itemIds.filter((item) => item === listing.id);
+      if (filteredIds.length > 0) {
+        listing.liked = true;
+      } else {
+        listing.liked = false;
+      }
+    });
+
+    return listings;
   };
 
   onMount(async () => {
-    getPotMatches(`${signedIn.uid}`);
+    potentialMatches = await likeButtonSetting(`${signedIn.uid}`);
   });
 </script>
 
 <main>
-  <h2>Potential Matches</h2>
+  <h2>Potential Matches ({potentialMatches.length})</h2>
   {#if !anyMatchesYet}
-    <p> No potential matches yet, get liking to increase your visibility!</p>
+    <p>No potential matches yet, get liking to increase your visibility!</p>
   {:else}
-    <ListingCard listings={potentialMatches} />
+    <ListingCard listingsWithLikes={potentialMatches} />
   {/if}
 </main>
 

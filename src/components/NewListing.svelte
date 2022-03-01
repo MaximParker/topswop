@@ -56,12 +56,7 @@
       placeholder="tradeRequired..."
       bind:value={newListing.tradeRequired}
     />
-    <input
-      type="file"
-      accept="image/*"
-      placeholder="image..."
-      on:change={() => uploadImage(event)}
-    />
+    <input type="file" accept="image/*" placeholder="image..." />
     <button class="btn" type="submit">Submit</button>
   </form>
 </main>

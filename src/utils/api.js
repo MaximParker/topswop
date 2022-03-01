@@ -46,10 +46,12 @@ let newListing = {
 let listingRef;
 export const postListing = async (event, newListing) => {
   event.preventDefault();
+  console.log(event.target[6].files[0]);
 
   const docRef = await addDoc(collection(db, "listings"), newListing);
   console.log("Document written to Listings with ID: ", docRef.id);
   listingRef = docRef.id;
+  uploadImage(event);
   return listingRef;
 };
 console.log(listingRef);
@@ -61,19 +63,19 @@ const metadata = {
 export let imageURL;
 export const uploadImage = (event) => {
   event.preventDefault();
-  console.log(event.target.files[0]);
+  console.log(event.target[6].files[0]);
 
-  const file = event.target.files[0];
+  const file = event.target[6].files[0];
   if (!file) return;
   const storageRef = ref_storage(
     storage,
     `/files/${uid}/${listingRef}/${file}`
   );
-  console.log("works", event.target.files[0]);
+  console.log("works", event.target[6].files[0]);
   const uploadTask = uploadBytesResumable(storageRef, file, metadata)
     .then((snapshot) => {
       console.log("Uploaded a blob or file!");
-      console.log(snapshot);
+
       return snapshot;
     })
     .then((snapshot) => {

@@ -10,16 +10,6 @@ import {
   documentId,
   setDoc,
 } from "firebase/firestore";
-import { getDatabase, ref, set } from "firebase/database";
-import {
-  getStorage,
-  uploadBytes,
-  getDownloadURL,
-  uploadBytesResumable,
-  ref as ref_storage,
-} from "firebase/storage";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
 export const db = getFirestore();
 const storage = getStorage();
 const auth = getAuth();
@@ -73,6 +63,19 @@ const updateListingWithImage = (downloadURL, listingRef) => {
 
 export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));
+};
+
+export const removeLike = async (current_user, itemId) => {
+  const query1 = query(
+    collection(db, "matches"),
+    where("liking_user_id", "==", current_user), where("item_id", "==", itemId))
+
+    const querySnapshot = await getDocs(query1);
+  querySnapshot.forEach((data) => {
+    deleteDoc(doc(db, "matches", data.id));
+    console.log(data.id, 'deleted')
+  });
+
 };
 
 export const postLike = async (event, likingUserId, itemId, itemOwnerId) => {

@@ -1,6 +1,7 @@
 <script>
-  import { postLike } from "../utils/api";
+  import { postLike, removeLike } from "../utils/api";
   import { user } from "../utils/stores";
+  import { getOrderedList } from "../utils/helpers";
 
   let signedIn;
 
@@ -8,12 +9,29 @@
     signedIn = value;
   });
 
-  export let listings = [];
+  export let listingsWithLikes = [];
+
+  const eventHandler = (event, signedIn, listingId, listingUserId, liked) => {
+    let updatedListingLikes = [];
+
+    if (liked === true) {
+      removeLike(signedIn, listingId);
+    } else {
+      postLike(event, signedIn, listingId, listingUserId);
+    }
+    listingsWithLikes.forEach((item) => {
+      if (item.id == listingId) {
+        item.liked = !item.liked;
+      }
+      updatedListingLikes = [item, ...updatedListingLikes];
+    });
+    listingsWithLikes = updatedListingLikes;
+  };
 </script>
 
 <main>
   <ul class="basic-grid">
-    {#each listings as listing, i}
+    {#each getOrderedList([...listingsWithLikes]) as listing, i}
       <li class="card" style="--animation-order: {i + 1};">
         <img class="card-image" src={listing.imageURL} alt="clothing item" />
         <h3>{listing.title}</h3>
@@ -22,9 +40,22 @@
         <p>Location: {listing.location}</p>
         <button
           on:click={(event) => {
-            postLike(event, signedIn.uid, listing.id, listing.user_id);
-          }}>LIKE</button
+            eventHandler(
+              event,
+              signedIn.uid,
+              listing.id,
+              listing.user_id,
+              listing.liked
+            );
+          }}
         >
+          {#if listing.liked == false}
+            LIKE
+          {:else}
+            Dislike
+          {/if}
+        </button>
+
       </li>
     {:else}
       <p>Loading.App..</p>

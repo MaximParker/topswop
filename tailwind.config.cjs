@@ -13,15 +13,15 @@ const config = {
       "emerald",
       {
         "topswop_light": {
-          primary: "#83b271",
+          primary: "#ffffff",
 
           secondary: "#edf2e9",
 
           accent: "#37CDBE",
 
-          neutral: "#f3f7f0",
+          neutral: "#a1cc91",
 
-          "base-100": "#fcfffa",
+          "base-100": "#83b271",
 
           info: "#3ABFF8",
 

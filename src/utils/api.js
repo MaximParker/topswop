@@ -9,6 +9,7 @@ import {
   getDocs,
   documentId,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 export const db = getFirestore();
 const storage = getStorage();
@@ -298,4 +299,20 @@ export const sendMessage = async (senderID, recipientID, messageObject) => {
     messageObject
   );
   console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
+};
+
+export function deleteListing(listing) {
+  deleteDoc(doc(db, "listings", listing));
+}
+
+export const updateItem = async (
+  editItem,
+  listItem,
+  title,
+  description,
+  condition,
+  location
+) => {
+  const updateRef = doc(db, "listings", listItem);
+  await updateDoc(updateRef, editItem);
 };

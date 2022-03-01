@@ -32,17 +32,13 @@
       <Profile />
     </PrivateRoute>
 
-    <PrivateRoute path="new-listing" let:location>
-      <NewListing />
-    </PrivateRoute>
+  <PrivateRoute path="potential-matches" let:location>
+    <PotentialMatches />
+  </PrivateRoute>
 
-    <PrivateRoute path="potential-matches" let:location>
-      <PotentialMatches />
-    </PrivateRoute>
-
-    <PrivateRoute path="matches" let:location>
-      <Matches />
-    </PrivateRoute>
+  <PrivateRoute path="matches" let:location>
+    <Matches />
+  </PrivateRoute>
 
     <PrivateRoute path="new-listing" let:location>
       <NewListing />

@@ -1,5 +1,5 @@
 <script>
-  import { postLike, imageURL } from "../utils/api";
+  import { postLike } from "../utils/api";
   import { user } from "../utils/stores";
 
   let signedIn;
@@ -15,7 +15,7 @@
   <ul class="basic-grid">
     {#each listings as listing, i}
       <li class="card" style="--animation-order: {i + 1};">
-        <img class="card-image" src={imageURL} alt="clothing item" />
+        <img class="card-image" src={listing.imageURL} alt="clothing item" />
         <h3>{listing.title}</h3>
         <p>Description: {listing.description}</p>
         <p>Condition: {listing.condition}</p>

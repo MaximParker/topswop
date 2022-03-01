@@ -28,7 +28,6 @@ let uid;
 onAuthStateChanged(auth, (user) => {
   if (user) {
     uid = user.uid;
-
     return uid;
   }
 });
@@ -46,53 +45,44 @@ let newListing = {
 let listingRef;
 export const postListing = async (event, newListing) => {
   event.preventDefault();
-  console.log(event.target[6].files[0]);
-
   const docRef = await addDoc(collection(db, "listings"), newListing);
   console.log("Document written to Listings with ID: ", docRef.id);
   listingRef = docRef.id;
   uploadImage(event);
   return listingRef;
 };
-console.log(listingRef);
 
 const storageRef = ref_storage(storage);
 const metadata = {
   contentType: "image/jpeg",
 };
-export let imageURL;
+
 export const uploadImage = (event) => {
   event.preventDefault();
-  console.log(event.target[6].files[0]);
-
   const file = event.target[6].files[0];
   if (!file) return;
   const storageRef = ref_storage(
     storage,
     `/files/${uid}/${listingRef}/${file}`
   );
-  console.log("works", event.target[6].files[0]);
   const uploadTask = uploadBytesResumable(storageRef, file, metadata)
-    .then((snapshot) => {
-      console.log("Uploaded a blob or file!");
-
-      return snapshot;
-    })
     .then((snapshot) => {
       return snapshot;
     })
     .then((uploadTaskSnapshot) => {
       getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
-        console.log("File available at", downloadURL);
-        imageURL = downloadURL;
-        return imageURL;
+        updateListingWithImage(downloadURL);
       });
     })
     .catch((error) => {
       console.log(error);
     });
 };
-console.log(imageURL);
+
+const updateListingWithImage = (downloadURL) => {
+  const newListingRef = doc(db, "listings", listingRef);
+  setDoc(newListingRef, { imageURL: downloadURL }, { merge: true });
+};
 
 export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));

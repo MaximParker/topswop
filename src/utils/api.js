@@ -52,31 +52,45 @@ export const postListing = async (event, newListing) => {
   listingRef = docRef.id;
   return listingRef;
 };
+console.log(listingRef);
 
 const storageRef = ref_storage(storage);
+const metadata = {
+  contentType: "image/jpeg",
+};
 export let imageURL;
 export const uploadImage = (event) => {
   event.preventDefault();
-  const file = event.target.files[0];
   console.log(event.target.files[0]);
+
+  const file = event.target.files[0];
   if (!file) return;
-  const storageRef = ref(storage, `/files/${uid}/${listingRef}/${file}`);
+  const storageRef = ref_storage(
+    storage,
+    `/files/${uid}/${listingRef}/${file}`
+  );
   console.log("works", event.target.files[0]);
   const uploadTask = uploadBytesResumable(storageRef, file, metadata)
     .then((snapshot) => {
       console.log("Uploaded a blob or file!");
+      console.log(snapshot);
       return snapshot;
     })
     .then((snapshot) => {
       return snapshot;
     })
     .then((uploadTaskSnapshot) => {
-      getDownloadURL(uploadTaskSnapshot.ref_storage).then((downloadURL) => {
+      getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
         console.log("File available at", downloadURL);
         imageURL = downloadURL;
+        return imageURL;
       });
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };
+console.log(imageURL);
 
 export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));

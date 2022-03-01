@@ -26,7 +26,6 @@
 
   <form
     on:submit={(event) => {
-      console.log(event.target[6]);
       postListing(event, newListing);
     }}
   >
@@ -61,7 +60,7 @@
       type="file"
       accept="image/*"
       placeholder="image..."
-      on:change={uploadImage}
+      on:change={() => uploadImage(event)}
     />
     <button class="btn" type="submit">Submit</button>
   </form>

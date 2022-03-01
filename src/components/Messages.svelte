@@ -60,35 +60,23 @@
 </script>
 
 <header>
-  <h1>Messages</h1>
+  <div class="mx-auto my-2">
+    <h1 class="text-xl font-bold text-primary align-center text-center">Messages</h1>
+  </div>
 </header>
-
-<button
-  on:click={() => {
-    createChatroom(
-      "WoDT5RSioGR1wrsQXtseBN1J6mq1",
-      "SKTFILPxIPamzZ2EUbNSRgy830q1"
-    );
-  }}
->Create conversation</button>
 
 <main>
   {#if currentRecipient}
     <Chat {conversationArray} {currentRecipient} />
   {:else}
-    <ul>
+    <ul class="menu bg-primary mx-auto w-80 p-2 rounded-box">
       {#each uniqueConversations as convo}
-        {console.log(convo, "<<<<<")}
         <li>
-          <p>
-            <strong>{convo.recipient}</strong>
-          </p>
-          <p>{convo.data.from} says: {convo.data.text}</p>
-
           <button
+            class="btn btn-ghost"
             on:click={() => {
               currentRecipient = convo.recipient;
-            }}>Open chat</button
+            }}>{convo.recipient}</button
           >
         </li>
       {/each}

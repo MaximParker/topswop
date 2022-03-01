@@ -41,17 +41,20 @@ export const updateUserDisplayName = (newUsername) => {
     });
 };
 
-export const registerUserByEmail = (email, password, username) => {
+export const registerUserByEmail = (email, password, displayName) => {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       console.log("REGISTERED NEW USER:\n", userCredential.user);
       user.set({
         uid: userCredential.user.uid,
         email: userCredential.user.email,
-        displayName: username,
-      });
-      updateUserDisplayName(username);
-      addDisplayNameToDB
+        displayName,
+      })
+      return displayName;
+    })
+    .then((displayName) => {
+      updateUserDisplayName(displayName);
+      // addDisplayNameToDB(displayName);
       return true;
     })
     .catch((error) => {

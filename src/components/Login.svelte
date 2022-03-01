@@ -19,7 +19,7 @@ import { sendWelcomeMessage } from "../utils/api";
   let displayMenu = "register";
   let email;
   let password;
-  let newUsername;
+  let newDisplayName;
   let newEmail;
   let newPassword;
   let confirmPassword;
@@ -34,7 +34,7 @@ import { sendWelcomeMessage } from "../utils/api";
   function handleRegister(event) {
     event.preventDefault();
     if (newPassword == confirmPassword) {
-      registerUserByEmail(newEmail, newPassword, newUsername)
+      registerUserByEmail(newEmail, newPassword, newDisplayName)
       .then(() => {
         sendWelcomeMessage(signedIn.uid)
         navigate("/home");
@@ -49,13 +49,13 @@ import { sendWelcomeMessage } from "../utils/api";
   <div class="card-body items-center text-center">
     <figure>
       <img
-        src="graphics/logotext_green_icon_dark_text.png"
+        src="graphics/logotext_white_hollow.png"
         alt="Topswop logo"
       />
     </figure>
     {#if displayMenu === "register"}
       <div class="btn-group my-6">
-        <button class="btn btn-active">Register</button>
+        <button class="btn btn-active ">Register</button>
         <button
           class="btn"
           on:click={() => {
@@ -72,35 +72,46 @@ import { sendWelcomeMessage } from "../utils/api";
         >
           <div class="form-control">
             <label class="input-group input-group-vertical mb-2">
-              <span>Email</span>
+              <span class="bg-neutral">Display name</span>
+              <input
+                bind:value={newDisplayName}
+                type="text"
+                placeholder="Display name..."
+                required
+                class="input input-bordered bg-primary"
+              />
+            </label>
+            
+            <label class="input-group input-group-vertical mb-2">
+              <span class="bg-neutral">Email</span>
               <input
                 bind:value={newEmail}
                 type="email"
                 placeholder="example@site.com"
                 required
-                class="input input-bordered"
+                class="input input-bordered bg-primary"
               />
             </label>
 
             <label class="input-group input-group-vertical mb-2">
-              <span>Password</span>
+              <span class="bg-neutral">Password</span>
               <input
                 bind:value={newPassword}
                 type="password"
                 placeholder="At least 6 characters..."
                 required
-                class="input input-bordered"
+                class="input input-bordered bg-primary"
               />
             </label>
 
             <label class="input-group input-group-vertical mb-2">
-              <span>Confirm password</span>
+              <span class="bg-neutral">Confirm password</span>
               <input
                 bind:value={confirmPassword}
                 type="password"
                 placeholder="Confirm password..."
                 required
-                class="input input-bordered"
+                class="input input-bordered bg-primary"
               />
             </label>
           </div>
@@ -130,24 +141,24 @@ import { sendWelcomeMessage } from "../utils/api";
         >
           <div class="form-control">
             <label class="input-group input-group-vertical mb-2">
-              <span>Email</span>
+              <span class="bg-neutral">Email</span>
               <input
                 bind:value={email}
                 type="email"
                 placeholder="example@site.com"
                 required
-                class="input input-bordered"
+                class="input input-bordered bg-primary"
               />
             </label>
 
             <label class="input-group input-group-vertical mb-2">
-              <span>Password</span>
+              <span class="bg-neutral">Password</span>
               <input
                 bind:value={password}
                 type="password"
                 placeholder="Password..."
                 required
-                class="input input-bordered"
+                class="input input-bordered bg-primary"
               />
             </label>
 

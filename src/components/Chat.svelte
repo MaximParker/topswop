@@ -46,15 +46,20 @@
   >
     <button type="submit">Go back to messages</button>
   </form>
-  <h1>{currentConversation[0].data.from}</h1>
-  {console.log(`Chatting with: ${currentConversation[0].data.from} (${currentRecipient})`)}
+  <div class="bg-primary mx-auto w-100 p-2">
+    <h1 class="text-xl font-bold align-center text-center">{currentConversation[0].data.from}</h1>
+  </div>
 </header>
 
-{#each currentConversation as message}
-  <li>
-    <strong>{message.data.from}</strong> says: {message.data.text}
-  </li>
-{/each}
+<ul class="bg-neutral mx-auto w-100 p-2">
+  {#each currentConversation as message}
+    <li>
+      <div class="bg-primary max-w-fit p-2 mb-1 rounded-r-lg mr-0">
+        <p>{message.data.text}</p>
+      </div>
+    </li>
+  {/each}
+</ul>
 
 <main>
   <form
@@ -74,6 +79,7 @@
       type="text"
       placeholder="type message here"
       bind:value={newMessage.text}
+      required
     />
     <button type="submit">Send!</button>
   </form>

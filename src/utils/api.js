@@ -217,18 +217,18 @@ export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
       addDoc(
         collection(db, `messages/${uid_a}/conversations/${uid_b}/messages`),
         {
-          from: uid_b,
+          from: displayName_a,
           date: new Date(),
-          text: `Matched with ${uid_b}! You can discuss the trade here.`,
+          text: `Matched with ${displayName_a}! You can discuss the trade here.`,
           read: false,
         }
       );
       addDoc(
         collection(db, `messages/${uid_b}/conversations/${uid_a}/messages`),
         {
-          from: uid_a,
+          from: displayname_b,
           date: new Date(),
-          text: `Matched with ${uid_a}! You can discuss the trade here.`,
+          text: `Matched with ${displayname_b}! You can discuss the trade here.`,
           read: false,
         }
       );

@@ -15,14 +15,14 @@
     condition: "",
     location: "",
     tradeRequired: false,
-    user_id: `${signedIn.uid}`
+    user_id: `${signedIn.uid}`,
   };
 </script>
 
 <main>
   <h1>New listing</h1>
 
-  <button></button>
+  <button />
 
   <form
     on:submit={(event) => {

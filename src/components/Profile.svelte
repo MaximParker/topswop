@@ -2,10 +2,24 @@
   import { handleLogout } from "../utils/auth";
   import { useNavigate, useLocation } from "svelte-navigator";
   import { user } from "../utils/stores";
-  import { updatePassword } from "firebase/auth";
+  import { updatePassword, onAuthStateChanged } from "firebase/auth";
   import MyListings from "./MyListings.svelte";
 
   const navigate = useNavigate();
+
+  import { getAuth } from "firebase/auth";
+
+  const auth = getAuth();
+
+  let fireUser;
+
+  onAuthStateChanged(auth, (firebaseUser) => {
+    if (firebaseUser) {
+      fireUser = firebaseUser;
+    } else {
+      console.log("no user!");
+    }
+  });
 
   let signedIn;
 
@@ -15,30 +29,37 @@
 
   let newPassword = "";
 
-  updatePassword(signedIn, newPassword)
-    .then((entry) => {
-      console.log(entry);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  function changePassword() {
+    console.log("inside function");
+    updatePassword(fireUser, newPassword)
+      .then(() => {
+        newPassword = "";
+        console.log("Password Changed");
+      })
+      .catch((error) => {
+        console.log(error, "errror");
+        console.log("Cannot change password");
+      });
+  }
 </script>
 
 <main>
   <h1>Welcome, {signedIn.displayName}</h1>
   <button on:click={handleLogout}>Logout</button>
   <p>Avatar image{signedIn.photoURL}</p>
-  <!-- <p>Location {signedIn.location}</p> -->
-  <button
-    on:click={() => {
-      MyListings;
-      navigate("/my-listings");
-    }}
-    >My listings
-  </button>
+
   <p>Email: {signedIn.email}</p>
-  <form>
-    <input type="text" placeholder="password" bind:value={newPassword} />
-    <button on:click={updatePassword()}>Change Password</button>
+  <form on:submit|preventDefault={changePassword}>
+    <input
+      type="password"
+      placeholder="new password"
+      bind:value={newPassword}
+    />
+    <button>Change Password</button>
   </form>
+
+  <ul>
+    My listings
+    <li />
+  </ul>
 </main>

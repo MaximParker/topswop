@@ -24,14 +24,6 @@ export const db = getFirestore();
 const storage = getStorage();
 const auth = getAuth();
 
-let uid;
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    uid = user.uid;
-    return uid;
-  }
-});
-
 let newListing = {
   username: "",
   title: "",
@@ -42,36 +34,31 @@ let newListing = {
   user_id: "",
 };
 
-let listingRef;
 export const postListing = async (event, newListing) => {
   event.preventDefault();
   const docRef = await addDoc(collection(db, "listings"), newListing);
   console.log("Document written to Listings with ID: ", docRef.id);
-  listingRef = docRef.id;
-  uploadImage(event);
-  return listingRef;
+  const listingRef = docRef.id;
+  const uid = newListing.user_id;
+  uploadImage(event, uid, listingRef);
 };
 
-const storageRef = ref_storage(storage);
-const metadata = {
-  contentType: "image/jpeg",
-};
-
-export const uploadImage = (event) => {
+export const uploadImage = (event, uid, listingRef) => {
+  const storageRef = ref_storage(storage);
+  const metadata = {
+    contentType: "image/jpeg",
+  };
   event.preventDefault();
   const file = event.target[6].files[0];
   if (!file) return;
-  const storageRef = ref_storage(
+  const storageRefImage = ref_storage(
     storage,
     `/files/${uid}/${listingRef}/${file}`
   );
-  const uploadTask = uploadBytesResumable(storageRef, file, metadata)
-    .then((snapshot) => {
-      return snapshot;
-    })
+  const uploadTask = uploadBytesResumable(storageRefImage, file, metadata)
     .then((uploadTaskSnapshot) => {
       getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
-        updateListingWithImage(downloadURL);
+        updateListingWithImage(downloadURL, listingRef);
       });
     })
     .catch((error) => {
@@ -79,7 +66,7 @@ export const uploadImage = (event) => {
     });
 };
 
-const updateListingWithImage = (downloadURL) => {
+const updateListingWithImage = (downloadURL, listingRef) => {
   const newListingRef = doc(db, "listings", listingRef);
   setDoc(newListingRef, { imageURL: downloadURL }, { merge: true });
 };

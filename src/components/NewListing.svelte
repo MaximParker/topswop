@@ -7,7 +7,7 @@
   user.subscribe((value) => {
     signedIn = value;
   });
-  console.log(user);
+
   let newListing = {
     username: "",
     title: "",

@@ -1,5 +1,5 @@
 <script>
-  import { postListing } from "../utils/api";
+  import { postListing, uploadImage } from "../utils/api";
   import { user } from "../utils/stores";
 
   let signedIn;
@@ -15,14 +15,14 @@
     condition: "",
     location: "",
     tradeRequired: false,
-    user_id: `${signedIn.uid}`
+    user_id: `${signedIn.uid}`,
   };
 </script>
 
 <main>
   <h1>New listing</h1>
 
-  <button></button>
+  <button />
 
   <form
     on:submit={(event) => {
@@ -56,6 +56,7 @@
       placeholder="tradeRequired..."
       bind:value={newListing.tradeRequired}
     />
+    <input type="file" accept="image/*" placeholder="image..." />
     <button class="btn" type="submit">Submit</button>
   </form>
 </main>

@@ -3,7 +3,15 @@
   import { handleLogout } from "../utils/auth";
   import { user } from "../utils/stores";
   import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
-  import { onSnapshot, collection, deleteDoc, doc } from "firebase/firestore";
+  import {
+    onSnapshot,
+    collection,
+    deleteDoc,
+    doc,
+    updateDoc,
+  } from "firebase/firestore";
+  import { update } from "firebase/database";
+  import UpdateListings from "./UpdateListings.svelte";
 
   const auth = getAuth();
 
@@ -57,6 +65,18 @@
   function deleteListing(listing) {
     deleteDoc(doc(db, "listings", listing));
   }
+
+  const updateItem = async (
+    editItem,
+    listItem,
+    title,
+    description,
+    condition,
+    location
+  ) => {
+    const updateRef = doc(db, "listings", listItem);
+    await updateDoc(updateRef, editItem);
+  };
 </script>
 
 <main>
@@ -77,14 +97,7 @@
   <ul>
     {#each myListings as listing}
       <li>
-        <h3>Title: {listing.title}</h3>
-        <p>Description: {listing.description}</p>
-        <p>Condition: {listing.condition}</p>
-        <p>Location: {listing.location}</p>
-        <button class="btn" on:click={deleteListing(listing.id)}
-          >Delete Item</button
-        >
-        <button class="btn">Edit Item</button>
+        <UpdateListings {listing} {deleteListing} {updateItem} />
       </li>
     {/each}
   </ul>

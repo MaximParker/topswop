@@ -20,9 +20,49 @@
 </script>
 
 <main>
-  <h1>New listing</h1>
-
-  <button />
+  <div class="mx-auto my-2">
+    <h1
+      class="text-xl font-bold text-primary align-center text-center"
+    >
+      New listing
+    </h1>
+  </div>
+  <div class="card w-100 bg-primary shadow-xl mx-auto">
+    <div class="card-body items-center text-center">
+      <div class="form-control">
+        <label class="input-group input-group-vertical mb-2">
+          <span class="bg-neutral">Item name</span>
+          <input
+            bind:value={newListing.title}
+            type="text"
+            placeholder="Item name..."
+            required
+            class="input input-bordered bg-primary"
+          />
+        </label>
+        <label class="input-group input-group-vertical mb-2">
+          <span class="bg-neutral">Description</span>
+          <input
+            bind:value={newListing.description}
+            type="text"
+            placeholder="Description..."
+            required
+            class="input input-bordered bg-primary"
+          />
+        </label>
+        <label class="input-group input-group-vertical mb-2">
+          <span class="bg-neutral">Location</span>
+          <input
+            bind:value={newListing.location}
+            type="text"
+            placeholder="Location..."
+            required
+            class="input input-bordered bg-primary"
+          />
+        </label>
+      </div>
+    </div>
+  </div>
 
   <form
     on:submit={(event) => {

@@ -45,7 +45,7 @@ import { sendWelcomeMessage } from "../utils/api";
   }
 </script>
 
-<div class="card w-80 bg-base-100 shadow-xl mx-auto my-10">
+<div class="card w-80 bg-base-100 shadow-xl mx-auto my-8">
   <div class="card-body items-center text-center">
     <figure>
       <img
@@ -54,10 +54,10 @@ import { sendWelcomeMessage } from "../utils/api";
       />
     </figure>
     {#if displayMenu === "register"}
-      <div class="btn-group my-6">
-        <button class="btn btn-active ">Register</button>
+      <div class="btn-group mt-4">
+        <button class="btn btn-neutral">Register</button>
         <button
-          class="btn"
+          class="btn bg-base-100"
           on:click={() => {
             displayMenu = "sign_in";
           }}>Sign in</button
@@ -123,14 +123,14 @@ import { sendWelcomeMessage } from "../utils/api";
       </div>
     {/if}
     {#if displayMenu === "sign_in"}
-      <div class="btn-group my-6">
+      <div class="btn-group mt-4">
         <button
-          class="btn"
+          class="btn bg-base-100"
           on:click={() => {
             displayMenu = "register";
           }}>Register</button
         >
-        <button class="btn btn-active">Sign in</button>
+        <button class="btn btn-neutral">Sign in</button>
       </div>
 
       <div class="form-control">

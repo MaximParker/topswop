@@ -285,7 +285,7 @@ export const sendWelcomeMessage = (targetID) => {
         {
           from: "Topswop Team",
           date: new Date(),
-          text: "Welcome to Topswop! Look here for your messages.",
+          text: "Welcome to Topswop! When you match with another user, a chat room will be opened for you to complete your trade.",
           read: false,
         }
       );

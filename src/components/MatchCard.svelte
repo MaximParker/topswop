@@ -1,6 +1,7 @@
 <script>
 	import { ConfettiExplosion } from 'svelte-confetti-explosion';
-    import { createChatroom } from '../utils/api'
+    import { createChatroom, updateItem } from '../utils/api'
+import { loginByEmail } from '../utils/auth';
 
 export let matchedItemData = []
 
@@ -18,15 +19,19 @@ export let matchedItemData = []
         <div>
             <div class="relative overflow-hidden pb-1/3">
                 <img class="absolute w-full h-full object-cover" src={m.item.imageURL} alt="clothing item">
+                <div class="badge badge-secondary absolute bottom-0 left-0 ml-2 mb-2">{m.item.username}</div>
             </div>
         </div>
         <div class="grid place-items-center mt-3" >
             <p>Congrats it's a match!</p>
-            <button on:click={() => {createChatroom(m.user, m.item.username, m.match_user, m.match_item.username )}} class="btn mt-2">Start Chat</button>
+            <button on:click={() => {createChatroom(m.user, m.match_user, m.item.username, m.match_item.username )}} class="btn mt-2">Start Chat</button>
         </div>
         <div>
             <div class="relative bottom-0 overflow-hidden pb-1/3 mt-3">
                 <img class="absolute w-full h-full object-cover" src={m.match_item.imageURL} alt="clothing item">
+                <!-- <button class="btn btn-secondary absolute bottom-0 right-0 mr-2 mb-2">{m.match_item.username}</button> -->
+                <div class="badge badge-secondary absolute top-0 right-0 mr-2 mt-2">{m.match_item.username}</div>
+
             </div>
         </div>
       </li>

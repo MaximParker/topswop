@@ -298,6 +298,7 @@ export const sendWelcomeMessage = (targetID) => {
 };
 
 export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
+  console.log(`Creating a conversation between ${displayName_a} and ${displayname_b}`)
   console.log(`Creating a conversation between ${uid_a} and ${uid_b}`);
   setDoc(doc(db, `messages/${uid_a}/conversations`, `${uid_b}`), {});
   setDoc(doc(db, `messages/${uid_b}/conversations`, `${uid_a}`), {}).then(
@@ -322,6 +323,7 @@ export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
       );
     }
   );
+  navigate("/messages")
 };
 
 export const sendMessage = async (senderID, recipientID, messageObject) => {

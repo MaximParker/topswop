@@ -49,8 +49,8 @@
       filteredMatches.forEach((item) => {
         let itemMatch = {
           user: user.liking_user_id,
-          item_id: user.item_id,
-          match_item_id: item.item_id,
+          match_item_id: user.item_id,
+          item_id: item.item_id,
           match_user: item.liking_user_id,
         };
         allMatchIds = [itemMatch, ...allMatchIds];

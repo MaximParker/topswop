@@ -15,7 +15,12 @@
   <p>Description: {listing.description}</p>
   <p>Condition: {listing.condition}</p>
   <p>Location: {listing.location}</p>
-  <button class="btn" on:click={deleteListing(listing.id)}>Delete Item</button>
+  <button
+    class="btn"
+    on:click={() => {
+      deleteListing(listing.id);
+    }}>Delete Item</button
+  >
   <form
     on:submit|preventDefault={() => {
       updateItem(

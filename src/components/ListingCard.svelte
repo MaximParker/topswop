@@ -26,7 +26,6 @@
       updatedListingLikes = [item, ...updatedListingLikes];
     });
     listingsWithLikes = updatedListingLikes;
-    console.log(listingsWithLikes);
   };
 </script>
 

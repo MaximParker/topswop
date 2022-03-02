@@ -35,9 +35,9 @@
     {#each getOrderedList([...listingsWithLikes]) as listing, i}
 
     
-      <li class="myCard bg-white rounded-lg overflow-hidden" style="--animation-order: {i + 1};">
+      <li class="myCard bg-secondary rounded-lg overflow-hidden" style="--animation-order: {i + 1};">
         <div class="relative overflow-hidden pb-2/3">
-        <img class="absolute w-full h-full object-cover" src={ listing.imageURL ? listing.imageURL : "http://cdn.akc.org/content/article-body-image/siberian_husky_cute_puppies.jpg"}  alt="clothing item" />
+        <img class="absolute w-full h-full object-cover" src={ listing.imageURL ? listing.imageURL : "graphics/logo_dark.png"}  alt="clothing item" />
         <button class="btn absolute bottom-0 right-0 mr-2 mb-2"
         on:click={(event) => {
           eventHandler(
@@ -63,7 +63,7 @@
         <h3 class="mt-1 font-semibold text-lg leading-tight truncate">{listing.title}</h3>
       
           <div class="mt-4 leading-tight " >
-        <p>Description: {listing.description}</p>
+          {listing.description}
         </div>
         <div class="text-gray-600 text-xs uppercase font-semibold tracking-wide mt-2">
           {listing.location}

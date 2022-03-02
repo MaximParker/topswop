@@ -53,9 +53,11 @@
 </script>
 
 <main>
-  <h1>All listings ({listingsWithLikes.length})</h1>
-
-  <p>Listings</p>
+  <header>
+    <div class="mx-auto my-2">
+      <h1 class="text-xl font-bold text-primary align-center text-center">All Topswops</h1>
+    </div>
+  </header>
   <ListingCard {listingsWithLikes} />
   <button
     on:click={(event) => {

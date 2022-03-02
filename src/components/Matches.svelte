@@ -6,6 +6,7 @@
     queryPotentialMatchItems,
   } from "../utils/api";
   import { onMount } from "svelte";
+  import MatchCard from "./MatchCard.svelte"
 
   let signedIn;
 
@@ -66,20 +67,15 @@
 </script>
 
 <main>
-  <h2>Matches!</h2>
+  <header>
+  <div class="mx-auto my-2">
+    <h1 class="text-xl font-bold text-primary align-center text-center">Matches</h1>
+  </div>
+</header>
+  
 
-  <ol>
-    {#each matchedItemData as m}
-      <li>
-        <span>{m.user}</span>
-        <span>{m.item.title}</span>
-        <span>{m.match_item.title}</span>
-        <span>{m.match_user}</span>
-      </li>
-    {:else}
-      <p>Loading Matches</p>
-    {/each}
-  </ol>
+    <MatchCard {matchedItemData} />  
+
 </main>
 
 <style>

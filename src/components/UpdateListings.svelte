@@ -14,24 +14,51 @@
 </script>
 
 <main>
-  <h3>Title: {listing.title}</h3>
-  <p>Description: {listing.description}</p>
-  <p>Condition: {listing.condition}</p>
-  <p>Location: {listing.location}</p>
-  <label
-    for="modal-edit"
-    class="btn modal-button"
-    on:click={() => {
-      edited = false;
-    }}>edit</label
-  >
-  <label
-    for="modal-delete"
-    class="btn btn-warning modal-button"
-    on:click={() => {
-      deleted = false;
-    }}>Delete</label
-  >
+  <div class="basic-grid">
+    <div class="myCard bg-secondary rounded-lg overflow-hidden">
+      <div class="relative overflow-hidden pb-2/3">
+        <img
+          class="absolute w-full h-full object-cover"
+          src={listing.imageURL ? listing.imageURL : "graphics/logo_dark.png"}
+          alt="clothing item"
+        />
+        <label
+          for="modal-edit"
+          class="btn modal-button absolute bottom-0 left-0 ml-2 mb-2"
+          on:click={() => {
+            edited = false;
+          }}>edit</label
+        >
+        <label
+          for="modal-delete"
+          class="btn btn-warning modal-button absolute bottom-0 right-0 mr-2 mb-2"
+          on:click={() => {
+            deleted = false;
+          }}>Delete</label
+        >
+      </div>
+      <div class="p-4 text-gray-600">
+        <div
+          class="text-gray-600 text-xs uppercase font-semibold tracking-wide"
+        >
+         {listing.fit} &bull {listing.cut} &bull {listing.condition}
+        </div>
+        <h3 class="mt-1 font-semibold text-lg leading-tight truncate">
+          {listing.title}
+        </h3>
+        <div class="mt-4 leading-tight ">
+          {listing.description}
+        </div>
+        <div
+          class="text-gray-600 text-xs uppercase font-semibold tracking-wide mt-2"
+        >
+          {listing.location}
+        </div>
+        
+        
+      </div>
+    </div>
+  </div>
 
   <input type="checkbox" id="modal-delete" class="modal-toggle" />
   <div class="modal">
@@ -80,8 +107,7 @@
               location: "",
             };
             edited = true;
-          }
-        }
+          }}
         >
           <input
             type="text"
@@ -115,3 +141,39 @@
     </div>
   </div>
 </main>
+
+<style>
+  .myCard {
+    box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem,
+      rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
+    transition: all 500ms;
+    animation: cardEntrance 700ms ease-out;
+    animation-fill-mode: backwards;
+    animation-delay: calc(var(--animation-order) * 100ms);
+  }
+
+  .basic-grid {
+    display: grid;
+    gap: 0.8rem;
+    padding: 0.7rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    justify-content: center;
+  }
+
+  @keyframes cardEntrance {
+    from {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    .basic-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    }
+  }
+</style>

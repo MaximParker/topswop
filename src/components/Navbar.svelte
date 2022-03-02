@@ -12,9 +12,23 @@
     LogOutIcon,
     ArchiveIcon,
     ZapIcon,
-    ToolIcon
+    ToolIcon,
   } from "svelte-feather-icons";
   import { handleLogout } from "../utils/auth";
+  import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
+  const auth = getAuth();
+
+  let fireUser;
+  export let profilePhotoURL;
+
+  onAuthStateChanged(auth, (firebaseUser) => {
+    if (firebaseUser) {
+      profilePhotoURL = firebaseUser.photoURL;
+      fireUser = firebaseUser;
+    } else {
+      console.log("no user!");
+    }
+  });
 
   let signedIn;
 
@@ -37,11 +51,8 @@
     <div class="flex-none gap-2">
       <div class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <img
-              src="https://api.lorem.space/image/face?hash=33791"
-              alt="Profile icon"
-            />
+          <div class="w-10 rounded-full ring ring-primary">
+            <img src={profilePhotoURL} alt="Profile icon" />
           </div>
         </label>
         <ul

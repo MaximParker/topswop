@@ -18,9 +18,11 @@ import {
   ref as ref_storage,
 } from "firebase/storage";
 import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { navigate } from "svelte-navigator";
 
 export const db = getFirestore();
 const storage = getStorage();
+const auth = getAuth();
 
 let newListing = {
   username: "",
@@ -47,6 +49,8 @@ export const postListing = async (event, newListing) => {
   const listingRef = docRef.id;
   const uid = newListing.user_id;
   uploadImage(event, uid, listingRef);
+  alert("Post successful!");
+  navigate("/home");
 };
 
 const storageRef = ref_storage(storage);
@@ -55,7 +59,7 @@ const metadata = {
 };
 export const uploadImage = (event, uid, listingRef) => {
   event.preventDefault();
-  const file = event.target[6].files[0];
+  const file = event.target[0].files[0];
   if (!file) return;
   const storageRefImage = ref_storage(
     storage,
@@ -94,7 +98,7 @@ export const uploadProfilePic = (event) => {
       updateProfile(auth.currentUser, {
         photoURL: downloadURL,
       }).catch((error) => {
-        console.log(error);
+        alert(error);
       });
     });
   });

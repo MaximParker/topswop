@@ -11,18 +11,8 @@
   const auth = getAuth();
 
   let fireUser;
+  export let profilePhotoURL;
 
-  onAuthStateChanged(auth, (firebaseUser) => {
-    if (firebaseUser) {
-      fireUser = firebaseUser;
-    } else {
-      console.log("no user!");
-    }
-  });
-
-  const auth = getAuth();
-  let fireUser;
-  let profilePhotoURL;
   onAuthStateChanged(auth, (firebaseUser) => {
     if (firebaseUser) {
       profilePhotoURL = firebaseUser.photoURL;
@@ -39,6 +29,7 @@
 
   let newPassword = "";
   let confirmNewPassword = "";
+  let newAvatarSubmitted = false;
 
   function changePassword() {
     if ((newPassword = confirmNewPassword)) {
@@ -81,28 +72,28 @@
     <h1 class="text-xl font-bold text-primary align-center text-center">
       Hello, {signedIn.displayName}!
     </h1>
-    <h2 class="text-l text-primary align-center text-center">
-      {signedIn.email}
-    </h2>
   </div>
 </header>
 
 <main>
   <ul class="menu bg-primary mx-auto w-80 p-2 rounded-box">
+    <div class="avatar">
+      <div class="w-24 rounded-full mx-auto mb-2">
+        <img src={profilePhotoURL} alt="Your profile avatar" />
+      </div>
+    </div>
+    <h2 class="text-l align-center text-center mb-2">
+      {signedIn.email}
+    </h2>
     <li>
-      <label for="modal-change-password" class="btn btn-ghost modal-button"
-        >Change password</label
-      >
       <label for="modal-change-avatar" class="btn btn-ghost modal-button"
         >Change avatar</label
       >
-      <button
-        class="btn btn-ghost"
-        on:click={handleLogout}
-        >Sign out
-      </button>
+      <label for="modal-change-password" class="btn btn-ghost modal-button"
+        >Change password</label
+      >
+      <button class="btn btn-ghost" on:click={handleLogout}>Sign out </button>
     </li>
-  
   </ul>
   <div class="divider" />
   <div class="mx-auto my-2">
@@ -174,16 +165,17 @@
   <div class="modal">
     <div class="modal-box bg-primary">
       <h3 class="font-bold text-lg">Upload new avatar</h3>
-      <p class="py-4">Upload a new image to change your avatar.</p>
 
-      <form on:submit|preventDefault={() => {}}>
-        <div class="modal-action">
-          <label for="modal-change-avatar" class="btn" type="submit"
-            >submit</label
-          >
-          <label for="modal-change-avatar" class="btn btn-ghost">Cancel</label>
-        </div>
+      <p class="py-4">Upload a new image to change your avatar.</p>
+      <form on:submit|preventDefault={uploadProfilePic}>
+        <label class="input-group">
+          <input type="file" accept="image/*" required />
+          <button class="btn" type="submit">Upload</button>
+        </label>
       </form>
+      <div class="modal-action">
+        <label for="modal-change-avatar" class="btn btn-ghost">Done</label>
+      </div>
     </div>
   </div>
 </main>

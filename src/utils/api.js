@@ -21,6 +21,7 @@ import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 export const db = getFirestore();
 const storage = getStorage();
+const auth = getAuth();
 
 let newListing = {
   username: "",

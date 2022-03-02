@@ -11,18 +11,8 @@
   const auth = getAuth();
 
   let fireUser;
-
-  onAuthStateChanged(auth, (firebaseUser) => {
-    if (firebaseUser) {
-      fireUser = firebaseUser;
-    } else {
-      console.log("no user!");
-    }
-  });
-
-  const auth = getAuth();
-  let fireUser;
   let profilePhotoURL;
+
   onAuthStateChanged(auth, (firebaseUser) => {
     if (firebaseUser) {
       profilePhotoURL = firebaseUser.photoURL;
@@ -176,7 +166,10 @@
       <h3 class="font-bold text-lg">Upload new avatar</h3>
       <p class="py-4">Upload a new image to change your avatar.</p>
 
+
+
       <form on:submit|preventDefault={() => {}}>
+        <button class="btn"></button>
         <div class="modal-action">
           <label for="modal-change-avatar" class="btn" type="submit"
             >submit</label

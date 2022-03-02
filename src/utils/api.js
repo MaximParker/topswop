@@ -9,11 +9,10 @@ import {
   getDocs,
   documentId,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
-import { getDatabase, ref, set } from "firebase/database";
 import {
   getStorage,
-  uploadBytes,
   getDownloadURL,
   uploadBytesResumable,
   ref as ref_storage,
@@ -22,7 +21,6 @@ import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 export const db = getFirestore();
 const storage = getStorage();
-const auth = getAuth();
 
 let newListing = {
   username: "",
@@ -63,7 +61,7 @@ export const uploadImage = (event, uid, listingRef) => {
     storage,
     `/files/${uid}/listings/${listingRef}/${file}`
   );
-  const uploadTask = uploadBytesResumable(storageRefImage, file, metadata)
+     uploadBytesResumable(storageRefImage, file, metadata)
     .then((uploadTaskSnapshot) => {
       getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
         updateListingWithImage(downloadURL, listingRef);
@@ -104,6 +102,19 @@ export const uploadProfilePic = (event) => {
 
 export const removeListingByID = async (id) => {
   await deleteDoc(doc(db, "listings", id));
+};
+
+export const removeLike = async (current_user, itemId) => {
+  const query1 = query(
+    collection(db, "matches"),
+    where("liking_user_id", "==", current_user), where("item_id", "==", itemId))
+
+    const querySnapshot = await getDocs(query1);
+  querySnapshot.forEach((data) => {
+    deleteDoc(doc(db, "matches", data.id));
+    console.log(data.id, 'deleted')
+  });
+
 };
 
 export const postLike = async (event, likingUserId, itemId, itemOwnerId) => {
@@ -254,6 +265,10 @@ export const reseedListingsDatabase = async (event, listings) => {
   console.log("Re-seed complete.");
 };
 
+export const addDisplayNameToDB = (uid, displayName) => {
+  setDoc(doc(db, `messages/${uid}/`), { displayName });
+};
+
 export const sendWelcomeMessage = (targetID) => {
   console.log(`Creating folder in messages for ${targetID}`);
   return setDoc(doc(db, `messages`, `${targetID}`), {}).then(() => {
@@ -286,18 +301,18 @@ export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
       addDoc(
         collection(db, `messages/${uid_a}/conversations/${uid_b}/messages`),
         {
-          from: "Topswop Team",
+          from: displayName_a,
           date: new Date(),
-          text: `You have matched with ${uid_b}! You can discuss the trade here.`,
+          text: `Matched with ${displayName_a}! You can discuss the trade here.`,
           read: false,
         }
       );
       addDoc(
         collection(db, `messages/${uid_b}/conversations/${uid_a}/messages`),
         {
-          from: "Topswop Team",
+          from: displayname_b,
           date: new Date(),
-          text: `You have matched with ${uid_a}! You can discuss the trade here.`,
+          text: `Matched with ${displayname_b}! You can discuss the trade here.`,
           read: false,
         }
       );
@@ -305,28 +320,37 @@ export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
   );
 };
 
-export const sendDirectMessage = (
-  sender_id,
-  sender_displayName,
-  recipient_id,
-  text
+export const sendMessage = async (senderID, recipientID, messageObject) => {
+  const senderCopy = await addDoc(
+    collection(
+      db,
+      `messages/${senderID}/conversations/${recipientID}/messages`
+    ),
+    messageObject
+  );
+  console.log("Sending message: ", senderCopy.id, "(sender's copy)");
+  const recipientCopy = await addDoc(
+    collection(
+      db,
+      `messages/${recipientID}/conversations/${senderID}/messages`
+    ),
+    messageObject
+  );
+  console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
+};
+
+export function deleteListing(listing) {
+  deleteDoc(doc(db, "listings", listing));
+}
+
+export const updateItem = async (
+  editItem,
+  listItem,
+  title,
+  description,
+  condition,
+  location
 ) => {
-  console.log(`Creating conversations collection for ${targetID}`);
-  setDoc(
-    doc(db, `messages/${targetID}/conversations`, `topswop_team`),
-    {}
-  ).then(() => {
-    addDoc(
-      collection(
-        db,
-        `messages/${targetID}/conversations/topswop_team/messages`
-      ),
-      {
-        from: "Topswop Team",
-        date: new Date(),
-        text: "Welcome to Topswop! Here's some information, etc. etc.",
-        read: false,
-      }
-    );
-  });
+  const updateRef = doc(db, "listings", listItem);
+  await updateDoc(updateRef, editItem);
 };

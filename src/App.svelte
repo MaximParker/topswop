@@ -8,48 +8,51 @@
   import Listings from "./components/Listings.svelte";
   import Profile from "./components/Profile.svelte";
   import PotentialMatches from "./components/PotentialMatches.svelte";
-  import Matches from "./components/Matches.svelte"
+  import Matches from "./components/Matches.svelte";
   import Messages from "./components/Messages.svelte";
+  import DevMenu from "./components/DevMenu.svelte";
 </script>
 
 <Router>
-  <nav>
-    <Navbar />
-  </nav>
+  <header class="sticky top-0 z-50">
+    <nav>
+      <Navbar />
+    </nav>
+  </header>
+  <main class="relative">
+    <Route path="/">
+      <Login />
+    </Route>
 
-  <Route path="/">
-    <Login />
-  </Route>
+    <PrivateRoute path="home" let:location>
+      <Listings />
+    </PrivateRoute>
 
-  <PrivateRoute path="home" let:location>
-    <Listings />
+    <PrivateRoute path="profile" let:location>
+      <Profile />
+    </PrivateRoute>
+
+  <PrivateRoute path="potential-matches" let:location>
+    <PotentialMatches />
   </PrivateRoute>
 
-  <PrivateRoute path="profile" let:location>
-    <Profile />
+  <PrivateRoute path="matches" let:location>
+    <Matches />
   </PrivateRoute>
-
 
     <PrivateRoute path="new-listing" let:location>
       <NewListing />
     </PrivateRoute>
 
-    <PrivateRoute path="potential-matches" let:location>
-      <PotentialMatches />
+    <PrivateRoute path="messages" let:location>
+      <Messages />
     </PrivateRoute>
 
-    <PrivateRoute path="matches" let:location>
-      <Matches />
+    <PrivateRoute path="developer" let:location>
+      <DevMenu />
     </PrivateRoute>
-
-  <PrivateRoute path="new-listing" let:location>
-    <NewListing />
-  </PrivateRoute>
-
-  <PrivateRoute path="messages" let:location>
-    <Messages />
-  </PrivateRoute>
-
+  </main>
+  <footer />
 </Router>
 
 <style global lang="postcss">

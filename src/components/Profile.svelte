@@ -86,12 +86,8 @@
       {signedIn.email}
     </h2>
     <li>
-      <label
-        for="modal-change-avatar"
-        class="btn btn-ghost modal-button"
-        on:click={() => {
-          newAvatarSubmitted = false;
-        }}>Change avatar</label
+      <label for="modal-change-avatar" class="btn btn-ghost modal-button"
+        >Change avatar</label
       >
       <label for="modal-change-password" class="btn btn-ghost modal-button"
         >Change password</label
@@ -173,7 +169,7 @@
       <p class="py-4">Upload a new image to change your avatar.</p>
       <form on:submit|preventDefault={uploadProfilePic}>
         <label class="input-group">
-          <input type="file" accept="image/*" />
+          <input type="file" accept="image/*" required />
           <button class="btn" type="submit">Upload</button>
         </label>
       </form>

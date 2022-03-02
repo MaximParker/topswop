@@ -15,6 +15,7 @@
     condition: "",
     location: "",
     fit: "",
+    cut: "",
     tradeRequired: false,
     user_id: `${signedIn.uid}`,
   };
@@ -34,7 +35,7 @@
             postListing(event, newListing);
           }}
         >
-          <input type="file" accept="image/*" placeholder="image..." class="mb-2"/>
+          <input type="file" accept="image/*" placeholder="image..." class="mb-2" required/>
           <label class="input-group input-group-vertical mb-2">
             <span class="bg-neutral">Item name</span>
             <input
@@ -77,12 +78,28 @@
               class="select w-full max-w-xs select-bordered bg-primary"
               required
             >
-              <option disabled selected>Select best fit...</option>
-              <option>Any / not applicable</option>
-              <option>Adults (unisex)</option>
+              <option disabled selected>Select size (approximate if necessary)...</option>
+              <option>Extra large</option>
+              <option>Large</option>
+              <option>Medium</option>
+              <option>Small</option>
+              <option>Extra small</option>
+            </select>
+          </label>
+          <label class="input-group input-group-vertical mb-2">
+            <span class="bg-neutral">Cut</span>
+            <select
+              bind:value={newListing.cut}
+              class="select w-full max-w-xs select-bordered bg-primary"
+              required
+            >
+              <option disabled selected>Select cut...</option>
+              <option>Unisex</option>
               <option>Women</option>
               <option>Men</option>
               <option>Children</option>
+              <option>Girls</option>
+              <option>Boys</option>
               <option>Toddlers</option>
               <option>Infants</option>
             </select>

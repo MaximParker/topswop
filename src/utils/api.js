@@ -18,7 +18,7 @@ import {
   uploadBytesResumable,
   ref as ref_storage,
 } from "firebase/storage";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 export const db = getFirestore();
 const storage = getStorage();
@@ -61,7 +61,7 @@ export const uploadImage = (event, uid, listingRef) => {
   if (!file) return;
   const storageRefImage = ref_storage(
     storage,
-    `/files/${uid}/${listingRef}/${file}`
+    `/files/${uid}/listings/${listingRef}/${file}`
   );
   const uploadTask = uploadBytesResumable(storageRefImage, file, metadata)
     .then((uploadTaskSnapshot) => {
@@ -79,14 +79,13 @@ const updateListingWithImage = (downloadURL, listingRef) => {
   setDoc(newListingRef, { imageURL: downloadURL }, { merge: true });
 };
 
-export let profilePicExport;
 export const uploadProfilePic = (event) => {
   event.preventDefault();
   const profilePic = event.target[0].files[0];
   if (!profilePic) return;
   const storageRef = ref_storage(
     storage,
-    `/files/${uid}/profilepics/${profilePic}`
+    `/files/${uid}/profilePic/${profilePic}`
   );
   const uploadTask = uploadBytesResumable(
     storageRef,
@@ -94,8 +93,11 @@ export const uploadProfilePic = (event) => {
     metadata
   ).then((uploadTaskSnapshot) => {
     getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
-      console.log(downloadURL);
-      return (profilePicExport = downloadURL);
+      updateProfile(auth.currentUser, {
+        photoURL: downloadURL,
+      }).catch((error) => {
+        console.log(error);
+      });
     });
   });
 };

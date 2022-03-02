@@ -30,14 +30,6 @@
 </script>
 
 <header>
-  <form
-    on:submit={() => {
-      currentRecipient = "";
-      navigate("/messages");
-    }}
-  >
-    <button type="submit">Go back to messages</button>
-  </form>
   <div class="bg-primary mx-auto w-100 p-2">
     <h1 class="text-xl font-bold align-center text-center">
       {currentConversation[0].data.from}
@@ -50,7 +42,7 @@
     <li>
       <div class="flex w-full">
         {#if message.data.from == signedIn.displayName}
-          <div class="grid flex-grow card p-2 mb-1 bg-base-100">{message.data.date}</div>
+          <div class="grid flex-grow card p-2 mb-1 bg-base-100"></div>
           <div
             class="grid flex-grow card p-2 mb-1 max-w-max bg-base-300 rounded-box place-items-center text-primary"
           >

@@ -9,7 +9,6 @@
   import { createChatroom, db } from "../utils/api";
   import { user } from "../utils/stores";
   import Chat from "../components/Chat.svelte";
-  import { onValue, ref } from "firebase/database";
   let signedIn;
 
   user.subscribe((value) => {
@@ -61,7 +60,9 @@
 
 <header>
   <div class="mx-auto my-2">
-    <h1 class="text-xl font-bold text-primary align-center text-center">Messages</h1>
+    <h1 class="text-xl font-bold text-primary align-center text-center" on:click={() => {
+      currentRecipient = "";
+    }}>Messages</h1>
   </div>
 </header>
 

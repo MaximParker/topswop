@@ -26,19 +26,25 @@
       updatedListingLikes = [item, ...updatedListingLikes];
     });
     listingsWithLikes = updatedListingLikes;
+    console.log(listingsWithLikes)
   };
 </script>
 
 <main>
   <ul class="basic-grid">
     {#each getOrderedList([...listingsWithLikes]) as listing, i}
-      <li class="card" style="--animation-order: {i + 1};">
-        <img class="card-image" src={listing.imageURL} alt="clothing item" />
-        <h3>{listing.title}</h3>
+
+    
+      <li class="myCard bg-white rounded-lg overflow-hidden" style="--animation-order: {i + 1};">
+        <div class="relative overflow-hidden pb-2/3">
+        <img class="absolute w-full h-full object-cover" src={ listing.imageURL ? listing.imageURL : "http://cdn.akc.org/content/article-body-image/siberian_husky_cute_puppies.jpg"}  alt="clothing item" />
+      </div>
+        <div class="m-4">
+        <h3 class="mt-1 font-semibold text-lg leading-tight truncate">{listing.title}</h3>
         <p>Description: {listing.description}</p>
         <p>Condition: {listing.condition}</p>
         <p>Location: {listing.location}</p>
-        <button
+        <button class="btn btn-primary"
           on:click={(event) => {
             eventHandler(
               event,
@@ -55,7 +61,7 @@
             Dislike
           {/if}
         </button>
-
+      </div>
       </li>
     {:else}
       <p>Loading.App..</p>
@@ -64,30 +70,32 @@
 </main>
 
 <style>
-  .card {
-    display: flex;
+  .myCard {
+    /* display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background: #353535;
     font-size: 1rem;
-    color: #fff;
+    color: #fff; */
     box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem,
       rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
-    height: 100%;
-    width: 100%;
-    border-radius: 4px;
+    /* height: 100%;
+    width: 100%; */
+    /* border-radius: 4px; */
     transition: all 500ms;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    /* overflow: hidden; */
+    /* background-size: cover; */
+    /* background-position: center; */
+    /* background-repeat: no-repeat; */
     animation: cardEntrance 700ms ease-out;
     animation-fill-mode: backwards;
     animation-delay: calc(var(--animation-order) * 100ms);
+
+ 
   }
 
-  .card:hover {
+  .myCard:hover {
     box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em,
       rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
     transform: translateY(-3px) scale(1.05);
@@ -97,7 +105,7 @@
     display: grid;
     gap: 0.75rem;
     padding: 0.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     justify-content: center;
   }
 
@@ -113,14 +121,14 @@
   }
 
   .card-image {
-    height: 150px;
+    /* height: 150px;
     margin-bottom: 15px;
-    margin-top: 15px;
+    margin-top: 15px; */
   }
 
-  @media screen and (max-width: 350px) {
+  /* @media screen and (max-width: 350px) {
     .basic-grid {
       grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     }
-  }
+  } */
 </style>

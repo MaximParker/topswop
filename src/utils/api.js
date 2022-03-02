@@ -17,6 +17,7 @@ import {
   uploadBytesResumable,
   ref as ref_storage,
 } from "firebase/storage";
+import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 export const db = getFirestore();
 const storage = getStorage();
@@ -31,6 +32,14 @@ let newListing = {
   user_id: "",
 };
 
+let uid;
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    uid = user.uid;
+    return uid;
+  }
+});
+
 export const postListing = async (event, newListing) => {
   event.preventDefault();
   const docRef = await addDoc(collection(db, "listings"), newListing);
@@ -40,16 +49,17 @@ export const postListing = async (event, newListing) => {
   uploadImage(event, uid, listingRef);
 };
 
+const storageRef = ref_storage(storage);
+const metadata = {
+  contentType: "image/jpeg",
+};
 export const uploadImage = (event, uid, listingRef) => {
-  const metadata = {
-    contentType: "image/jpeg",
-  };
   event.preventDefault();
   const file = event.target[6].files[0];
   if (!file) return;
   const storageRefImage = ref_storage(
     storage,
-    `/files/${uid}/${listingRef}/${file}`
+    `/files/${uid}/listings/${listingRef}/${file}`
   );
      uploadBytesResumable(storageRefImage, file, metadata)
     .then((uploadTaskSnapshot) => {
@@ -65,6 +75,29 @@ export const uploadImage = (event, uid, listingRef) => {
 const updateListingWithImage = (downloadURL, listingRef) => {
   const newListingRef = doc(db, "listings", listingRef);
   setDoc(newListingRef, { imageURL: downloadURL }, { merge: true });
+};
+
+export const uploadProfilePic = (event) => {
+  event.preventDefault();
+  const profilePic = event.target[0].files[0];
+  if (!profilePic) return;
+  const storageRef = ref_storage(
+    storage,
+    `/files/${uid}/profilePic/${profilePic}`
+  );
+  const uploadTask = uploadBytesResumable(
+    storageRef,
+    profilePic,
+    metadata
+  ).then((uploadTaskSnapshot) => {
+    getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
+      updateProfile(auth.currentUser, {
+        photoURL: downloadURL,
+      }).catch((error) => {
+        console.log(error);
+      });
+    });
+  });
 };
 
 export const removeListingByID = async (id) => {

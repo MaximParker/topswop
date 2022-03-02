@@ -1,5 +1,5 @@
 <script>
-  import { db } from "../utils/api";
+  import { db, uploadProfilePic } from "../utils/api";
   import { handleLogout } from "../utils/auth";
   import { user } from "../utils/stores";
   import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
@@ -14,6 +14,18 @@
 
   onAuthStateChanged(auth, (firebaseUser) => {
     if (firebaseUser) {
+      fireUser = firebaseUser;
+    } else {
+      console.log("no user!");
+    }
+  });
+
+  const auth = getAuth();
+  let fireUser;
+  let profilePhotoURL;
+  onAuthStateChanged(auth, (firebaseUser) => {
+    if (firebaseUser) {
+      profilePhotoURL = firebaseUser.photoURL;
       fireUser = firebaseUser;
     } else {
       console.log("no user!");
@@ -90,6 +102,7 @@
         >Sign out
       </button>
     </li>
+  
   </ul>
   <div class="divider" />
   <div class="mx-auto my-2">

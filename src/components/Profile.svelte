@@ -1,5 +1,5 @@
 <script>
-  import { db } from "../utils/api";
+  import { db, uploadProfilePic } from "../utils/api";
   import { handleLogout } from "../utils/auth";
   import { user } from "../utils/stores";
   import { getAuth, updatePassword, onAuthStateChanged } from "firebase/auth";
@@ -18,8 +18,19 @@
     }
   });
 
-  let signedIn;
+  const auth = getAuth();
+  let fireUser;
+  let profilePhotoURL;
+  onAuthStateChanged(auth, (firebaseUser) => {
+    if (firebaseUser) {
+      profilePhotoURL = firebaseUser.photoURL;
+      fireUser = firebaseUser;
+    } else {
+      console.log("no user!");
+    }
+  });
 
+  let signedIn;
   user.subscribe((value) => {
     signedIn = value;
   });
@@ -58,6 +69,12 @@
 
 <main>
   <h1>Welcome, {signedIn.displayName}</h1>
+  <img src={profilePhotoURL} alt="profile pic" />
+  <form on:submit={uploadProfilePic}>
+    <input type="file" accept="image/*" /><input />
+    <button type="submit">Add Profile Pic</button>
+  </form>
+  <br />
   <button on:click={handleLogout}>Logout</button>
   <p>Avatar image{signedIn.photoURL}</p>
   <p>Email: {signedIn.email}</p>

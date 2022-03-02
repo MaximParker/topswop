@@ -38,29 +38,37 @@
       <li class="myCard bg-white rounded-lg overflow-hidden" style="--animation-order: {i + 1};">
         <div class="relative overflow-hidden pb-2/3">
         <img class="absolute w-full h-full object-cover" src={ listing.imageURL ? listing.imageURL : "http://cdn.akc.org/content/article-body-image/siberian_husky_cute_puppies.jpg"}  alt="clothing item" />
+        <button class="btn absolute bottom-0 right-0 mr-2 mb-2"
+        on:click={(event) => {
+          eventHandler(
+            event,
+            signedIn.uid,
+            listing.id,
+            listing.user_id,
+            listing.liked
+          );
+        }}
+      >
+        {#if listing.liked == false}
+          Like
+        {:else}
+          Unlike
+        {/if}
+      </button>
       </div>
-        <div class="m-4">
+        <div class="p-4">
+          <div class="text-gray-600 text-xs uppercase font-semibold tracking-wide">
+            Size: &bull Mens &bull Condition: {listing.condition}
+          </div>
         <h3 class="mt-1 font-semibold text-lg leading-tight truncate">{listing.title}</h3>
+      
+          <div class="mt-4 leading-tight " >
         <p>Description: {listing.description}</p>
-        <p>Condition: {listing.condition}</p>
-        <p>Location: {listing.location}</p>
-        <button class="btn btn-primary"
-          on:click={(event) => {
-            eventHandler(
-              event,
-              signedIn.uid,
-              listing.id,
-              listing.user_id,
-              listing.liked
-            );
-          }}
-        >
-          {#if listing.liked == false}
-            LIKE
-          {:else}
-            Dislike
-          {/if}
-        </button>
+        </div>
+        <div class="text-gray-600 text-xs uppercase font-semibold tracking-wide mt-2">
+          {listing.location}
+        </div>
+       
       </div>
       </li>
     {:else}
@@ -118,12 +126,6 @@
       opacity: 1;
       transform: scale(1);
     }
-  }
-
-  .card-image {
-    /* height: 150px;
-    margin-bottom: 15px;
-    margin-top: 15px; */
   }
 
   /* @media screen and (max-width: 350px) {

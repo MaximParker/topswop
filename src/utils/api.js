@@ -11,9 +11,15 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
+import {
+  getStorage,
+  getDownloadURL,
+  uploadBytesResumable,
+  ref as ref_storage,
+} from "firebase/storage";
+
 export const db = getFirestore();
 const storage = getStorage();
-const auth = getAuth();
 
 let newListing = {
   username: "",
@@ -35,7 +41,6 @@ export const postListing = async (event, newListing) => {
 };
 
 export const uploadImage = (event, uid, listingRef) => {
-  const storageRef = ref_storage(storage);
   const metadata = {
     contentType: "image/jpeg",
   };
@@ -46,7 +51,7 @@ export const uploadImage = (event, uid, listingRef) => {
     storage,
     `/files/${uid}/${listingRef}/${file}`
   );
-  const uploadTask = uploadBytesResumable(storageRefImage, file, metadata)
+     uploadBytesResumable(storageRefImage, file, metadata)
     .then((uploadTaskSnapshot) => {
       getDownloadURL(uploadTaskSnapshot.ref).then((downloadURL) => {
         updateListingWithImage(downloadURL, listingRef);

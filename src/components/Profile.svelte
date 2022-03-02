@@ -61,7 +61,11 @@
   <button on:click={handleLogout}>Logout</button>
   <p>Avatar image{signedIn.photoURL}</p>
   <p>Email: {signedIn.email}</p>
-  <form on:submit|preventDefault={changePassword}>
+  <form
+    on:submit|preventDefault={() => {
+      changePassword;
+    }}
+  >
     <input
       type="password"
       placeholder="new password"

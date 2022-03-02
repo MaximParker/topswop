@@ -33,9 +33,7 @@ export const updateUserDisplayName = (newUsername) => {
   updateProfile(auth.currentUser, {
     displayName: newUsername,
   })
-    .then(() => {
-      alert("Profile updated.");
-    })
+    .then(() => {})
     .catch((error) => {
       alert(error);
     });
@@ -49,7 +47,7 @@ export const registerUserByEmail = (email, password, displayName) => {
         uid: userCredential.user.uid,
         email: userCredential.user.email,
         displayName,
-      })
+      });
       return displayName;
     })
     .then((displayName) => {

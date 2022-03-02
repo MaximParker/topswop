@@ -32,30 +32,53 @@
 <main>
   <ul class="basic-grid">
     {#each getOrderedList([...listingsWithLikes]) as listing, i}
-      <li class="card" style="--animation-order: {i + 1};">
-        <img class="card-image" src={listing.imageURL} alt="clothing item" />
-        <h3>{listing.title}</h3>
-        <p>Description: {listing.description}</p>
-        <p>Condition: {listing.condition}</p>
-        <p>Location: {listing.location}</p>
-        <button
-          on:click={(event) => {
-            eventHandler(
-              event,
-              signedIn.uid,
-              listing.id,
-              listing.user_id,
-              listing.liked
-            );
-          }}
-        >
-          {#if listing.liked == false}
-            LIKE
-          {:else}
-            Dislike
-          {/if}
-        </button>
-
+      <li
+        class="myCard bg-secondary rounded-lg overflow-hidden"
+        style="--animation-order: {i + 1};"
+      >
+        <div class="relative overflow-hidden pb-2/3">
+          <img
+            class="absolute w-full h-full object-cover"
+            src={listing.imageURL ? listing.imageURL : "graphics/logo_dark.png"}
+            alt="clothing item"
+          />
+          <button
+            class="btn absolute bottom-0 right-0 mr-2 mb-2"
+            on:click={(event) => {
+              eventHandler(
+                event,
+                signedIn.uid,
+                listing.id,
+                listing.user_id,
+                listing.liked
+              );
+            }}
+          >
+            {#if listing.liked == false}
+              Like
+            {:else}
+              Unlike
+            {/if}
+          </button>
+        </div>
+        <div class="p-4">
+          <div
+            class="text-gray-600 text-xs uppercase font-semibold tracking-wide"
+          >
+            {listing.fit} &bull {listing.cut} &bull {listing.condition}
+          </div>
+          <h3 class="mt-1 font-semibold text-lg leading-tight truncate">
+            {listing.title}
+          </h3>
+          <div class="mt-4 leading-tight ">
+            {listing.description}
+          </div>
+          <div
+            class="text-gray-600 text-xs uppercase font-semibold tracking-wide mt-2"
+          >
+            {listing.location}
+          </div>
+        </div>
       </li>
     {:else}
       <p>Loading.App..</p>
@@ -64,40 +87,20 @@
 </main>
 
 <style>
-  .card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: #353535;
-    font-size: 1rem;
-    color: #fff;
+  .myCard {
     box-shadow: rgba(3, 8, 20, 0.1) 0px 0.15rem 0.5rem,
       rgba(2, 8, 20, 0.1) 0px 0.075rem 0.175rem;
-    height: 100%;
-    width: 100%;
-    border-radius: 4px;
     transition: all 500ms;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     animation: cardEntrance 700ms ease-out;
     animation-fill-mode: backwards;
     animation-delay: calc(var(--animation-order) * 100ms);
   }
 
-  .card:hover {
-    box-shadow: rgba(2, 8, 20, 0.1) 0px 0.35em 1.175em,
-      rgba(2, 8, 20, 0.08) 0px 0.175em 0.5em;
-    transform: translateY(-3px) scale(1.05);
-  }
-
   .basic-grid {
     display: grid;
-    gap: 0.75rem;
-    padding: 0.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 0.8rem;
+    padding: 0.7rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     justify-content: center;
   }
 
@@ -112,13 +115,7 @@
     }
   }
 
-  .card-image {
-    height: 150px;
-    margin-bottom: 15px;
-    margin-top: 15px;
-  }
-
-  @media screen and (max-width: 350px) {
+  @media screen and (max-width: 380px) {
     .basic-grid {
       grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     }

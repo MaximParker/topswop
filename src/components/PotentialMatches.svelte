@@ -56,7 +56,11 @@
 </script>
 
 <main>
-  <h2>Potential Matches ({potentialMatches.length})</h2>
+  <header>
+    <div class="mx-auto my-2">
+      <h1 class="text-xl font-bold text-primary align-center text-center">Potential Matches</h1>
+    </div>
+  </header>
   {#if !anyMatchesYet}
     <p>No potential matches yet, get liking to increase your visibility!</p>
   {:else}

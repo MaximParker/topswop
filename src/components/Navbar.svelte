@@ -62,11 +62,6 @@
             >
           </li>
           <li>
-            <Link to="/my-listings">
-              <ArchiveIcon size="24" />My listings</Link
-            >
-          </li>
-          <li>
             <Link to="/new-listing">
               <PlusCircleIcon size="24" />New listing</Link
             >

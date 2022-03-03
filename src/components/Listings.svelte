@@ -84,33 +84,25 @@ import { each } from "svelte/internal";
         All Topswops
       </h1>
       <div class="dropdown">
-        <!-- svelte-ignore a11y-label-has-associated-control -->
         <label tabindex="0" class="m-1 btn btn-secondary">Filter</label>
         <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
-          <!-- svelte-ignore a11y-missing-attribute -->
           <li><a on:click={() => {hiddenCut=true, hiddenFit=true, filter() }}>All</a></li>
-          <!-- svelte-ignore a11y-missing-attribute -->
           <li><a on:click={() => {hiddenCut=false, hiddenFit=true }}>Cut</a></li>
-          <!-- svelte-ignore a11y-missing-attribute -->
           <li><a on:click={() => {hiddenCut=true, hiddenFit=false }}>Fit</a></li>
         </ul>
       </div>
       <div class="dropdown" class:hidden={hiddenFit} id="fit"> 
-        <!-- svelte-ignore a11y-label-has-associated-control -->
         <label tabindex="0" class="m-1 btn btn-secondary">Fit</label>
         <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
           {#each fitOption as o}
-          <!-- svelte-ignore a11y-missing-attribute -->
           <li><a on:click={() => filter("fit", o)}>{o}</a></li>
           {/each}
         </ul> 
       </div>
       <div class="dropdown" class:hidden={hiddenCut} id="cut">
-        <!-- svelte-ignore a11y-label-has-associated-control -->
         <label tabindex="0" class="m-1 btn btn-secondary">Cut</label>
         <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
           {#each cutOptions as o}
-          <!-- svelte-ignore a11y-missing-attribute -->
           <li><a on:click={() => filter("cut", o)}>{o}</a></li>
           {/each}
         </ul>

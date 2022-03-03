@@ -75,8 +75,10 @@
           ...currentConversation,
           { data: { ...newMessage } },
         ];
-        sendMessage(signedIn.uid, currentRecipient, newMessage);
-        newMessage.text = "";
+        sendMessage(signedIn.uid, currentRecipient, newMessage)
+        .then(() => {
+          newMessage.text = "";
+        })
       }}
     >
       <input

@@ -24,7 +24,7 @@ export let matchedItemData = []
         </div>
         <div class="grid place-items-center mt-3" >
             <p>Congrats it's a match!</p>
-            <button on:click={() => {createChatroom(m.user, m.match_user, m.item.username, m.match_item.username )}} class="btn mt-2">Start Chat</button>
+            <button on:click={createChatroom(m.user, m.match_user, m.item.username, m.match_item.username)} class="btn mt-2">Start Chat</button>
         </div>
         <div>
             <div class="relative bottom-0 overflow-hidden pb-1/3 mt-3">

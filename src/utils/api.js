@@ -297,8 +297,8 @@ export const sendWelcomeMessage = (targetID) => {
   });
 };
 
-export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
-  console.log(`Creating a conversation between ${displayName_a} and ${displayname_b}`)
+export const createChatroom = (uid_a, uid_b, displayName_a, displayName_b) => {
+  console.log(`Creating a conversation between ${displayName_a} and ${displayName_b}`)
   setDoc(doc(db, `messages/${uid_a}/conversations`, `${uid_b}`), {});
   setDoc(doc(db, `messages/${uid_b}/conversations`, `${uid_a}`), {})
   .then(
@@ -315,18 +315,18 @@ export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
       addDoc(
         collection(db, `messages/${uid_b}/conversations/${uid_a}/messages`),
         {
-          from: displayname_a,
+          from: displayName_a,
           date: new Date(),
-          text: `Matched with ${displayname_a}! You can discuss the trade here.`,
+          text: `Matched with ${displayName_a}! You can discuss the trade here.`,
           read: false,
         }
       );
     }
-  );
-  navigate("/messages")
+  )
 };
 
 export const sendMessage = async (senderID, recipientID, messageObject) => {
+  console.log(messageObject)
   const senderCopy = await addDoc(
     collection(
       db,
@@ -334,7 +334,7 @@ export const sendMessage = async (senderID, recipientID, messageObject) => {
     ),
     messageObject
   );
-  console.log("Sending message: ", senderCopy.id, "(sender's copy)");
+  console.log("Sending message for: ", senderID, "(sender's copy)");
   const recipientCopy = await addDoc(
     collection(
       db,
@@ -342,7 +342,7 @@ export const sendMessage = async (senderID, recipientID, messageObject) => {
     ),
     messageObject
   );
-  console.log("Sending message: ", recipientCopy.id, "(recipient's copy)");
+  console.log("Sending message for: ", recipientID, "(recipient's copy)");
 };
 
 export function deleteListing(listing) {

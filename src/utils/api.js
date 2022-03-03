@@ -299,25 +299,25 @@ export const sendWelcomeMessage = (targetID) => {
 
 export const createChatroom = (uid_a, uid_b, displayName_a, displayname_b) => {
   console.log(`Creating a conversation between ${displayName_a} and ${displayname_b}`)
-  console.log(`Creating a conversation between ${uid_a} and ${uid_b}`);
   setDoc(doc(db, `messages/${uid_a}/conversations`, `${uid_b}`), {});
-  setDoc(doc(db, `messages/${uid_b}/conversations`, `${uid_a}`), {}).then(
+  setDoc(doc(db, `messages/${uid_b}/conversations`, `${uid_a}`), {})
+  .then(
     () => {
       addDoc(
         collection(db, `messages/${uid_a}/conversations/${uid_b}/messages`),
         {
-          from: displayName_a,
+          from: displayName_b,
           date: new Date(),
-          text: `Matched with ${displayName_a}! You can discuss the trade here.`,
+          text: `Matched with ${displayName_b}! You can discuss the trade here.`,
           read: false,
         }
       );
       addDoc(
         collection(db, `messages/${uid_b}/conversations/${uid_a}/messages`),
         {
-          from: displayname_b,
+          from: displayname_a,
           date: new Date(),
-          text: `Matched with ${displayname_b}! You can discuss the trade here.`,
+          text: `Matched with ${displayname_a}! You can discuss the trade here.`,
           read: false,
         }
       );

@@ -29,7 +29,6 @@ export let matchedItemData = []
         <div>
             <div class="relative bottom-0 overflow-hidden pb-1/3 mt-3">
                 <img class="absolute w-full h-full object-cover" src={m.match_item.imageURL} alt="clothing item">
-                <!-- <button class="btn btn-secondary absolute bottom-0 right-0 mr-2 mb-2">{m.match_item.username}</button> -->
                 <div class="badge badge-secondary absolute top-0 right-0 mr-2 mt-2">{m.match_item.username}</div>
 
             </div>

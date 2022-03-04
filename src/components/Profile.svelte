@@ -79,7 +79,7 @@
   <ul class="menu bg-primary mx-auto w-80 p-2 rounded-box">
     <div class="avatar">
       <div class="w-24 rounded-full mx-auto mb-2">
-        <img src={profilePhotoURL} alt="Your profile avatar" />
+        <img src={(profilePhotoURL ? profilePhotoURL : `graphics/default_icon.jpg`)} alt="Your profile avatar" />
       </div>
     </div>
     <h2 class="text-l align-center text-center mb-2">

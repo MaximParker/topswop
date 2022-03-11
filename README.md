@@ -1,109 +1,60 @@
-*Psst — looking for a more complete solution? Check out [SvelteKit](https://kit.svelte.dev), the official framework for building web applications of all sizes, with a beautiful development experience and flexible filesystem-based routing.*
+# Topswop
 
-*Looking for a shareable component template instead? You can [use SvelteKit for that as well](https://kit.svelte.dev/docs#packaging) or the older [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+## Introduction
+
+**Topswop** is a web-app for trading second-hand clothes. It is built using [Svelte](https://svelte.dev/) and [DaisyUI](https://daisyui.com/) for the front-end, and [Firebase](https://firebase.google.com/) for the back-end.
+
+Written by Team Foobar: [Dan Everson](https://github.com/dweverson), [Cat Hoang](https://github.com/CatHoang), [Syed Javaid](https://github.com/syedmjavaid), and [Maxim Parker](github.com/MaximParker).
+
+Latest version 1.0.0 (11 March 2022).
 
 ---
-
-# svelte app
-
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
-
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
-
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+## How to run a local copy
+### 1. Install dependencies
 ```
-
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
-npm install
+$ npm i
 ```
+At a minimim, `Firebase 9.6.7` must be installed.
 
-...then start [Rollup](https://rollupjs.org):
-
-```bash
-npm run dev
-```
-
-Navigate to [localhost:8080](http://localhost:8080). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
-
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
-
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-npm run build
-```
-
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
+### 2. Add your own Firebase config file
+1. Create a new Firebase project and a new app within it
+2. Go to `Project settings`
+3. Scroll down to the code excerpt and copy the object called `firebaseConfig`. It should look like this:
 ```js
-"start": "sirv public --single"
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "..."
+};
 ```
+4. Copy this object into a new file in `src > utils` called `firebaseConfig.js`, and export it like so:
+```js
+export const firebaseConfig = {
+  // ...
+};
+```
+Your local copy of Topswop will now have access to your Firebase app.
 
-## Using TypeScript
+### 4. Add collections to Firestore Database
+In order to function, the app requires certain collections be available in your Firestore Database (a.k.a. 'Cloud Firestore'). Start three collections in your app:
+- `listings`
+- `matches`
+- `messages`
 
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
+> Note: By design, a document is required in order to start a collection in Firestore, but the name and contents of this document are irrelevant. You should delete the dummy document immediately after starting the collection.
 
+### 5. Start your local copy
 ```bash
-node scripts/setupTypeScript.js
+HOST=0.0.0.0 npm run dev
 ```
 
-Or remove the script via:
+---
+## Acknowledgements
 
-```bash
-rm scripts/setupTypeScript.js
-```
+This project was completed as part of the front-end module on the [Northcoders](https://northcoders.com/) bootcamp. We couldn't have done this without the intensive 12 weeks of mentoring provided by their hard-working and friendly tutors.
 
-If you want to use `baseUrl` or `path` aliases within your `tsconfig`, you need to set up `@rollup/plugin-alias` to tell Rollup to resolve the aliases. For more info, see [this StackOverflow question](https://stackoverflow.com/questions/63427935/setup-tsconfig-path-in-svelte).
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+---
+Copyright (c) 2022

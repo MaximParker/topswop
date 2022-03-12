@@ -77,7 +77,7 @@
             class="btn btn-ghost"
             on:click={() => {
               currentRecipient = convo.recipient;
-            }}>{convo.recipient}</button
+            }}>{convo.data.from}</button
           >
         </li>
       {/each}

@@ -10,8 +10,6 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
-    "@smui/button": "^6.0.0-beta.14",
-    "@smui/card": "^6.0.0-beta.14",
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.5",
     "postcss-load-config": "^3.1.1",
@@ -31,7 +29,6 @@
     "rxjs": "^7.5.4",
     "sirv-cli": "^2.0.2",
     "svelte-confetti-explosion": "^0.2.0",
-    "svelte-material-ui": "^6.0.0-beta.14",
     "svelte-navigator": "^3.1.5"
   }
 }

@@ -52,7 +52,7 @@
       <div class="dropdown dropdown-end">
         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full ring ring-primary">
-            <img src={profilePhotoURL} alt="Profile icon" />
+            <img src={(profilePhotoURL ? profilePhotoURL : `graphics/default_icon.jpg`)} alt="Profile icon" />
           </div>
         </label>
         <ul
